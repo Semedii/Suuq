@@ -50,7 +50,7 @@ class WelcomePage extends ConsumerWidget {
         _getTitle(title),
         const SizedBox(height: 10),
         _getSubtitle(subtitle),
-        _buildButtonAndIndicator(),
+        _getButtonAndIndicator(),
       ],
     );
   }
@@ -80,7 +80,7 @@ class WelcomePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildButtonAndIndicator() {
+  Widget _getButtonAndIndicator() {
     return Consumer(
       builder: (context, ref, _) {
         final index = ref.watch(indexDotNotifierProvider);
