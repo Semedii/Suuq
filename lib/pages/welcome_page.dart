@@ -1,6 +1,7 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:suuq/pages/login_page.dart';
 import 'package:suuq/providers/welcome/index_dot_notifier.dart';
 
 class WelcomePage extends ConsumerWidget {
@@ -86,7 +87,7 @@ class WelcomePage extends ConsumerWidget {
         final index = ref.watch(indexDotNotifierProvider);
         return Column(
           children: [
-            _getButton(index),
+            _getButton(context, index),
             _getIndicator(index),
           ],
         );
@@ -107,9 +108,9 @@ class WelcomePage extends ConsumerWidget {
     );
   }
 
-  ElevatedButton _getButton(int index) {
+  ElevatedButton _getButton(BuildContext context, int index) {
     return ElevatedButton(
-      onPressed: () => _onButtonPressed(index),
+      onPressed: () => _onButtonPressed(context, index),
       style: _getButtonStyle(),
       child: _getButtonText(index),
     );
@@ -136,13 +137,16 @@ class WelcomePage extends ConsumerWidget {
     );
   }
 
-  void _onButtonPressed(int index) {
+  void _onButtonPressed(BuildContext context, int index) {
     if (index < 2) {
       _controller.animateToPage(
         index + 1,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+    }
+    else{
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
     }
   }
 }
