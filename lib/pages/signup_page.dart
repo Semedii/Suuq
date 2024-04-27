@@ -6,6 +6,7 @@ import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/providers/signup/signup_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/field_validators.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class SignupPage extends ConsumerWidget {
@@ -13,27 +14,28 @@ class SignupPage extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     final signUpProvider = ref.watch(signupNotifierProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sign up"),
-        bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            child: Text("Enter your details below & free signup")),
+        title: Text(localizations.signup),
+        bottom:  PreferredSize(
+            preferredSize: const Size.fromHeight(50),
+            child: Text(localizations.enterYourDetailsAndSignUp)),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24),
           child: Column(
             children: [
-              _getTextFields(ref),
+              _getTextFields(ref, localizations),
               _getTermsAndConditionsSection(ref),
               AppButton(
-                  title: "Sign up",
+                  title: localizations.signup,
                   isLoading: signUpProvider.isButtonLoading,
                   onTap: () => _handleSignUp(ref)),
               AppButton(
-                title: "Back to Login",
+                title: localizations.backToLogin,
                 onTap: () => AutoRouter.of(context).replace(
                   const LoginRoute(),
                 ),
@@ -45,7 +47,7 @@ class SignupPage extends ConsumerWidget {
     );
   }
 
-  Form _getTextFields(WidgetRef ref) {
+  Form _getTextFields(WidgetRef ref, AppLocalizations localizations) {
     final signUpProvider = ref.watch(signupNotifierProvider);
     return Form(
       key: _formKey,
@@ -53,8 +55,8 @@ class SignupPage extends ConsumerWidget {
         children: [
           AppTextField(
             initialValue: signUpProvider.fullName,
-            label: "Full Name",
-            hintText: "Enter your username",
+            label: localizations.enterYourFullName,
+            hintText: localizations.enterYourFullName,
             prefixIcon: const Icon(Icons.person),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onFullNameChanged,
@@ -62,16 +64,16 @@ class SignupPage extends ConsumerWidget {
           ),
           AppTextField(
             initialValue: signUpProvider.email,
-            label: "Email",
-            hintText: "Enter your email address",
+            label: localizations.email,
+            hintText: localizations.enterYourEmailAddress,
             prefixIcon: const Icon(Icons.email),
             onChanged: ref.read(signupNotifierProvider.notifier).onEmailChanged,
             validator: FieldValidators.required,
           ),
           AppTextField(
             initialValue: signUpProvider.password,
-            label: "Password",
-            hintText: "Enter your password",
+            label: localizations.password,
+            hintText: localizations.enterYourPassword,
             prefixIcon: const Icon(Icons.lock),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onPasswordChanged,
@@ -79,8 +81,8 @@ class SignupPage extends ConsumerWidget {
           ),
           AppTextField(
             initialValue: signUpProvider.rePassword,
-            label: "Confirm Password",
-            hintText: "Enter your password again",
+            label: localizations.confirmPassword,
+            hintText: localizations.enterYourPasswordAgain,
             prefixIcon: const Icon(Icons.lock),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onRePasswordChanged,

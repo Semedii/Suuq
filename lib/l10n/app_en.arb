@@ -1,0 +1,15 @@
+{
+  "backToLogin": "BackToLogin",
+  "confirmPassword": "Confirm Password",
+  "email": "Email",
+  "enterYourDetailsAndSignUp": "Enter your details and sign up freely",
+  "enterYourEmailAddress": "Enter your email address",
+  "enterYourFullName": "Enter your full name",
+  "enterYourPassword": "Enter your password",
+  "enterYourPasswordAgain": "Enter your password again",
+  "forgotYourPassword": "Forgot your password",
+  "fullName": "Full name",
+  "login": "Login",
+  "password": "Password",
+  "signup": "Signup"
+}
