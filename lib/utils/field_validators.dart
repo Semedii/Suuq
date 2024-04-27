@@ -25,4 +25,13 @@ class FieldValidators {
     }
     return null;
   }
+
+    static String? password(String? value) {
+    if (required(value) != null) {
+      return required(value);
+    } else if (value!.length < 6) {
+      return 'Password should be at least 6 characters';
+    }
+    return null;
+  }
 }

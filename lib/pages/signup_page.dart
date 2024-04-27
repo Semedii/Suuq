@@ -75,7 +75,7 @@ class SignupPage extends ConsumerWidget {
             prefixIcon: const Icon(Icons.lock),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onPasswordChanged,
-            validator: FieldValidators.required,
+            validator: FieldValidators.password,
           ),
           AppTextField(
             initialValue: signUpProvider.rePassword,
