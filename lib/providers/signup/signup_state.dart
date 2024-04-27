@@ -4,6 +4,7 @@ class SignupState {
   final String password;
   final String rePassword;
   final bool isAgreed;
+  final bool isButtonLoading;
 
   SignupState({
     this.fullName = "",
@@ -11,6 +12,7 @@ class SignupState {
     this.password = "",
     this.rePassword = "",
     this.isAgreed = false,
+    this.isButtonLoading = false,
   });
 
   SignupState copyWith({
@@ -19,6 +21,7 @@ class SignupState {
     String? password,
     String? rePassword,
     bool? isAgreed,
+    bool? isButtonLoading,
   }) {
     return SignupState(
       fullName: fullName ?? this.fullName,
@@ -26,6 +29,7 @@ class SignupState {
       password: password ?? this.password,
       rePassword: rePassword ?? this.rePassword,
       isAgreed: isAgreed ?? this.isAgreed,
+      isButtonLoading: isButtonLoading ?? this.isButtonLoading,
     );
   }
 }
