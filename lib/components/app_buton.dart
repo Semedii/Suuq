@@ -5,18 +5,26 @@ class AppButton extends StatelessWidget {
     super.key,
     required this.title,
     required this.onTap,
+    this.isLoading = false,
   });
   final String title;
+  final bool isLoading;
   final void Function() onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        width: 350,
         margin: const EdgeInsets.only(top: 20, left: 32, right: 32),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: _getDecoration(),
-        child: _getTitleText(),
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                color: Colors.white,
+              ))
+            : _getTitleText(),
       ),
     );
   }

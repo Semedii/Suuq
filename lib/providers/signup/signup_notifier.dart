@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq/providers/signup/signup_state.dart';
+import 'package:suuq/utils/pop_up_message.dart';
 
 part 'signup_notifier.g.dart';
 
@@ -31,22 +32,26 @@ class SignupNotifier extends _$SignupNotifier {
     state = state.copyWith(isAgreed: isAgreed);
   }
 
-  void onSignupPressed()async{
+  void onSignupPressed() async {
+    state = state.copyWith(isButtonLoading: true);
     try {
-  final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    email: state.email,
-    password: state.password,
-  );
-  print("credentials $credential");
-} on FirebaseAuthException catch (e) {
-  if (e.code == 'weak-password') {
-    print('The password provided is too weak.');
-  } else if (e.code == 'email-already-in-use') {
-    print('The account already exists for that email.');
-  }
-} catch (e) {
-  print(e);
-}
-    
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: state.email,
+        password: state.password,
+      );
+      print("credentials $credential");
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        toastInfo('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        toastInfo("This email is already in use");
+      } else if (e.code == 'invalid-email') {
+        toastInfo("The email is invalid");
+      }
+    } catch (e) {
+      print(e);
+    }
+    state = state.copyWith(isButtonLoading: false);
   }
 }

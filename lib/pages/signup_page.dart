@@ -10,10 +10,10 @@ import 'package:suuq/utils/field_validators.dart';
 @RoutePage()
 class SignupPage extends ConsumerWidget {
   SignupPage({super.key});
-
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final signUpProvider = ref.watch(signupNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sign up"),
@@ -28,7 +28,10 @@ class SignupPage extends ConsumerWidget {
             children: [
               _getTextFields(ref),
               _getTermsAndConditionsSection(ref),
-              AppButton(title: "Sign up", onTap: () => _handleSignUp(ref)),
+              AppButton(
+                  title: "Sign up",
+                  isLoading: signUpProvider.isButtonLoading,
+                  onTap: () => _handleSignUp(ref)),
               AppButton(
                 title: "Back to Login",
                 onTap: () => AutoRouter.of(context).replace(
