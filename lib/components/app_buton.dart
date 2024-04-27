@@ -23,20 +23,12 @@ class AppButton extends StatelessWidget {
 
   BoxDecoration _getDecoration() {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(80.0),
+      borderRadius: BorderRadius.circular(20.0),
       gradient: const LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [Color(0xFF64B5F6), Color(0xFF2196F3)],
       ),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 2,
-          blurRadius: 5,
-          offset: const Offset(0, 3),
-        ),
-      ],
     );
   }
 
