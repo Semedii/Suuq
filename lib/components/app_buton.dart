@@ -35,7 +35,7 @@ class AppButton extends StatelessWidget {
   Center _getTitleText() {
     return Center(
       child: Text(
-        title,
+        title.toUpperCase(),
         style: const TextStyle(
           color: Colors.white,
           fontSize: 18,

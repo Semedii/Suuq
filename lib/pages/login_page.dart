@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:suuq/components/app_textfield.dart';
+import 'package:suuq/pages/signup_page.dart';
 
 import '../components/app_buton.dart';
 
@@ -23,18 +24,25 @@ class LoginPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AppTextField(hintText: "Email", prefixIcon: Icon(Icons.person)),
-          const SizedBox(
-            height: 20,
+          const AppTextField(
+            label: "Email",
+            hintText: "Enter your email address",
+            prefixIcon: Icon(Icons.person),
           ),
           const AppTextField(
-            hintText: "Password",
+            label: "Password",
+            hintText: "Enter your Password",
             prefixIcon: Icon(Icons.lock),
             isObscureText: true,
           ),
           _getForgotPasswordText(),
           AppButton(title: "Login", onTap: () {}),
-          AppButton(title: "Signup", onTap: () {}),
+          AppButton(
+              title: "Sign up",
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignupPage()));
+              }),
         ],
       ),
     );
