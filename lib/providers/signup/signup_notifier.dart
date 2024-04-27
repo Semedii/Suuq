@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq/providers/signup/signup_state.dart';
 
@@ -30,7 +33,22 @@ class SignupNotifier extends _$SignupNotifier {
     state = state.copyWith(isAgreed: isAgreed);
   }
 
-  void onSignupPressed(){
-    print("fullname: ${state.fullName}, email: ${state.email}");
+  void onSignupPressed()async{
+    try {
+  final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    email: state.email,
+    password: state.password,
+  );
+  print("credentials $credential");
+} on FirebaseAuthException catch (e) {
+  if (e.code == 'weak-password') {
+    print('The password provided is too weak.');
+  } else if (e.code == 'email-already-in-use') {
+    print('The account already exists for that email.');
+  }
+} catch (e) {
+  print(e);
+}
+    
   }
 }
