@@ -1,15 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_buton.dart';
 import 'package:suuq/components/app_textfield.dart';
+import 'package:suuq/providers/signup/signup_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
 
 @RoutePage()
-class SignupPage extends StatelessWidget {
+class SignupPage extends ConsumerWidget {
   const SignupPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final signUpProvider = ref.watch(signupNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sign up"),
