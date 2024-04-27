@@ -24,9 +24,9 @@ class SignupPage extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(vertical: 24),
         child: Column(
           children: [
-            _getTextFields(),
-            _getTermsAndConditionsSection(),
-            AppButton(title: "Sign up", onTap: () {}),
+            _getTextFields(ref),
+            _getTermsAndConditionsSection(ref),
+            AppButton(title: "Sign up", onTap: ref.read(signupNotifierProvider.notifier).onSignupPressed),
             AppButton(
               title: "Back to Login",
               onTap: () => AutoRouter.of(context).replace(
@@ -39,39 +39,47 @@ class SignupPage extends ConsumerWidget {
     );
   }
 
-  Column _getTextFields() {
-    return const Column(
+  Column _getTextFields(WidgetRef ref) {
+    return Column(
       children: [
         AppTextField(
           label: "Full Name",
           hintText: "Enter your username",
-          prefixIcon: Icon(Icons.person),
+          prefixIcon: const Icon(Icons.person),
+          onChanged:
+              ref.read(signupNotifierProvider.notifier).onFullNameChanged,
         ),
         AppTextField(
           label: "Email",
           hintText: "Enter your email address",
-          prefixIcon: Icon(Icons.email),
+          prefixIcon: const Icon(Icons.email),
+          onChanged: ref.read(signupNotifierProvider.notifier).onEmailChanged,
         ),
         AppTextField(
           label: "Password",
           hintText: "Enter your password",
-          prefixIcon: Icon(Icons.lock),
+          prefixIcon: const Icon(Icons.lock),
+          onChanged:
+              ref.read(signupNotifierProvider.notifier).onPasswordChanged,
         ),
         AppTextField(
           label: "Confirm Password",
           hintText: "Enter your password again",
-          prefixIcon: Icon(Icons.lock),
+          prefixIcon: const Icon(Icons.lock),
+          onChanged:
+              ref.read(signupNotifierProvider.notifier).onRePasswordChanged,
         ),
       ],
     );
   }
 
-  Row _getTermsAndConditionsSection() {
+  Row _getTermsAndConditionsSection(WidgetRef ref) {
     return Row(
       children: [
         Checkbox(
           value: true,
-          onChanged: (s) {},
+          onChanged:
+              ref.read(signupNotifierProvider.notifier).onIsAgreedChanged,
           activeColor: Colors.grey,
           checkColor: Colors.black,
         ),

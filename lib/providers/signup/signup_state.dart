@@ -13,13 +13,13 @@ class SignupState {
     this.isAgreed = false,
   });
 
-  SignupState copyWith(
+  SignupState copyWith({
     String? fullName,
     String? email,
     String? password,
     String? rePassword,
     bool? isAgreed,
-  ) {
+  }) {
     return SignupState(
       fullName: fullName ?? this.fullName,
       email: email ?? this.email,

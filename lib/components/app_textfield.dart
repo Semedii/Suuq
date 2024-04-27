@@ -7,11 +7,13 @@ class AppTextField extends StatelessWidget {
     required this.label,
     this.prefixIcon,
     this.isObscureText = false,
+    this.onChanged,
   });
   final String hintText;
   final String label;
   final Icon? prefixIcon;
   final bool isObscureText;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class AppTextField extends StatelessWidget {
               focusedBorder: _getBorder(),
             ),
             obscureText: isObscureText,
+            onChanged: onChanged,
           ),
         ],
       ),
