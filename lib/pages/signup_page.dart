@@ -89,7 +89,7 @@ class SignupPage extends ConsumerWidget {
     return Row(
       children: [
         Checkbox(
-          value: true,
+          value: ref.read(signupNotifierProvider).isAgreed,
           onChanged:
               ref.read(signupNotifierProvider.notifier).onIsAgreedChanged,
           activeColor: Colors.grey,
@@ -106,7 +106,7 @@ class SignupPage extends ConsumerWidget {
 
   void _handleSignUp(WidgetRef ref) {
     if (_formKey.currentState!.validate()) {
-      ref.read(signupNotifierProvider.notifier).onSignupPressed;
+      ref.read(signupNotifierProvider.notifier).onSignupPressed();
     }
   }
 }
