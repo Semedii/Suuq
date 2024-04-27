@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:suuq/pages/login_page.dart';
 import 'package:suuq/providers/welcome/index_dot_notifier.dart';
+import 'package:suuq/router/app_router.gr.dart';
 
+@RoutePage()
 class WelcomePage extends ConsumerWidget {
   WelcomePage({super.key});
   final PageController _controller = PageController();
@@ -146,7 +148,7 @@ class WelcomePage extends ConsumerWidget {
       );
     }
     else{
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+      AutoRouter.of(context).push(const LoginRoute());
     }
   }
 }

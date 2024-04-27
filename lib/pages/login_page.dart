@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:suuq/components/app_textfield.dart';
-import 'package:suuq/pages/signup_page.dart';
+import 'package:suuq/router/app_router.gr.dart';
 
 import '../components/app_buton.dart';
 
+@RoutePage()
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -38,11 +40,9 @@ class LoginPage extends StatelessWidget {
           _getForgotPasswordText(),
           AppButton(title: "Login", onTap: () {}),
           AppButton(
-              title: "Sign up",
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignupPage()));
-              }),
+            title: "Sign up",
+            onTap: () => AutoRouter.of(context).replace(const SignupRoute()),
+          )
         ],
       ),
     );

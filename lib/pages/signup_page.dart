@@ -1,7 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:suuq/components/app_buton.dart';
 import 'package:suuq/components/app_textfield.dart';
+import 'package:suuq/router/app_router.gr.dart';
 
+@RoutePage()
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
 
@@ -21,7 +24,12 @@ class SignupPage extends StatelessWidget {
             _getTextFields(),
             _getTermsAndConditionsSection(),
             AppButton(title: "Sign up", onTap: () {}),
-            AppButton(title: "Back to Login", onTap: () {}),
+            AppButton(
+              title: "Back to Login",
+              onTap: () => AutoRouter.of(context).replace(
+                const LoginRoute(),
+              ),
+            ),
           ],
         ),
       ),
