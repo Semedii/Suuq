@@ -39,12 +39,25 @@ class SignupPage extends StatelessWidget {
   Column _getTextFields() {
     return const Column(
       children: [
-        AppTextField(label: "Username", hintText: "Enter your username"),
-        AppTextField(label: "Email", hintText: "Enter your email address"),
-        AppTextField(label: "Password", hintText: "Enter your password"),
+        AppTextField(
+          label: "Full Name",
+          hintText: "Enter your username",
+          prefixIcon: Icon(Icons.person),
+        ),
+        AppTextField(
+          label: "Email",
+          hintText: "Enter your email address",
+          prefixIcon: Icon(Icons.email),
+        ),
+        AppTextField(
+          label: "Password",
+          hintText: "Enter your password",
+          prefixIcon: Icon(Icons.lock),
+        ),
         AppTextField(
           label: "Confirm Password",
           hintText: "Enter your password again",
+          prefixIcon: Icon(Icons.lock),
         ),
       ],
     );
