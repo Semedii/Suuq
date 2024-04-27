@@ -8,12 +8,14 @@ class AppTextField extends StatelessWidget {
     this.prefixIcon,
     this.isObscureText = false,
     this.onChanged,
+    this.validator,
   });
   final String hintText;
   final String label;
   final Icon? prefixIcon;
   final bool isObscureText;
   final Function(String)? onChanged;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class AppTextField extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(label),
           ),
-          TextField(
+          TextFormField(
             decoration: InputDecoration(
               hintText: hintText,
               prefixIcon: prefixIcon,
@@ -35,6 +37,7 @@ class AppTextField extends StatelessWidget {
             ),
             obscureText: isObscureText,
             onChanged: onChanged,
+            validator: validator,
           ),
         ],
       ),

@@ -26,9 +26,11 @@ abstract class $AppRouter extends _i4.RootStackRouter {
       );
     },
     SignupRoute.name: (routeData) {
+      final args = routeData.argsAs<SignupRouteArgs>(
+          orElse: () => const SignupRouteArgs());
       return _i4.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i2.SignupPage(),
+        child: _i2.SignupPage(key: args.key),
       );
     },
     WelcomeRoute.name: (routeData) {
@@ -58,16 +60,31 @@ class LoginRoute extends _i4.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.SignupPage]
-class SignupRoute extends _i4.PageRouteInfo<void> {
-  const SignupRoute({List<_i4.PageRouteInfo>? children})
-      : super(
+class SignupRoute extends _i4.PageRouteInfo<SignupRouteArgs> {
+  SignupRoute({
+    _i5.Key? key,
+    List<_i4.PageRouteInfo>? children,
+  }) : super(
           SignupRoute.name,
+          args: SignupRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'SignupRoute';
 
-  static const _i4.PageInfo<void> page = _i4.PageInfo<void>(name);
+  static const _i4.PageInfo<SignupRouteArgs> page =
+      _i4.PageInfo<SignupRouteArgs>(name);
+}
+
+class SignupRouteArgs {
+  const SignupRouteArgs({this.key});
+
+  final _i5.Key? key;
+
+  @override
+  String toString() {
+    return 'SignupRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

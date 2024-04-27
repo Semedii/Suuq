@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
           AppButton(title: "Login", onTap: () {}),
           AppButton(
             title: "Sign up",
-            onTap: () => AutoRouter.of(context).replace(const SignupRoute()),
+            onTap: () => AutoRouter.of(context).replace(SignupRoute()),
           )
         ],
       ),

@@ -5,11 +5,13 @@ import 'package:suuq/components/app_buton.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/providers/signup/signup_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
+import 'package:suuq/utils/validators.dart';
 
 @RoutePage()
 class SignupPage extends ConsumerWidget {
-  const SignupPage({super.key});
+  SignupPage({super.key});
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final signUpProvider = ref.watch(signupNotifierProvider);
@@ -20,56 +22,66 @@ class SignupPage extends ConsumerWidget {
             preferredSize: Size.fromHeight(50),
             child: Text("Enter your details below & free signup")),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24),
-        child: Column(
-          children: [
-            _getTextFields(ref),
-            _getTermsAndConditionsSection(ref),
-            AppButton(title: "Sign up", onTap: ref.read(signupNotifierProvider.notifier).onSignupPressed),
-            AppButton(
-              title: "Back to Login",
-              onTap: () => AutoRouter.of(context).replace(
-                const LoginRoute(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Column(
+            children: [
+              _getTextFields(ref),
+              _getTermsAndConditionsSection(ref),
+              AppButton(title: "Sign up", onTap: () => _handleSignUp(ref)),
+              AppButton(
+                title: "Back to Login",
+                onTap: () => AutoRouter.of(context).replace(
+                  const LoginRoute(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Column _getTextFields(WidgetRef ref) {
-    return Column(
-      children: [
-        AppTextField(
-          label: "Full Name",
-          hintText: "Enter your username",
-          prefixIcon: const Icon(Icons.person),
-          onChanged:
-              ref.read(signupNotifierProvider.notifier).onFullNameChanged,
-        ),
-        AppTextField(
-          label: "Email",
-          hintText: "Enter your email address",
-          prefixIcon: const Icon(Icons.email),
-          onChanged: ref.read(signupNotifierProvider.notifier).onEmailChanged,
-        ),
-        AppTextField(
-          label: "Password",
-          hintText: "Enter your password",
-          prefixIcon: const Icon(Icons.lock),
-          onChanged:
-              ref.read(signupNotifierProvider.notifier).onPasswordChanged,
-        ),
-        AppTextField(
-          label: "Confirm Password",
-          hintText: "Enter your password again",
-          prefixIcon: const Icon(Icons.lock),
-          onChanged:
-              ref.read(signupNotifierProvider.notifier).onRePasswordChanged,
-        ),
-      ],
+  Form _getTextFields(WidgetRef ref) {
+     final signUpProvider = ref.watch(signupNotifierProvider);
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          AppTextField(
+            label: "Full Name",
+            hintText: "Enter your username",
+            prefixIcon: const Icon(Icons.person),
+            onChanged:
+                ref.read(signupNotifierProvider.notifier).onFullNameChanged,
+            validator: Validators.isRequired,
+          ),
+          AppTextField(
+            label: "Email",
+            hintText: "Enter your email address",
+            prefixIcon: const Icon(Icons.email),
+            onChanged: ref.read(signupNotifierProvider.notifier).onEmailChanged,
+            validator: Validators.isRequired,
+          ),
+          AppTextField(
+            label: "Password",
+            hintText: "Enter your password",
+            prefixIcon: const Icon(Icons.lock),
+            onChanged:
+                ref.read(signupNotifierProvider.notifier).onPasswordChanged,
+            validator: Validators.isRequired,
+          ),
+          AppTextField(
+            label: "Confirm Password",
+            hintText: "Enter your password again",
+            prefixIcon: const Icon(Icons.lock),
+            onChanged:
+                ref.read(signupNotifierProvider.notifier).onRePasswordChanged,
+                validator: (value1)=>Validators.doesMatch(value1, signUpProvider.password),
+          ),
+        ],
+      ),
     );
   }
 
@@ -90,5 +102,11 @@ class SignupPage extends ConsumerWidget {
         )
       ],
     );
+  }
+
+  void _handleSignUp(WidgetRef ref) {
+    if (_formKey.currentState!.validate()) {
+      ref.read(signupNotifierProvider.notifier).onSignupPressed;
+    }
   }
 }
