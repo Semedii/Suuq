@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/router/app_router.gr.dart';
 
-import '../components/app_buton.dart';
+import '../components/app_button.dart';
 
 @RoutePage()
 class LoginPage extends StatelessWidget {

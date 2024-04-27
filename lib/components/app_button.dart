@@ -13,7 +13,7 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       child: Container(
         width: 350,
         margin: const EdgeInsets.only(top: 20, left: 32, right: 32),
