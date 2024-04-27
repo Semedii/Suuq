@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
+    this.initialValue,
     required this.hintText,
     required this.label,
     this.prefixIcon,
@@ -10,6 +11,7 @@ class AppTextField extends StatelessWidget {
     this.onChanged,
     this.validator,
   });
+  final String? initialValue;
   final String hintText;
   final String label;
   final Icon? prefixIcon;
@@ -29,6 +31,7 @@ class AppTextField extends StatelessWidget {
             child: Text(label),
           ),
           TextFormField(
+            initialValue: initialValue,
             decoration: InputDecoration(
               hintText: hintText,
               prefixIcon: prefixIcon,

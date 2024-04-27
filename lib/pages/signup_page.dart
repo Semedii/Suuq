@@ -14,7 +14,6 @@ class SignupPage extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final signUpProvider = ref.watch(signupNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Sign up"),
@@ -50,6 +49,7 @@ class SignupPage extends ConsumerWidget {
       child: Column(
         children: [
           AppTextField(
+            initialValue: signUpProvider.fullName,
             label: "Full Name",
             hintText: "Enter your username",
             prefixIcon: const Icon(Icons.person),
@@ -58,6 +58,7 @@ class SignupPage extends ConsumerWidget {
             validator: FieldValidators.fullName,
           ),
           AppTextField(
+            initialValue: signUpProvider.email,
             label: "Email",
             hintText: "Enter your email address",
             prefixIcon: const Icon(Icons.email),
@@ -65,6 +66,7 @@ class SignupPage extends ConsumerWidget {
             validator: FieldValidators.required,
           ),
           AppTextField(
+            initialValue: signUpProvider.password,
             label: "Password",
             hintText: "Enter your password",
             prefixIcon: const Icon(Icons.lock),
@@ -73,6 +75,7 @@ class SignupPage extends ConsumerWidget {
             validator: FieldValidators.required,
           ),
           AppTextField(
+            initialValue: signUpProvider.rePassword,
             label: "Confirm Password",
             hintText: "Enter your password again",
             prefixIcon: const Icon(Icons.lock),
