@@ -5,7 +5,7 @@ import 'package:suuq/components/app_buton.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/providers/signup/signup_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
-import 'package:suuq/utils/validators.dart';
+import 'package:suuq/utils/field_validators.dart';
 
 @RoutePage()
 class SignupPage extends ConsumerWidget {
@@ -44,7 +44,7 @@ class SignupPage extends ConsumerWidget {
   }
 
   Form _getTextFields(WidgetRef ref) {
-     final signUpProvider = ref.watch(signupNotifierProvider);
+    final signUpProvider = ref.watch(signupNotifierProvider);
     return Form(
       key: _formKey,
       child: Column(
@@ -55,14 +55,14 @@ class SignupPage extends ConsumerWidget {
             prefixIcon: const Icon(Icons.person),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onFullNameChanged,
-            validator: Validators.isRequired,
+            validator: FieldValidators.fullName,
           ),
           AppTextField(
             label: "Email",
             hintText: "Enter your email address",
             prefixIcon: const Icon(Icons.email),
             onChanged: ref.read(signupNotifierProvider.notifier).onEmailChanged,
-            validator: Validators.isRequired,
+            validator: FieldValidators.required,
           ),
           AppTextField(
             label: "Password",
@@ -70,7 +70,7 @@ class SignupPage extends ConsumerWidget {
             prefixIcon: const Icon(Icons.lock),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onPasswordChanged,
-            validator: Validators.isRequired,
+            validator: FieldValidators.required,
           ),
           AppTextField(
             label: "Confirm Password",
@@ -78,7 +78,8 @@ class SignupPage extends ConsumerWidget {
             prefixIcon: const Icon(Icons.lock),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onRePasswordChanged,
-                validator: (value1)=>Validators.doesMatch(value1, signUpProvider.password),
+            validator: (value1) =>
+                FieldValidators.match(value1, signUpProvider.password),
           ),
         ],
       ),
