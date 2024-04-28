@@ -26,11 +26,18 @@ class FieldValidators {
     return null;
   }
 
-    static String? password(String? value) {
+  static String? password(String? value) {
     if (required(value) != null) {
       return required(value);
     } else if (value!.length < 6) {
       return 'Password should be at least 6 characters';
+    }
+    return null;
+  }
+
+  static String? checkbox(bool? value) {
+    if (value != null || value == false) {
+      return 'You need to accept the terms';
     }
     return null;
   }

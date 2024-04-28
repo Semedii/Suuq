@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
+import 'package:suuq/components/app_checkbox.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/providers/signup/signup_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
@@ -35,7 +36,6 @@ class SignupPage extends ConsumerWidget {
           child: Column(
             children: [
               _getTextFields(ref, localizations),
-              _getTermsAndConditionsSection(ref, localizations),
               AppButton(
                   title: localizations.signup,
                   isLoading: signUpProvider.isButtonLoading,
@@ -95,41 +95,37 @@ class SignupPage extends ConsumerWidget {
             validator: (value1) =>
                 FieldValidators.match(value1, signUpProvider.password),
           ),
+          AppCheckBox(
+            title: _getTermsAndConditionsTitle(localizations),
+            value: ref.watch(signupNotifierProvider).isAgreed,
+            onChanged: (s) {
+              ref.read(signupNotifierProvider.notifier).onIsAgreedChanged(s);
+            },
+            validator: FieldValidators.checkbox,
+          ),
         ],
       ),
     );
   }
 
-  Row _getTermsAndConditionsSection(
-      WidgetRef ref, AppLocalizations localizations) {
-    return Row(
-      children: [
-        Checkbox(
-          value: ref.read(signupNotifierProvider).isAgreed,
-          onChanged:
-              ref.read(signupNotifierProvider.notifier).onIsAgreedChanged,
-          activeColor: Colors.grey,
-          checkColor: Colors.black,
-        ),
-        Flexible(
-          child: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                    text: localizations.iAccept,
-                    style: const TextStyle(color: Colors.black)),
-                TextSpan(
-                  text: localizations.termsAndConditions,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline),
-                ),
-              ],
+  Widget _getTermsAndConditionsTitle(AppLocalizations localizations) {
+    return Flexible(
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+                text: localizations.iAccept,
+                style: const TextStyle(color: Colors.black)),
+            TextSpan(
+              text: localizations.termsAndConditions,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
