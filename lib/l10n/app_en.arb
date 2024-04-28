@@ -1,6 +1,7 @@
 {
   "backToLogin": "Back to Login",
   "confirmPassword": "Confirm Password",
+  "doesNotMatch": "Does not match, Please check again.",
   "email": "Email",
   "enterYourDetailsAndSignUp": "Enter your details and sign up freely",
   "enterYourEmailAddress": "Enter your email address",
@@ -9,9 +10,13 @@
   "enterYourPasswordAgain": "Enter your password again",
   "forgotYourPassword": "Forgot your password",
   "fullName": "Full name",
+  "fullNameValidation": "Please enter a full name",
   "iAccept": "I accept ",
   "login": "Login",
   "password": "Password",
+  "passwordLengthValidation": "Password should be at least 6 characters",
+  "requiredField": "This field is required",
   "signup": "Signup",
-  "termsAndConditions": "the terms and conditions"
+  "termsAndConditions": "the terms and conditions",
+  "termsValidation": "You need to accept the terms"
 }

@@ -6,7 +6,7 @@ class AppCheckBox extends FormField<bool> {
     Widget? title,
     required bool value,
     Function(bool?)? onChanged,
-    Function(bool?)? validator,
+    super.validator,
     bool super.initialValue = false,
   }) : super(builder: (FormFieldState<bool> state) {
           return ListTileTheme(

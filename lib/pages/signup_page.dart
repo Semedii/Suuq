@@ -66,7 +66,8 @@ class SignupPage extends ConsumerWidget {
             prefixIcon: const Icon(Icons.person),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onFullNameChanged,
-            validator: FieldValidators.fullName,
+            validator: (value) =>
+                FieldValidators.fullName(value, localizations),
           ),
           AppTextField(
             initialValue: signUpProvider.email,
@@ -74,7 +75,8 @@ class SignupPage extends ConsumerWidget {
             hintText: localizations.enterYourEmailAddress,
             prefixIcon: const Icon(Icons.email),
             onChanged: ref.read(signupNotifierProvider.notifier).onEmailChanged,
-            validator: FieldValidators.required,
+            validator: (value) =>
+                FieldValidators.required(value, localizations),
           ),
           AppTextField(
             initialValue: signUpProvider.password,
@@ -83,7 +85,8 @@ class SignupPage extends ConsumerWidget {
             prefixIcon: const Icon(Icons.lock),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onPasswordChanged,
-            validator: FieldValidators.password,
+            validator: (value) =>
+                FieldValidators.password(value, localizations),
           ),
           AppTextField(
             initialValue: signUpProvider.rePassword,
@@ -92,8 +95,8 @@ class SignupPage extends ConsumerWidget {
             prefixIcon: const Icon(Icons.lock),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onRePasswordChanged,
-            validator: (value1) =>
-                FieldValidators.match(value1, signUpProvider.password),
+            validator: (value1) => FieldValidators.match(
+                value1, signUpProvider.password, localizations),
           ),
           AppCheckBox(
             title: _getTermsAndConditionsTitle(localizations),
@@ -101,7 +104,8 @@ class SignupPage extends ConsumerWidget {
             onChanged: (s) {
               ref.read(signupNotifierProvider.notifier).onIsAgreedChanged(s);
             },
-            validator: FieldValidators.checkbox,
+            validator: (value) =>
+                FieldValidators.checkbox(value, localizations),
           ),
         ],
       ),
@@ -109,22 +113,20 @@ class SignupPage extends ConsumerWidget {
   }
 
   Widget _getTermsAndConditionsTitle(AppLocalizations localizations) {
-    return Flexible(
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-                text: localizations.iAccept,
-                style: const TextStyle(color: Colors.black)),
-            TextSpan(
-              text: localizations.termsAndConditions,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline),
-            ),
-          ],
-        ),
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+              text: localizations.iAccept,
+              style: const TextStyle(color: Colors.black)),
+          TextSpan(
+            text: localizations.termsAndConditions,
+            style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline),
+          ),
+        ],
       ),
     );
   }

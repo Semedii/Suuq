@@ -1,6 +1,7 @@
 {
   "backToLogin": "Ku noqo Bogga gelidda",
   "confirmPassword": "Hubi furaha sirta ah",
+  "doesNotMatch": "Fadlan hubi inay isku mid yihiin",
   "email": "Cinwaanka email",
   "enterYourDetailsAndSignUp": "Geli macluumaadkaga kadib is diiwaangeli lacag la'aan",
   "enterYourEmailAddress": "geli cinwaaanka emailkaga",
@@ -9,9 +10,13 @@
   "enterYourPasswordAgain": "Geli furaha sirta ah mar kale",
   "forgotYourPassword": "Furihi sirta ma xasuusto",
   "fullName": "Magaca oo dhameystiran",
+  "fullNameValidation": "Fadlan geli magaca dhamaystiran",
   "iAccept": "Waan aqbalay ",
   "login": "Gal",
   "password": "Furaha sirta ah ",
+  "passwordLengthValidation": "Furaha sirtu kama yaraan karo 6 god",
+  "requiredField": "Fadlan buuxi ",
   "signup": "Is diwaan geli",
-  "termsAndConditions": "shuruudaha app-ka"
+  "termsAndConditions": "shuruudaha app-ka",
+  "termsValidation": "Fadlan aqbal shuruudaha"
 }
