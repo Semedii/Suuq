@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
               width: 150,
               height: 150,
             )),
-        title: const Text("Login"),
+        title: Text(localizations.login),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
           AppTextField(
             label: localizations.email,
             hintText: localizations.enterYourEmailAddress,
-            prefixIcon: Icon(Icons.person),
+            prefixIcon: const Icon(Icons.person),
           ),
           AppTextField(
             label: localizations.password,

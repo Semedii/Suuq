@@ -1,5 +1,5 @@
 {
-  "backToLogin": "Dib ugu noqo bogga gelidda",
+  "backToLogin": "Ku noqo Bogga gelidda",
   "confirmPassword": "Hubi furaha sirta ah",
   "email": "Cinwaanka email",
   "enterYourDetailsAndSignUp": "Geli macluumaadkaga kadib is diiwaangeli lacag la'aan",
@@ -9,7 +9,9 @@
   "enterYourPasswordAgain": "Geli furaha sirta ah mar kale",
   "forgotYourPassword": "Furihi sirta ma xasuusto",
   "fullName": "Magaca oo dhameystiran",
+  "iAccept": "Waan aqbalay ",
   "login": "Gal",
   "password": "Furaha sirta ah ",
-  "signup": "Is diwaan geli"
+  "signup": "Is diwaan geli",
+  "termsAndConditions": "shuruudaha app-ka"
 }

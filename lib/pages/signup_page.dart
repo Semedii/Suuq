@@ -19,9 +19,15 @@ class SignupPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.signup),
-        bottom:  PreferredSize(
+        bottom: PreferredSize(
             preferredSize: const Size.fromHeight(50),
-            child: Text(localizations.enterYourDetailsAndSignUp)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                localizations.enterYourDetailsAndSignUp,
+                textAlign: TextAlign.center,
+              ),
+            )),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -29,7 +35,7 @@ class SignupPage extends ConsumerWidget {
           child: Column(
             children: [
               _getTextFields(ref, localizations),
-              _getTermsAndConditionsSection(ref),
+              _getTermsAndConditionsSection(ref, localizations),
               AppButton(
                   title: localizations.signup,
                   isLoading: signUpProvider.isButtonLoading,
@@ -94,7 +100,8 @@ class SignupPage extends ConsumerWidget {
     );
   }
 
-  Row _getTermsAndConditionsSection(WidgetRef ref) {
+  Row _getTermsAndConditionsSection(
+      WidgetRef ref, AppLocalizations localizations) {
     return Row(
       children: [
         Checkbox(
@@ -104,11 +111,24 @@ class SignupPage extends ConsumerWidget {
           activeColor: Colors.grey,
           checkColor: Colors.black,
         ),
-        const Flexible(
-          child: Text(
-            "By creating an account you have to agree with our terms & conditions",
+        Flexible(
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                    text: localizations.iAccept,
+                    style: const TextStyle(color: Colors.black)),
+                TextSpan(
+                  text: localizations.termsAndConditions,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline),
+                ),
+              ],
+            ),
           ),
-        )
+        ),
       ],
     );
   }

@@ -9,7 +9,9 @@
   "enterYourPasswordAgain": "Enter your password again",
   "forgotYourPassword": "Forgot your password",
   "fullName": "Full name",
+  "iAccept": "I accept ",
   "login": "Login",
   "password": "Password",
-  "signup": "Signup"
+  "signup": "Signup",
+  "termsAndConditions": "the terms and conditions"
 }
