@@ -51,9 +51,6 @@ class SignupNotifier extends _$SignupNotifier {
 
   void handleFirebaseError(FirebaseException e) {
     switch (e.code) {
-      case 'weak-password':
-        toastInfo('The password provided is too weak.');
-        break;
       case 'email-already-in-use':
         toastInfo("This email is already in use");
         break;
