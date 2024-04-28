@@ -82,7 +82,16 @@ class SignupPage extends ConsumerWidget {
             initialValue: signUpProvider.password,
             label: localizations.password,
             hintText: localizations.enterYourPassword,
+            isObscureText: signUpProvider.isPasswordHidden,
             prefixIcon: const Icon(Icons.lock),
+            suffix: IconButton(
+              icon: signUpProvider.isPasswordHidden
+                  ? const Icon(Icons.visibility_off)
+                  : const Icon(Icons.visibility),
+              onPressed: ref
+                  .read(signupNotifierProvider.notifier)
+                  .onisPasswordHiddenChanged,
+            ),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onPasswordChanged,
             validator: (value) =>
@@ -93,6 +102,15 @@ class SignupPage extends ConsumerWidget {
             label: localizations.confirmPassword,
             hintText: localizations.enterYourPasswordAgain,
             prefixIcon: const Icon(Icons.lock),
+            isObscureText: signUpProvider.isRePasswordHidden,
+            suffix: IconButton(
+              icon: signUpProvider.isRePasswordHidden
+                  ? const Icon(Icons.visibility_off)
+                  : const Icon(Icons.visibility),
+              onPressed: ref
+                  .read(signupNotifierProvider.notifier)
+                  .onisRePasswordHiddenChanged,
+            ),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onRePasswordChanged,
             validator: (value1) => FieldValidators.match(

@@ -33,6 +33,14 @@ class SignupNotifier extends _$SignupNotifier {
     state = state.copyWith(isAgreed: isAgreed);
   }
 
+  void onisPasswordHiddenChanged() {
+    state = state.copyWith(isPasswordHidden: !state.isPasswordHidden);
+  }
+
+  void onisRePasswordHiddenChanged() {
+    state = state.copyWith(isRePasswordHidden: !state.isRePasswordHidden);
+  }
+
   void onSignupPressed() async {
     state = state.copyWith(isButtonLoading: true);
     try {

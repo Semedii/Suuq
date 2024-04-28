@@ -3,6 +3,8 @@ class SignupState {
   final String email;
   final String password;
   final String rePassword;
+  final bool isPasswordHidden;
+  final bool isRePasswordHidden;
   final bool isAgreed;
   final bool isButtonLoading;
 
@@ -11,6 +13,8 @@ class SignupState {
     this.email = "",
     this.password = "",
     this.rePassword = "",
+    this.isPasswordHidden = true,
+    this.isRePasswordHidden = true,
     this.isAgreed = false,
     this.isButtonLoading = false,
   });
@@ -20,6 +24,8 @@ class SignupState {
     String? email,
     String? password,
     String? rePassword,
+    bool? isPasswordHidden,
+    bool? isRePasswordHidden,
     bool? isAgreed,
     bool? isButtonLoading,
   }) {
@@ -28,6 +34,8 @@ class SignupState {
       email: email ?? this.email,
       password: password ?? this.password,
       rePassword: rePassword ?? this.rePassword,
+      isPasswordHidden: isPasswordHidden ?? this.isPasswordHidden,
+      isRePasswordHidden: isRePasswordHidden ?? this.isRePasswordHidden,
       isAgreed: isAgreed ?? this.isAgreed,
       isButtonLoading: isButtonLoading ?? this.isButtonLoading,
     );
