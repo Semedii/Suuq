@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/utils/symbol_utilities.dart';
 
 import '../components/app_button.dart';
 
@@ -54,8 +55,12 @@ class LoginPage extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-        child: Text(localizations.forgotYourPassword),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        child: Text(
+          localizations.forgotYourPassword + SymbolUtilities.questionMark,
+        ),
       ),
     );
   }
