@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
 import 'package:suuq/components/app_checkbox.dart';
 import 'package:suuq/components/app_textfield.dart';
-import 'package:suuq/providers/signup/signup_notifier.dart';
+import 'package:suuq/notifiers/signup/signup_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

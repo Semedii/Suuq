@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:suuq/providers/signup/signup_state.dart';
+import 'package:suuq/notifiers/signup/signup_state.dart';
 import 'package:suuq/services/auth_service.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 
