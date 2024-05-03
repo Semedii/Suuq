@@ -17,4 +17,8 @@ class AuthService {
     );
     return credential;
   }
+
+  void logout() async {
+    await _auth.signOut();
+  }
 }
