@@ -122,8 +122,8 @@ class SignupPage extends ConsumerWidget {
             onChanged: (s) {
               ref.read(signupNotifierProvider.notifier).onIsAgreedChanged(s);
             },
-            validator: (value) =>
-                FieldValidators.checkbox(value, localizations),
+             validator: (value){
+                FieldValidators.checkbox(value, localizations);}
           ),
         ],
       ),
