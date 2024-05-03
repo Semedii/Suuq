@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:suuq/global.dart';
+import 'package:suuq/models/user.dart';
 import 'package:suuq/notifiers/login/login_state.dart';
 import 'package:suuq/services/auth_service.dart';
+import 'package:suuq/utils/constants.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 
 class LoginNotifier extends StateNotifier<LoginState> {
@@ -22,17 +25,22 @@ class LoginNotifier extends StateNotifier<LoginState> {
   void handleLogin() async {
     try {
       final authService = AuthService();
-     final credential =  await authService.login(state.email, state.password);
+      final credential = await authService.login(state.email, state.password);
 
-     var user = credential.user;
-     if(user!=null){
-      String? displayName = user.displayName;
-      String? email = user.email;
-      String? id = user.uid;
-      String? photoUrl = user.photoURL;
+      var user = credential.user;
+      if (user != null) {
+        String? displayName = user.displayName;
+        String? email = user.email;
+        String? id = user.uid;
+        String? photoUrl = user.photoURL;
 
-      
-     }
+        UserEntity userEntity = UserEntity();
+        userEntity.name = displayName;
+        userEntity.id = id;
+        userEntity.avatar = photoUrl;
+        userEntity.email = email;
+        Global.storageService.setString(AppConstants.Storage_USER_PROFILE_KEY, "value");
+      }
     } catch (e) {
       if (e is FirebaseException) {
         handleFirebaseError(e);
