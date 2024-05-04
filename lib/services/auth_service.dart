@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:suuq/models/user_model.dart';
+import 'package:suuq/utils/firebase_exceptions.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -21,7 +22,7 @@ class AuthService {
         );
       }
     } on FirebaseException catch (e) {
-      print(e);
+      FirebaseExceptionHandler.handleFirebaseError(e);
     }
     return null;
   }
@@ -43,7 +44,7 @@ class AuthService {
         );
       }
     } on FirebaseException catch (e) {
-      print(e);
+      FirebaseExceptionHandler.handleFirebaseError(e);
     }
     return null;
   }

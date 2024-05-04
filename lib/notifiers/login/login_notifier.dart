@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/notifiers/login/login_state.dart';
 import 'package:suuq/services/auth_service.dart';
-import 'package:suuq/utils/pop_up_message.dart';
 
 class LoginNotifier extends StateNotifier<LoginState> {
   final AuthService authService = AuthService();
@@ -35,22 +33,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
         state = LoginFailureState('login failed');
       }
     } catch (e) {
-     print("www ${e.toString()}");
+      throw Exception(e);
     } 
     state = lastState;
-  }
-
-  void handleFirebaseError(FirebaseException e) {
-    switch (e.code) {
-      case 'invalid-credential':
-        toastInfo("Wrong email or password");
-        break;
-      case 'invalid-email':
-        toastInfo("The email is invalid");
-        break;
-      default:
-        toastInfo("An error occurred: ${e.message}");
-    }
   }
 }
 
