@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suuq/utils/app_colors.dart';
 
 class AppTheme{
   static ThemeData appThemeData = ThemeData(
@@ -6,7 +7,7 @@ class AppTheme{
     appBarTheme: const AppBarTheme(
       elevation: 0,
       centerTitle: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
     )
   );
 }

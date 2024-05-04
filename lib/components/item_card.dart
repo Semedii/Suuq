@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suuq/utils/app_colors.dart';
 
 class ItemCard extends StatelessWidget {
   const ItemCard({
@@ -37,14 +38,14 @@ class ItemCard extends StatelessWidget {
                   TextSpan(
                     text: sellerName,
                     style: const TextStyle(
-                      color: Colors.black,
+                      color: AppColors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   TextSpan(
                     text: " - $description",
                     style: const TextStyle(
-                      color: Colors.black,
+                      color: AppColors.black,
                     ),
                   ),
                 ],
@@ -53,7 +54,7 @@ class ItemCard extends StatelessWidget {
             Text(
               "${price.toStringAsFixed(2)}\$",
               style: const TextStyle(
-                color: Colors.green,
+                color: AppColors.green,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

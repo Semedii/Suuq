@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 class HomePageAppBar extends StatelessWidget {
@@ -13,7 +14,7 @@ class HomePageAppBar extends StatelessWidget {
       child: Expanded(
         child: Container(
           padding: AppStyles.edgeInsets4,
-          color: Colors.grey.withOpacity(0.2),
+          color: AppColors.lightestGrey,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -48,18 +49,18 @@ class HomePageAppBar extends StatelessWidget {
     return TextField(
       decoration: InputDecoration(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: AppColors.white,
         hintText: "Search products...",
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
           borderSide: BorderSide(
-            color: Colors.grey.withOpacity(0.2),
+            color: AppColors.lightestGrey,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
-          borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+          borderSide: BorderSide(color: AppColors.lightestGrey),
         ),
       ),
     );

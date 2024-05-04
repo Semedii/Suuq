@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/bottomNavBar/bottom_nav_bar_notifier.dart';
 import 'package:suuq/pages/homepage/home_page.dart';
+import 'package:suuq/pages/my_profile_page.dart';
+import 'package:suuq/utils/app_colors.dart';
 
 @RoutePage()
 class MainPage extends ConsumerWidget {
@@ -16,20 +18,19 @@ class MainPage extends ConsumerWidget {
     final bodies = [
       const HomePage(),
       const Center(
-        child: Text('Hello From Favorite Screen'),
-      ),
-      const Center(
         child: Text('Hello From Settings Screen'),
       ),
+      const MyProfilePage(),
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: indexBottomNavbar,
         onTap: ref.read(bottomNavBarNotifierProvider.notifier).onTap,
-        selectedItemColor: Colors.black,
+        selectedItemColor: AppColors.black,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart), label: "Cart"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "My Profile")
         ],
       ),

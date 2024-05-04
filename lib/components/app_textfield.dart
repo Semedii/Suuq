@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 class AppTextField extends StatelessWidget {
@@ -53,7 +54,7 @@ class AppTextField extends StatelessWidget {
 
   OutlineInputBorder _getBorder() {
     return OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.black),
+      borderSide: const BorderSide(color: AppColors.black),
       borderRadius: BorderRadius.circular(12),
     );
   }

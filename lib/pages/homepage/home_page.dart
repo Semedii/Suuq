@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:suuq/components/item_card.dart';
 import 'package:suuq/models/item.dart';
 import 'package:suuq/pages/homepage/home_page_app_bar.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 @RoutePage()
@@ -47,14 +48,14 @@ class HomePage extends StatelessWidget {
               Text(
                 nicheName,
                 style: const TextStyle(
-                  color: Colors.black,
+                  color: AppColors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const Text(
                 "Show All",
                 style:
-                    TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                    TextStyle(color: AppColors.green, fontWeight: FontWeight.bold),
               )
             ],
           ),

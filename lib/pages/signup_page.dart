@@ -7,6 +7,7 @@ import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/notifiers/signup/signup_notifier.dart';
 import 'package:suuq/notifiers/signup/signup_state.dart';
 import 'package:suuq/router/app_router.gr.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -171,11 +172,11 @@ class SignupPage extends ConsumerWidget {
         children: [
           TextSpan(
               text: localizations.iAccept,
-              style: const TextStyle(color: Colors.black)),
+              style: const TextStyle(color: AppColors.black)),
           TextSpan(
             text: localizations.termsAndConditions,
             style: const TextStyle(
-                color: Colors.black,
+                color: AppColors.black,
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline),
           ),

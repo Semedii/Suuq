@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/welcome/index_dot_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 @RoutePage()
@@ -66,7 +67,7 @@ class WelcomePage extends ConsumerWidget {
         subtitle,
         style: TextStyle(
           fontSize: 18.0,
-          color: Colors.grey[600],
+          color: AppColors.lightGrey,
         ),
         textAlign: TextAlign.center,
       ),
@@ -79,7 +80,7 @@ class WelcomePage extends ConsumerWidget {
       style: const TextStyle(
         fontSize: 24.0,
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        color: AppColors.black,
       ),
     );
   }
@@ -125,14 +126,14 @@ class WelcomePage extends ConsumerWidget {
       style: const TextStyle(
         fontSize: 18.0,
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: AppColors.white,
       ),
     );
   }
 
   ButtonStyle _getButtonStyle() {
     return ElevatedButton.styleFrom(
-      backgroundColor: Colors.blue,
+      backgroundColor: AppColors.darkGrey,
       padding:AppStyles.edgeInsetsH32V12,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),

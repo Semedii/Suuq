@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 class AppButton extends StatelessWidget {
@@ -23,7 +24,7 @@ class AppButton extends StatelessWidget {
         child: isLoading
             ? const Center(
                 child: CircularProgressIndicator(
-                color: Colors.white,
+                color: AppColors.white,
               ))
             : _getTitleText(),
       ),
@@ -33,11 +34,7 @@ class AppButton extends StatelessWidget {
   BoxDecoration _getDecoration() {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(20.0),
-      gradient: const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [Color(0xFF64B5F6), Color(0xFF2196F3)],
-      ),
+      color: AppColors.darkGrey,
     );
   }
 
@@ -46,7 +43,7 @@ class AppButton extends StatelessWidget {
       child: Text(
         title.toUpperCase(),
         style: const TextStyle(
-          color: Colors.white,
+          color: AppColors.white,
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
