@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:suuq/components/item_card.dart';
@@ -5,6 +6,7 @@ import 'package:suuq/models/item.dart';
 import 'package:suuq/pages/homepage/home_page_app_bar.dart';
 import 'package:suuq/utils/app_styles.dart';
 
+@RoutePage()
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
