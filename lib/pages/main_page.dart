@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/bottomNavBar/bottom_nav_bar_notifier.dart';
 import 'package:suuq/pages/homepage/home_page.dart';
 
+@RoutePage()
 class MainPage extends ConsumerWidget {
   const MainPage({
     super.key,
