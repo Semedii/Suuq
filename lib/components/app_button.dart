@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suuq/utils/app_styles.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({
@@ -16,8 +17,8 @@ class AppButton extends StatelessWidget {
       onTap: isLoading ? null : onTap,
       child: Container(
         width: 350,
-        margin: const EdgeInsets.only(top: 20, left: 32, right: 32),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        margin: AppStyles.edgeInsetsT20L32R32,
+        padding: AppStyles.edgeInsetsV10H20,
         decoration: _getDecoration(),
         child: isLoading
             ? const Center(

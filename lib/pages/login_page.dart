@@ -6,6 +6,7 @@ import 'package:suuq/notifiers/login/login_notifier.dart';
 import 'package:suuq/notifiers/login/login_state.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 import 'package:suuq/utils/symbol_utilities.dart';
 
@@ -100,9 +101,7 @@ class LoginPage extends ConsumerWidget {
     return GestureDetector(
       onTap: () {},
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
+        padding: AppStyles.edgeInsetsH20,
         child: Text(
           localizations.forgotYourPassword + SymbolUtilities.questionMark,
         ),

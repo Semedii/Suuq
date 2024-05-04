@@ -6,6 +6,7 @@ import 'package:suuq/components/app_checkbox.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/notifiers/signup/signup_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
+import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -23,7 +24,7 @@ class SignupPage extends ConsumerWidget {
         bottom: PreferredSize(
             preferredSize: const Size.fromHeight(50),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: AppStyles.edgeInsetsH20,
               child: Text(
                 localizations.enterYourDetailsAndSignUp,
                 textAlign: TextAlign.center,
@@ -32,7 +33,7 @@ class SignupPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24),
+          padding: AppStyles.edgeInsetsV24,
           child: Column(
             children: [
               _getTextFields(ref, localizations),

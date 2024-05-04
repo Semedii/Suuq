@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/welcome/index_dot_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
+import 'package:suuq/utils/app_styles.dart';
 
 @RoutePage()
 class WelcomePage extends ConsumerWidget {
@@ -60,7 +61,7 @@ class WelcomePage extends ConsumerWidget {
 
   Widget _getSubtitle(String subtitle) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 48.0),
+      padding: AppStyles.edgeInsetsB48,
       child: Text(
         subtitle,
         style: TextStyle(
@@ -132,7 +133,7 @@ class WelcomePage extends ConsumerWidget {
   ButtonStyle _getButtonStyle() {
     return ElevatedButton.styleFrom(
       backgroundColor: Colors.blue,
-      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 12.0),
+      padding:AppStyles.edgeInsetsH32V12,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),

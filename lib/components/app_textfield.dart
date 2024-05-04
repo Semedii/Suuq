@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suuq/utils/app_styles.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField({
@@ -24,12 +25,12 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+      padding: AppStyles.edgeInsetsL16R16B16,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8.0),
+            padding: AppStyles.edgeInsetsL8,
             child: Text(label),
           ),
           TextFormField(
