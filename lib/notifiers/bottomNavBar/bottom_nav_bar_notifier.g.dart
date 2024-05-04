@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'signup_notifier.dart';
+part of 'bottom_nav_bar_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signupNotifierHash() => r'a01c62c6a63f30280698c482b27592fc875bea76';
+String _$bottomNavBarNotifierHash() =>
+    r'0fa065882afa89cb011b0a67db554bc2f5de5f83';
 
-/// See also [SignupNotifier].
-@ProviderFor(SignupNotifier)
-final signupNotifierProvider =
-    AutoDisposeNotifierProvider<SignupNotifier, SignupState>.internal(
-  SignupNotifier.new,
-  name: r'signupNotifierProvider',
+/// See also [BottomNavBarNotifier].
+@ProviderFor(BottomNavBarNotifier)
+final bottomNavBarNotifierProvider =
+    AutoDisposeNotifierProvider<BottomNavBarNotifier, int>.internal(
+  BottomNavBarNotifier.new,
+  name: r'bottomNavBarNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$signupNotifierHash,
+      : _$bottomNavBarNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SignupNotifier = AutoDisposeNotifier<SignupState>;
+typedef _$BottomNavBarNotifier = AutoDisposeNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
