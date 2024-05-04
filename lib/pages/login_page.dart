@@ -6,6 +6,7 @@ import 'package:suuq/notifiers/login/login_notifier.dart';
 import 'package:suuq/notifiers/login/login_state.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/utils/pop_up_message.dart';
 import 'package:suuq/utils/symbol_utilities.dart';
 
 import '../components/app_button.dart';
@@ -16,24 +17,31 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var loginProvider = ref.watch(loginInNotifierProvider);
+    var loginState = ref.watch(loginInNotifierProvider);
+    print("state is $loginState");
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         bottom: _getAppBarBottom(),
         title: Text(localizations.login),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _getEmailField(loginProvider, localizations, ref),
-          _getPasswordField(loginProvider, localizations, ref),
-          _getForgotPasswordText(localizations),
-          _getLoginButton(localizations, ref),
-          _getSignupButton(localizations, context)
-        ],
-      ),
+      body: mapStateToWidget(context, ref, loginState),
+    );
+  }
+
+  Column _buildLoginForm(
+      BuildContext context, WidgetRef ref, LoginInitialState loginState) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _getEmailField(loginState, localizations, ref),
+        _getPasswordField(loginState, localizations, ref),
+        _getForgotPasswordText(localizations),
+        _getLoginButton(localizations, ref),
+        _getSignupButton(localizations, context)
+      ],
     );
   }
 
@@ -48,12 +56,12 @@ class LoginPage extends ConsumerWidget {
   }
 
   AppTextField _getEmailField(
-    LoginState loginProvider,
+    LoginInitialState loginState,
     AppLocalizations localizations,
     WidgetRef ref,
   ) {
     return AppTextField(
-      initialValue: loginProvider.email,
+      initialValue: loginState.email,
       label: localizations.email,
       hintText: localizations.enterYourEmailAddress,
       prefixIcon: const Icon(Icons.person),
@@ -62,7 +70,7 @@ class LoginPage extends ConsumerWidget {
   }
 
   AppTextField _getPasswordField(
-    LoginState loginProvider,
+    LoginInitialState loginProvider,
     AppLocalizations localizations,
     WidgetRef ref,
   ) {
@@ -77,7 +85,8 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  IconButton _getPasswordFieldSuffix(LoginState loginProvider, WidgetRef ref) {
+  IconButton _getPasswordFieldSuffix(
+      LoginInitialState loginProvider, WidgetRef ref) {
     return IconButton(
       icon: loginProvider.isPasswordHidden
           ? const Icon(Icons.visibility_off)
@@ -116,5 +125,23 @@ class LoginPage extends ConsumerWidget {
       title: localizations.signup,
       onTap: () => AutoRouter.of(context).push(SignupRoute()),
     );
+  }
+
+  Widget mapStateToWidget(
+      BuildContext context, WidgetRef ref, LoginState loginState) {
+    if (loginState is LoginInitialState) {
+      return _buildLoginForm(context, ref, loginState);
+    }
+    if (loginState is LoginLoadingState) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (loginState is LoginSuccessState) {
+      print("logged in");
+      //  AutoRouter.of(context).replaceAll(routes)
+    }
+    if (loginState is LoginFailureState) {
+      toastInfo(loginState.errorMessage);
+    }
+    return const Center(child: CircularProgressIndicator());
   }
 }

@@ -6,7 +6,7 @@ import 'package:suuq/router/app_router.dart';
 import 'package:suuq/utils/app_theme.dart';
 
 void main() async {
-  Global.init();
+  await Global.init();
   runApp(ProviderScope(child: MyApp()));
 }
 

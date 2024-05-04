@@ -1,11 +1,11 @@
-class UserEntity {
+class UserModel {
   String? id;
   String? name;
   String? email;
   String? phoneNumber;
   String? avatar;
 
-  UserEntity({this.name, this.email, this.phoneNumber, this.avatar});
+  UserModel({this.name, this.email, this.phoneNumber, this.avatar});
 
   Map<String, dynamic> toJson() => {
         "id": id,
