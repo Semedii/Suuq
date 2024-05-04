@@ -49,6 +49,7 @@ class SignupPage extends ConsumerWidget {
       return const Center(child: CircularProgressIndicator());
     }
     if (signupState is SignupStateSuccess) {
+      toastInfo("Successfully created, please login");
       AutoRouter.of(context).replace(const LoginRoute());
     }
     if (signupState is SignupStateFailure) {
@@ -156,8 +157,8 @@ class SignupPage extends ConsumerWidget {
                   .read(signupNotifierProvider.notifier)
                   .onIsAgreedChanged(value);
             },
-            validator: (value) =>
-                FieldValidators.checkbox(value, localizations),
+            validator: (value) {
+                FieldValidators.checkbox(value, localizations);}
           ),
         ],
       ),
