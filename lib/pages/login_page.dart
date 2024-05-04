@@ -127,7 +127,10 @@ class LoginPage extends ConsumerWidget {
   }
 
   Widget mapStateToWidget(
-      BuildContext context, WidgetRef ref, LoginState loginState) {
+    BuildContext context,
+    WidgetRef ref,
+    LoginState loginState,
+  ) {
     if (loginState is LoginInitialState) {
       return _buildLoginForm(context, ref, loginState);
     }
@@ -135,7 +138,7 @@ class LoginPage extends ConsumerWidget {
       return const Center(child: CircularProgressIndicator());
     }
     if (loginState is LoginSuccessState) {
-        AutoRouter.of(context).replace(const HomeRoute());
+      AutoRouter.of(context).replace(const HomeRoute());
     }
     if (loginState is LoginFailureState) {
       toastInfo(loginState.errorMessage);

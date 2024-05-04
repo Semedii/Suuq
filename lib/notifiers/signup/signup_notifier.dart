@@ -10,42 +10,53 @@ part 'signup_notifier.g.dart';
 class SignupNotifier extends _$SignupNotifier {
   @override
   SignupState build() {
-    return SignupState();
+    return SignupStateInitial();
   }
 
   void onFullNameChanged(String? fullName) {
-    state = state.copyWith(fullName: fullName);
+    var lastState = state as SignupStateInitial;
+    state = lastState.copyWith(fullName: fullName);
   }
 
   void onEmailChanged(String? email) {
-    state = state.copyWith(email: email);
+    var lastState = state as SignupStateInitial;
+    state = lastState.copyWith(email: email);
   }
 
   void onPasswordChanged(String? password) {
-    state = state.copyWith(password: password);
+    var lastState = state as SignupStateInitial;
+    state = lastState.copyWith(password: password);
   }
 
   void onRePasswordChanged(String? rePassword) {
-    state = state.copyWith(rePassword: rePassword);
+    var lastState = state as SignupStateInitial;
+    state = lastState.copyWith(rePassword: rePassword);
   }
 
   void onIsAgreedChanged(bool? isAgreed) {
-    state = state.copyWith(isAgreed: isAgreed);
+    var lastState = state as SignupStateInitial;
+    state = lastState.copyWith(isAgreed: isAgreed);
   }
 
   void onisPasswordHiddenChanged() {
-    state = state.copyWith(isPasswordHidden: !state.isPasswordHidden);
+    var lastState = state as SignupStateInitial;
+    state = lastState.copyWith(isPasswordHidden: !lastState.isPasswordHidden);
   }
 
   void onisRePasswordHiddenChanged() {
-    state = state.copyWith(isRePasswordHidden: !state.isRePasswordHidden);
+    var lastState = state as SignupStateInitial;
+    state =
+        lastState.copyWith(isRePasswordHidden: !lastState.isRePasswordHidden);
   }
 
   void onSignupPressed() async {
-    state = state.copyWith(isButtonLoading: true);
+    var lastState = state as SignupStateInitial;
+    state = lastState.copyWith(isButtonLoading: true);
     try {
       final authService = AuthService();
-      await authService.signup(state.email, state.password);
+      state = SignupStateLoading();
+      await authService.signup(lastState.email, lastState.password);
+      state = SignupStateSuccess();
     } catch (e) {
       if (e is FirebaseException) {
         handleFirebaseError(e);
@@ -53,7 +64,7 @@ class SignupNotifier extends _$SignupNotifier {
         toastInfo("unknown error");
       }
     } finally {
-      state = state.copyWith(isButtonLoading: false);
+      state = SignupStateInitial();
     }
   }
 

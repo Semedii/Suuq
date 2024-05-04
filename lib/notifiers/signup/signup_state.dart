@@ -1,4 +1,8 @@
-class SignupState {
+abstract class SignupState {
+  const SignupState();
+}
+
+class SignupStateInitial extends SignupState {
   final String fullName;
   final String email;
   final String password;
@@ -8,7 +12,7 @@ class SignupState {
   final bool isAgreed;
   final bool isButtonLoading;
 
-  SignupState({
+  SignupStateInitial({
     this.fullName = "",
     this.email = "",
     this.password = "",
@@ -19,7 +23,7 @@ class SignupState {
     this.isButtonLoading = false,
   });
 
-  SignupState copyWith({
+  SignupStateInitial copyWith({
     String? fullName,
     String? email,
     String? password,
@@ -29,7 +33,7 @@ class SignupState {
     bool? isAgreed,
     bool? isButtonLoading,
   }) {
-    return SignupState(
+    return SignupStateInitial(
       fullName: fullName ?? this.fullName,
       email: email ?? this.email,
       password: password ?? this.password,
@@ -40,4 +44,14 @@ class SignupState {
       isButtonLoading: isButtonLoading ?? this.isButtonLoading,
     );
   }
+}
+
+class SignupStateSuccess extends SignupState {}
+
+class SignupStateLoading extends SignupState {}
+
+class SignupStateFailure extends SignupState {
+  final String errorMessage;
+
+  SignupStateFailure({required this.errorMessage});
 }

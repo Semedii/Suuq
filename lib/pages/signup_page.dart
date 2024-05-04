@@ -5,10 +5,12 @@ import 'package:suuq/components/app_button.dart';
 import 'package:suuq/components/app_checkbox.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/notifiers/signup/signup_notifier.dart';
+import 'package:suuq/notifiers/signup/signup_state.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/utils/pop_up_message.dart';
 
 @RoutePage()
 class SignupPage extends ConsumerWidget {
@@ -17,7 +19,7 @@ class SignupPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    final signUpProvider = ref.watch(signupNotifierProvider);
+    final signupState = ref.watch(signupNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.signup),
@@ -31,37 +33,66 @@ class SignupPage extends ConsumerWidget {
               ),
             )),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: AppStyles.edgeInsetsV24,
-          child: Column(
-            children: [
-              _getTextFields(ref, localizations),
-              AppButton(
-                  title: localizations.signup,
-                  isLoading: signUpProvider.isButtonLoading,
-                  onTap: () => _handleSignUp(ref)),
-              AppButton(
-                title: localizations.backToLogin,
-                onTap: () => AutoRouter.of(context).replace(
-                  const LoginRoute(),
-                ),
+      body: _mapStateToWidget(context, ref, signupState),
+    );
+  }
+
+  Widget _mapStateToWidget(
+    BuildContext context,
+    WidgetRef ref,
+    SignupState signupState,
+  ) {
+    if (signupState is SignupStateInitial) {
+      return _buildSignupForm(context, ref, signupState);
+    }
+    if (signupState is SignupStateLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (signupState is SignupStateSuccess) {
+      AutoRouter.of(context).replace(const LoginRoute());
+    }
+    if (signupState is SignupStateFailure) {
+      toastInfo(signupState.errorMessage);
+    }
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  SingleChildScrollView _buildSignupForm(
+    BuildContext context,
+    WidgetRef ref,
+    SignupStateInitial state,
+  ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: AppStyles.edgeInsetsV24,
+        child: Column(
+          children: [
+            _getTextFields(ref, localizations, state),
+            AppButton(
+                title: localizations.signup,
+                isLoading: state.isButtonLoading,
+                onTap: () => _handleSignUp(ref)),
+            AppButton(
+              title: localizations.backToLogin,
+              onTap: () => AutoRouter.of(context).replace(
+                const LoginRoute(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Form _getTextFields(WidgetRef ref, AppLocalizations localizations) {
-    final signUpProvider = ref.watch(signupNotifierProvider);
+  Form _getTextFields(
+      WidgetRef ref, AppLocalizations localizations, SignupStateInitial state) {
     return Form(
       key: _formKey,
       child: Column(
         children: [
           AppTextField(
-            initialValue: signUpProvider.fullName,
+            initialValue: state.fullName,
             label: localizations.enterYourFullName,
             hintText: localizations.enterYourFullName,
             prefixIcon: const Icon(Icons.person),
@@ -71,7 +102,7 @@ class SignupPage extends ConsumerWidget {
                 FieldValidators.fullName(value, localizations),
           ),
           AppTextField(
-            initialValue: signUpProvider.email,
+            initialValue: state.email,
             label: localizations.email,
             hintText: localizations.enterYourEmailAddress,
             prefixIcon: const Icon(Icons.email),
@@ -80,13 +111,13 @@ class SignupPage extends ConsumerWidget {
                 FieldValidators.required(value, localizations),
           ),
           AppTextField(
-            initialValue: signUpProvider.password,
+            initialValue: state.password,
             label: localizations.password,
             hintText: localizations.enterYourPassword,
-            isObscureText: signUpProvider.isPasswordHidden,
+            isObscureText: state.isPasswordHidden,
             prefixIcon: const Icon(Icons.lock),
             suffix: IconButton(
-              icon: signUpProvider.isPasswordHidden
+              icon: state.isPasswordHidden
                   ? const Icon(Icons.visibility_off)
                   : const Icon(Icons.visibility),
               onPressed: ref
@@ -99,13 +130,13 @@ class SignupPage extends ConsumerWidget {
                 FieldValidators.password(value, localizations),
           ),
           AppTextField(
-            initialValue: signUpProvider.rePassword,
+            initialValue: state.rePassword,
             label: localizations.confirmPassword,
             hintText: localizations.enterYourPasswordAgain,
             prefixIcon: const Icon(Icons.lock),
-            isObscureText: signUpProvider.isRePasswordHidden,
+            isObscureText: state.isRePasswordHidden,
             suffix: IconButton(
-              icon: signUpProvider.isRePasswordHidden
+              icon: state.isRePasswordHidden
                   ? const Icon(Icons.visibility_off)
                   : const Icon(Icons.visibility),
               onPressed: ref
@@ -114,17 +145,19 @@ class SignupPage extends ConsumerWidget {
             ),
             onChanged:
                 ref.read(signupNotifierProvider.notifier).onRePasswordChanged,
-            validator: (value1) => FieldValidators.match(
-                value1, signUpProvider.password, localizations),
+            validator: (value1) =>
+                FieldValidators.match(value1, state.password, localizations),
           ),
           AppCheckBox(
             title: _getTermsAndConditionsTitle(localizations),
-            value: ref.watch(signupNotifierProvider).isAgreed,
-            onChanged: (s) {
-              ref.read(signupNotifierProvider.notifier).onIsAgreedChanged(s);
+            value: state.isAgreed,
+            onChanged: (value) {
+              ref
+                  .read(signupNotifierProvider.notifier)
+                  .onIsAgreedChanged(value);
             },
-             validator: (value){
-                FieldValidators.checkbox(value, localizations);}
+            validator: (value) =>
+                FieldValidators.checkbox(value, localizations),
           ),
         ],
       ),
