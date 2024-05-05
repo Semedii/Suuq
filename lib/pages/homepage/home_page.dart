@@ -24,9 +24,9 @@ class HomePage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _buildNiche("Garamaan", tShirts),
+                _buildNiche("Alaabta guriga", homeAccessories, expand: false),
+                _buildNiche("Clothes", tShirts),
                 _buildNiche("Kabo", shoes),
-                _buildNiche("Alaabta guriga", homeAccessories, expand: false)
               ],
             ),
           ),
