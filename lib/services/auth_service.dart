@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:suuq/global.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/utils/firebase_exceptions.dart';
@@ -56,5 +57,6 @@ class AuthService {
 
   Future<void> logout() async {
     await _auth.signOut();
+   Global.storageService.clear();
   }
 }

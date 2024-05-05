@@ -11,8 +11,8 @@ class MyProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var loginSuccessSate =
-        ref.read(loginInNotifierProvider) as LoginSuccessState;
+    // var loginSuccessSate =
+    //     ref.read(loginInNotifierProvider) as LoginSuccessState;
     return Scaffold(
       body: Container(
         color: AppColors.lightestGrey,
@@ -21,8 +21,8 @@ class MyProfilePage extends ConsumerWidget {
             Expanded(
               child: Stack(
                 children: [
-                  _buildHeader(context, loginSuccessSate.user.name),
-                  _buildMenuList(context),
+                  _buildHeader(context,"s"),
+                  _buildMenuList(context, ref),
                 ],
               ),
             ),
@@ -74,6 +74,7 @@ class MyProfilePage extends ConsumerWidget {
 
   Positioned _buildMenuList(
     BuildContext context,
+    WidgetRef ref,
   ) {
     return Positioned(
         top: MediaQuery.of(context).size.height * .42,
@@ -91,7 +92,7 @@ class MyProfilePage extends ConsumerWidget {
                 _getMenu(
                   Icons.logout_outlined,
                   "Logout",
-                  onTap: AuthService().logout,
+                  onTap: ref.read(loginInNotifierProvider.notifier).handleLogout,
                 ),
               ],
             ),
