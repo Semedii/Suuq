@@ -6,6 +6,7 @@ import 'package:suuq/models/item.dart';
 import 'package:suuq/pages/homepage/home_page_app_bar.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:suuq/utils/enums/category_enum.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
@@ -86,6 +87,7 @@ List<Item> tShirts = [
     description: "Garan/Garamad oversize ah",
     price: 12,
     imageUrl: "assets/images/tshirt.jpg",
+    category: Category.clothes
   ),
 ];
 
@@ -95,6 +97,7 @@ List<Item> shoes = [
     description: "kabo shark triko oo madaw",
     price: 12,
     imageUrl: "assets/images/shoe.jpg",
+    category: Category.shoes
   ),
 ];
 
@@ -104,17 +107,20 @@ List<Item> homeAccessories = [
     description: "Container ama box-ka cuntada lagu kaydiyo",
     price: 5,
     imageUrl: "assets/images/container.jpg",
+    category: Category.homeAccessories
   ),
    Item(
     sellerName: "Suuq Online",
     description: "Maqli aan ku dhegeyn",
     price: 15,
     imageUrl: "assets/images/pan.jpg",
+    category: Category.homeAccessories
   ),
    Item(
     sellerName: "WaxWalba Online",
     description: "Hanger-ka dharka la sudho",
     price: 6,
     imageUrl: "assets/images/hanger.jpg",
+    category: Category.homeAccessories
   ),
 ];
