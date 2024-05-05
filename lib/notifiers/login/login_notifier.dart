@@ -35,7 +35,6 @@ class LoginNotifier extends StateNotifier<LoginState> {
     } catch (e) {
       throw Exception(e);
     } 
-    state = lastState;
   }
 }
 

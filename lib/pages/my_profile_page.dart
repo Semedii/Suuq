@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:suuq/notifiers/login/login_notifier.dart';
+import 'package:suuq/notifiers/login/login_state.dart';
 import 'package:suuq/services/auth_service.dart';
 import 'package:suuq/utils/app_colors.dart';
+import 'package:suuq/utils/string_utilities.dart';
 
-class MyProfilePage extends StatelessWidget {
+class MyProfilePage extends ConsumerWidget {
   const MyProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var loginSuccessSate =
+        ref.read(loginInNotifierProvider) as LoginSuccessState;
     return Scaffold(
       body: Container(
         color: AppColors.lightestGrey,
@@ -15,7 +21,7 @@ class MyProfilePage extends StatelessWidget {
             Expanded(
               child: Stack(
                 children: [
-                  _buildHeader(context),
+                  _buildHeader(context, loginSuccessSate.user.name),
                   _buildMenuList(context),
                 ],
               ),
@@ -26,14 +32,14 @@ class MyProfilePage extends StatelessWidget {
     );
   }
 
-  Container _buildHeader(BuildContext context) {
+  Container _buildHeader(BuildContext context, String? name) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * .4,
       decoration: _buildHeaderDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [_buildAvatar(), _buildusername()],
+        children: [_buildAvatar(), _buildusername(name)],
       ),
     );
   }
@@ -55,10 +61,10 @@ class MyProfilePage extends StatelessWidget {
     );
   }
 
-  Text _buildusername() {
-    return const Text(
-      "Abdisamad Ibrahim",
-      style: TextStyle(
+  Text _buildusername(String? name) {
+    return Text(
+      name ?? StringUtilities.emptyString,
+      style: const TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
         color: AppColors.white,

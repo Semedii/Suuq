@@ -46,7 +46,7 @@ class AuthService {
       final User? firebaseUser = userCredential.user;
       if (firebaseUser != null) {
        UserModel? user = await _authDataService.fetchCurrentUser(email);
-        print("aaaaa ${user?.email}, ${user?.name}");
+        return user;
       }
     } on FirebaseException catch (e) {
       FirebaseExceptionHandler.handleFirebaseError(e);
