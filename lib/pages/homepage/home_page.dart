@@ -33,12 +33,13 @@ class HomePage extends StatelessWidget {
         ));
   }
 
-  SizedBox _buildNiche(String nicheName, List<Product> products, {bool expand = true}) {
-   if(expand) {
-     products = products
-        .expand((element) => [element, element, element, element])
-        .toList();
-   }
+  SizedBox _buildNiche(String nicheName, List<Product> products,
+      {bool expand = true}) {
+    if (expand) {
+      products = products
+          .expand((element) => [element, element, element, element])
+          .toList();
+    }
     return SizedBox(
       height: 300,
       child: Column(
@@ -55,8 +56,8 @@ class HomePage extends StatelessWidget {
               ),
               const Text(
                 "Show All",
-                style:
-                    TextStyle(color: AppColors.green, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: AppColors.green, fontWeight: FontWeight.bold),
               )
             ],
           ),
@@ -66,12 +67,7 @@ class HomePage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return ProductCard(
-                  imageUrl: product.imageUrl!,
-                  sellerName: product.sellerName,
-                  description: product.description,
-                  price: product.price,
-                );
+                return ProductCard(product: product);
               },
             ),
           ),
@@ -83,44 +79,39 @@ class HomePage extends StatelessWidget {
 
 List<Product> tShirts = [
   Product(
-    sellerName: "Shaal Online",
-    description: "Garan/Garamad oversize ah",
-    price: 12,
-    imageUrl: "assets/images/tshirt.jpg",
-    category: Category.clothes
-  ),
+      sellerName: "Shaal Online",
+      description: "Garan/Garamad oversize ah",
+      price: 12,
+      imageUrl: "assets/images/tshirt.jpg",
+      category: Category.clothes),
 ];
 
 List<Product> shoes = [
   Product(
-    sellerName: "Semedy",
-    description: "kabo shark triko oo madaw",
-    price: 12,
-    imageUrl: "assets/images/shoe.jpg",
-    category: Category.shoes
-  ),
+      sellerName: "Semedy",
+      description: "kabo shark triko oo madaw",
+      price: 12,
+      imageUrl: "assets/images/shoe.jpg",
+      category: Category.shoes),
 ];
 
 List<Product> homeAccessories = [
   Product(
-    sellerName: "Shaal Online",
-    description: "Container ama box-ka cuntada lagu kaydiyo",
-    price: 5,
-    imageUrl: "assets/images/container.jpg",
-    category: Category.homeAccessories
-  ),
-   Product(
-    sellerName: "Suuq Online",
-    description: "Maqli aan ku dhegeyn",
-    price: 15,
-    imageUrl: "assets/images/pan.jpg",
-    category: Category.homeAccessories
-  ),
-   Product(
-    sellerName: "WaxWalba Online",
-    description: "Hanger-ka dharka la sudho",
-    price: 6,
-    imageUrl: "assets/images/hanger.jpg",
-    category: Category.homeAccessories
-  ),
+      sellerName: "Shaal Online",
+      description: "Container ama box-ka cuntada lagu kaydiyo",
+      price: 5,
+      imageUrl: "assets/images/container.jpg",
+      category: Category.homeAccessories),
+  Product(
+      sellerName: "Suuq Online",
+      description: "Maqli aan ku dhegeyn",
+      price: 15,
+      imageUrl: "assets/images/pan.jpg",
+      category: Category.homeAccessories),
+  Product(
+      sellerName: "WaxWalba Online",
+      description: "Hanger-ka dharka la sudho",
+      price: 6,
+      imageUrl: "assets/images/hanger.jpg",
+      category: Category.homeAccessories),
 ];

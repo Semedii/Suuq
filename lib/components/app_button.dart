@@ -8,17 +8,19 @@ class AppButton extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.isLoading = false,
+    this.isSmall = false,
   });
   final String title;
   final bool isLoading;
+  final bool isSmall;
   final void Function() onTap;
   @override
   Widget build(BuildContext context) {
+    double phoneWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: isLoading ? null : onTap,
       child: Container(
-        width: 350,
-        margin: AppStyles.edgeInsetsT20L32R32,
+        width: isSmall? phoneWidth*.4: phoneWidth*.8,
         padding: AppStyles.edgeInsetsV10H20,
         decoration: _getDecoration(),
         child: isLoading
