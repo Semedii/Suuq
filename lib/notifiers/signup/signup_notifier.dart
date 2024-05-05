@@ -56,7 +56,11 @@ class SignupNotifier extends _$SignupNotifier {
     try {
       final authService = AuthService();
       state = SignupStateLoading();
-      await authService.signup(lastState.email, lastState.password);
+      await authService.signup(
+        lastState.fullName,
+        lastState.email,
+        lastState.password,
+      );
       state = SignupStateSuccess();
       authService.logout();
     } on FirebaseAuthException catch (e) {
