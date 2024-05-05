@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:suuq/models/product.dart';
+import 'package:suuq/services/cart_manager.dart';
 import 'package:suuq/utils/app_colors.dart';
 
-@immutable
+@RoutePage()
 class ProductPage extends StatelessWidget {
   const ProductPage(this.product, {super.key});
 
@@ -58,7 +60,9 @@ class ProductPage extends StatelessWidget {
         children: [
           _buildPrice(),
           _buildButton("Buy Now"),
-          _buildButton("To Cart", isTransparent: true),
+          _buildButton("To Cart", isTransparent: true, onTap: () {
+            CartManager().addItemToCart(product);
+          }),
         ],
       ),
     );
@@ -146,19 +150,23 @@ class ProductPage extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(String title, {bool isTransparent = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      decoration: BoxDecoration(
-        color: isTransparent ? null : Colors.green,
-        border: isTransparent ? Border.all() : null,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: isTransparent ? Colors.black : Colors.white,
-          fontSize: 20,
+  Widget _buildButton(String title,
+      {bool isTransparent = false, void Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        decoration: BoxDecoration(
+          color: isTransparent ? null : Colors.green,
+          border: isTransparent ? Border.all() : null,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isTransparent ? Colors.black : Colors.white,
+            fontSize: 20,
+          ),
         ),
       ),
     );

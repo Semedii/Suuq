@@ -38,4 +38,15 @@ class Product {
       "category": categoryToString(category),
     };
   }
+  //for sharedpref
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      sellerName: json['seller_name'],
+      description: json['description'],
+      imageUrl: json['image'],
+      price: double.parse(json['price']),
+      category: getCategoryFromString(json['category']),
+    );
+  }
+
 }

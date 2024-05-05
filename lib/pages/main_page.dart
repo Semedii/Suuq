@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/bottomNavBar/bottom_nav_bar_notifier.dart';
+import 'package:suuq/pages/cart_page.dart';
 import 'package:suuq/pages/homepage/home_page.dart';
 import 'package:suuq/pages/my_profile_page.dart';
 import 'package:suuq/utils/app_colors.dart';
@@ -17,9 +18,7 @@ class MainPage extends ConsumerWidget {
     final indexBottomNavbar = ref.watch(bottomNavBarNotifierProvider);
     final bodies = [
       const HomePage(),
-      const Center(
-        child: Text('Hello From Settings Screen'),
-      ),
+      const CartPage(),
       const MyProfilePage(),
     ];
     return Scaffold(

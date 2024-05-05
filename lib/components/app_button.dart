@@ -21,6 +21,7 @@ class AppButton extends StatelessWidget {
       onTap: isLoading ? null : onTap,
       child: Container(
         width: isSmall? phoneWidth*.4: phoneWidth*.8,
+        margin: AppStyles.edgeInsetsT20L32R32,
         padding: AppStyles.edgeInsetsV10H20,
         decoration: _getDecoration(),
         child: isLoading

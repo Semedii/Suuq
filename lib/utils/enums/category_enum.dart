@@ -11,7 +11,7 @@ Category getCategoryFromString(String categoryString) {
       return Category.clothes;
     case 'shoes':
       return Category.shoes;
-    case 'homeAccessories':
+    case 'homeaccessories':
       return Category.homeAccessories;
     case 'electronics':
       return Category.electronics;
@@ -27,7 +27,7 @@ String categoryToString(Category category) {
     case Category.shoes:
       return 'shoes';
     case Category.homeAccessories:
-      return 'homeAccessories';
+      return 'homeaccessories';
     case Category.electronics:
       return 'electronics';
   }
