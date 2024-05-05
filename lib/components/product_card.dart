@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:suuq/utils/app_colors.dart';
 
-class ItemCard extends StatelessWidget {
-  const ItemCard({
+class ProductCard extends StatelessWidget {
+  const ProductCard({
     required this.imageUrl,
     required this.sellerName,
     required this.description,

@@ -1,52 +1,52 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:suuq/models/item.dart';
+import 'package:suuq/models/product.dart';
 
 class ProductDataService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<List<Item>?> fetchAllProducts() async {
+  Future<List<Product>?> fetchAllProducts() async {
     try {
       final collectionRef = db.collection("products").withConverter(
-            fromFirestore: Item.fromFirestore,
-            toFirestore: (item, _) => item.toFirestore(),
+            fromFirestore: Product.fromFirestore,
+            toFirestore: (product, _) => product.toFirestore(),
           );
 
       final querySnapshot = await collectionRef.get();
-      List<Item> items = querySnapshot.docs.map((doc) => doc.data()).toList();
-      return items;
+      List<Product> products = querySnapshot.docs.map((doc) => doc.data()).toList();
+      return products;
     } catch (e) {
       print("Error fetching products: $e");
       return null;
     }
   }
 
-  Future<List<Item>?> fetchProductsByCategory(String category) async {
+  Future<List<Product>?> fetchProductsByCategory(String category) async {
     try {
       final collectionRef = db
           .collection("products")
           .where('category', isEqualTo: category.toLowerCase())
           .withConverter(
-            fromFirestore: Item.fromFirestore,
-            toFirestore: (item, _) => item.toFirestore(),
+            fromFirestore: Product.fromFirestore,
+            toFirestore: (product, _) => product.toFirestore(),
           );
 
       final querySnapshot = await collectionRef.get();
-      List<Item> items = querySnapshot.docs.map((doc) => doc.data()).toList();
-      return items;
+      List<Product> products = querySnapshot.docs.map((doc) => doc.data()).toList();
+      return products;
     } catch (e) {
       print("Error fetching products: $e");
       return null;
     }
   }
 
-  Future<void> addProduct(Item item) async {
+  Future<void> addProduct(Product product) async {
     final docRef = db
         .collection("products")
         .withConverter(
-          fromFirestore: Item.fromFirestore,
-          toFirestore: (Item item, options) => item.toFirestore(),
+          fromFirestore: Product.fromFirestore,
+          toFirestore: (Product item, options) => product.toFirestore(),
         )
         .doc();
-    await docRef.set(item);
+    await docRef.set(product);
   }
 }

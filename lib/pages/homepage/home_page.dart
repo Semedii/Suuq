@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:suuq/components/item_card.dart';
-import 'package:suuq/models/item.dart';
+import 'package:suuq/components/product_card.dart';
+import 'package:suuq/models/product.dart';
 import 'package:suuq/pages/homepage/home_page_app_bar.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
@@ -33,9 +33,9 @@ class HomePage extends StatelessWidget {
         ));
   }
 
-  SizedBox _buildNiche(String nicheName, List<Item> items, {bool expand = true}) {
+  SizedBox _buildNiche(String nicheName, List<Product> products, {bool expand = true}) {
    if(expand) {
-     items = items
+     products = products
         .expand((element) => [element, element, element, element])
         .toList();
    }
@@ -62,15 +62,15 @@ class HomePage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: items.length,
+              itemCount: products.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                final item = items[index];
-                return ItemCard(
-                  imageUrl: item.imageUrl!,
-                  sellerName: item.sellerName,
-                  description: item.description,
-                  price: item.price,
+                final product = products[index];
+                return ProductCard(
+                  imageUrl: product.imageUrl!,
+                  sellerName: product.sellerName,
+                  description: product.description,
+                  price: product.price,
                 );
               },
             ),
@@ -81,8 +81,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-List<Item> tShirts = [
-  Item(
+List<Product> tShirts = [
+  Product(
     sellerName: "Shaal Online",
     description: "Garan/Garamad oversize ah",
     price: 12,
@@ -91,8 +91,8 @@ List<Item> tShirts = [
   ),
 ];
 
-List<Item> shoes = [
-  Item(
+List<Product> shoes = [
+  Product(
     sellerName: "Semedy",
     description: "kabo shark triko oo madaw",
     price: 12,
@@ -101,22 +101,22 @@ List<Item> shoes = [
   ),
 ];
 
-List<Item> homeAccessories = [
-  Item(
+List<Product> homeAccessories = [
+  Product(
     sellerName: "Shaal Online",
     description: "Container ama box-ka cuntada lagu kaydiyo",
     price: 5,
     imageUrl: "assets/images/container.jpg",
     category: Category.homeAccessories
   ),
-   Item(
+   Product(
     sellerName: "Suuq Online",
     description: "Maqli aan ku dhegeyn",
     price: 15,
     imageUrl: "assets/images/pan.jpg",
     category: Category.homeAccessories
   ),
-   Item(
+   Product(
     sellerName: "WaxWalba Online",
     description: "Hanger-ka dharka la sudho",
     price: 6,
