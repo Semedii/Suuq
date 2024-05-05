@@ -18,4 +18,17 @@ Category getCategoryFromString(String categoryString) {
     default:
       throw Exception('Unknown category: $categoryString');
   }
+  
+}
+String categoryToString(Category category) {
+  switch (category) {
+    case Category.clothes:
+      return 'clothes';
+    case Category.shoes:
+      return 'shoes';
+    case Category.homeAccessories:
+      return 'homeAccessories';
+    case Category.electronics:
+      return 'electronics';
+  }
 }

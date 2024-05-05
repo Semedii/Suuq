@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 
 class Item {
@@ -15,14 +16,26 @@ class Item {
     required this.category,
   });
 
-  factory Item.fromMap(Map<String, dynamic> map) {
-    print("aafd $map");
+  factory Item.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
     return Item(
-      sellerName: map['seller_name'],
-      imageUrl: map['image'],
-      description: map['description'],
-      price: map['price'].toDouble(),
-      category: getCategoryFromString(map['category']),
+      sellerName: data?['seller_name'],
+      imageUrl: data?['image'],
+      description: data?['description'],
+      price: data?['price'].toDouble(),
+      category: getCategoryFromString(data?['category']),
     );
+  }
+  Map<String, dynamic> toFirestore() {
+    return {
+      "seller_name": sellerName,
+      "image": imageUrl,
+      "description": description,
+      "price": price.toStringAsFixed(2),
+      "category": categoryToString(category),
+    };
   }
 }

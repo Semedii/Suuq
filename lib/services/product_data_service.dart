@@ -4,32 +4,49 @@ import 'package:suuq/models/item.dart';
 class ProductDataService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<List<Item>> fetchAllProducts() async {
+  Future<List<Item>?> fetchAllProducts() async {
     try {
-      QuerySnapshot querySnapshot = await db.collection("products").get();
-      List<Item> items = querySnapshot.docs.map((docSnapshot) {
-        return Item.fromMap(docSnapshot.data() as Map<String, dynamic>);
-      }).toList();
+      final collectionRef = db.collection("products").withConverter(
+            fromFirestore: Item.fromFirestore,
+            toFirestore: (item, _) => item.toFirestore(),
+          );
+
+      final querySnapshot = await collectionRef.get();
+      List<Item> items = querySnapshot.docs.map((doc) => doc.data()).toList();
       return items;
     } catch (e) {
       print("Error fetching products: $e");
-      return [];
+      return null;
     }
   }
 
-  Future<List<Item>> fetchProductsByCategory(String category) async {
+  Future<List<Item>?> fetchProductsByCategory(String category) async {
     try {
-      QuerySnapshot querySnapshot = await db
+      final collectionRef = db
           .collection("products")
           .where('category', isEqualTo: category.toLowerCase())
-          .get();
-      List<Item> items = querySnapshot.docs.map((docSnapshot) {
-        return Item.fromMap(docSnapshot.data() as Map<String, dynamic>);
-      }).toList();
+          .withConverter(
+            fromFirestore: Item.fromFirestore,
+            toFirestore: (item, _) => item.toFirestore(),
+          );
+
+      final querySnapshot = await collectionRef.get();
+      List<Item> items = querySnapshot.docs.map((doc) => doc.data()).toList();
       return items;
     } catch (e) {
       print("Error fetching products: $e");
-      return [];
+      return null;
     }
+  }
+
+  Future<void> addProduct(Item item) async {
+    final docRef = db
+        .collection("products")
+        .withConverter(
+          fromFirestore: Item.fromFirestore,
+          toFirestore: (Item item, options) => item.toFirestore(),
+        )
+        .doc();
+    await docRef.set(item);
   }
 }
