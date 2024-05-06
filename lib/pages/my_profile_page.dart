@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/login/login_notifier.dart';
-import 'package:suuq/notifiers/login/login_state.dart';
-import 'package:suuq/services/auth_service.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/string_utilities.dart';
 

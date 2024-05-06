@@ -25,7 +25,7 @@ class Product {
       sellerName: data?['seller_name'],
       imageUrl: data?['image'],
       description: data?['description'],
-      price: data?['price'].toDouble(),
+      price: double.parse(data?['price']),
       category: getCategoryFromString(data?['category']),
     );
   }

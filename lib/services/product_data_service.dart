@@ -20,7 +20,7 @@ class ProductDataService {
     }
   }
 
-  Future<List<Product>?> fetchProductsByCategory(String category) async {
+  Future<List<Product?>> fetchProductsByCategory(String category) async {
     try {
       final collectionRef = db
           .collection("products")
@@ -35,7 +35,7 @@ class ProductDataService {
       return products;
     } catch (e) {
       print("Error fetching products: $e");
-      return null;
+      return [];
     }
   }
 

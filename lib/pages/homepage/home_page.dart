@@ -1,45 +1,62 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:suuq/components/product_card.dart';
 import 'package:suuq/models/product.dart';
+import 'package:suuq/notifiers/home/home_notifier.dart';
+import 'package:suuq/notifiers/home/home_state.dart';
 import 'package:suuq/pages/homepage/home_page_app_bar.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 
 @RoutePage()
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final homeState = ref.watch(homeNotifierProvider);
     return Scaffold(
         appBar: const PreferredSize(
           preferredSize: Size(double.infinity, 60),
           child: HomePageAppBar(),
         ),
-        body: Padding(
-          padding: AppStyles.edgeInsets4,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildNiche("Alaabta guriga", homeAccessories, expand: false),
-                _buildNiche("Clothes", tShirts),
-                _buildNiche("Kabo", shoes),
-              ],
-            ),
-          ),
-        ));
+        body: _mapStateToWidget(homeState, ref));
   }
 
-  SizedBox _buildNiche(String nicheName, List<Product> products,
-      {bool expand = true}) {
-    if (expand) {
-      products = products
-          .expand((element) => [element, element, element, element])
-          .toList();
+  Widget _mapStateToWidget(HomeState state, WidgetRef ref) {
+    if (state is HomeStateInitial) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(homeNotifierProvider.notifier).initPage();
+      });
+    } else if (state is HomeStateLoaded) {
+      return _buildHomePageBody(state);
     }
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Padding _buildHomePageBody(HomeStateLoaded state) {
+    return Padding(
+      padding: AppStyles.edgeInsets4,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildNiche("Alaabta guriga", state.homeAccessories),
+            _buildNiche("Clothes", state.cosmetics),
+            _buildNiche("Kabo", state.shoes),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox _buildNiche(String nicheName, List<Product?> products,
+      ) {
     return SizedBox(
       height: 300,
       child: Column(
@@ -67,7 +84,7 @@ class HomePage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return ProductCard(product: product);
+                return product!=null? ProductCard(product: product):const Text("not found");
               },
             ),
           ),
