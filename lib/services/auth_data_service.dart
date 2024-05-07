@@ -22,7 +22,7 @@ class AuthDataService {
     try {
       final docRef = db
           .collection("users")
-          .doc()
+          .doc('customersDoc')
           .collection('customers')
           .withConverter(
             fromFirestore: UserModel.fromFirestore,

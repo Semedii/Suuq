@@ -23,8 +23,7 @@ class ProductDataService {
   Future<List<Product?>> fetchProductsByCategory(String category) async {
     try {
       final collectionRef = db
-          .collection("products")
-          .where('category', isEqualTo: category.toLowerCase())
+          .collectionGroup(category.toLowerCase())
           .withConverter(
             fromFirestore: Product.fromFirestore,
             toFirestore: (product, _) => product.toFirestore(),

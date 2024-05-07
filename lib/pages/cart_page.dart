@@ -118,7 +118,7 @@ class CartPage extends ConsumerWidget {
         height: 130,
         child: Row(
           children: [
-            _buildImage(product.imageUrl!),
+            _buildImage(product.imageUrl.first??''),
             _buildInfoSection(product.sellerName, product.description),
             _buildPriceAndDelete(product, ref),
           ],

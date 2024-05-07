@@ -4,7 +4,7 @@ import 'package:suuq/utils/enums/category_enum.dart';
 class Product {
   final String id;
   final String sellerName;
-  final String? imageUrl;
+  final List<String?> imageUrl;
   final String description;
   final double price;
   final Category category;
@@ -26,7 +26,7 @@ class Product {
     return Product(
       id: snapshot.id,
       sellerName: data?['seller_name'],
-      imageUrl: data?['image'],
+      imageUrl: data?['image'].cast<String>(),
       description: data?['description'],
       price: double.parse(data?['price']),
       category: getCategoryFromString(data?['category']),

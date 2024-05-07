@@ -1,15 +1,24 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/services/cart_manager.dart';
 import 'package:suuq/utils/app_colors.dart';
 
 @RoutePage()
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   const ProductPage(this.product, {super.key});
 
   final Product product;
 
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +44,7 @@ class ProductPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildImage(context),
+                      buildCarousel(context),
                       _buildDescription(),
                       _buildReviews(),
                     ],
@@ -61,20 +70,73 @@ class ProductPage extends StatelessWidget {
           _buildPrice(),
           _buildButton("Buy Now"),
           _buildButton("To Cart", isTransparent: true, onTap: () {
-            CartManager().addItemToCart(product);
+            CartManager().addItemToCart(widget.product);
           }),
         ],
       ),
     );
   }
 
-  SizedBox _buildImage(BuildContext context) {
-    return SizedBox(
+  int _current = 0;
+  Widget buildCarousel(BuildContext context) {
+    return Column(
+      children: [
+        CarouselSlider(
+          options: _buildCarouselOptions(context),
+          items: widget.product.imageUrl.map((url) {
+            return Builder(
+              builder: (BuildContext context) {
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: Image.memory(
+                    base64Decode(url ?? ''),
+                    height: 200,
+                    width: 150,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
+            );
+          }).toList(),
+        ),
+        _buildDotIndicator()
+      ],
+    );
+  }
+
+  CarouselOptions _buildCarouselOptions(BuildContext context) {
+    return CarouselOptions(
       height: MediaQuery.of(context).size.height * 0.6,
-      width: double.infinity,
-      child: Image.asset(
-        product.imageUrl!,
-        fit: BoxFit.cover,
+      viewportFraction: 1,
+      initialPage: 0,
+      enableInfiniteScroll: true,
+      reverse: false,
+      autoPlay: true,
+      autoPlayInterval: const Duration(seconds: 3),
+      autoPlayAnimationDuration: const Duration(milliseconds: 800),
+      autoPlayCurve: Curves.fastOutSlowIn,
+      enlargeCenterPage: true,
+      scrollDirection: Axis.horizontal,
+      onPageChanged: (index, reason) {
+        setState(() {
+          _current = index;
+        });
+      },
+    );
+  }
+
+  DotsIndicator _buildDotIndicator() {
+    return DotsIndicator(
+      dotsCount: widget.product.imageUrl.length,
+      position: _current,
+      decorator: DotsDecorator(
+        shape: const Border(),
+        activeShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        size: const Size.square(10),
+        activeSize: const Size(20, 10),
       ),
     );
   }
@@ -88,14 +150,14 @@ class ProductPage extends StatelessWidget {
         text: TextSpan(
           children: [
             TextSpan(
-              text: product.sellerName,
+              text: widget.product.sellerName,
               style: const TextStyle(
                   color: AppColors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20),
             ),
             TextSpan(
-              text: ' - ${product.description}',
+              text: ' - ${widget.product.description}',
               style: const TextStyle(color: AppColors.black, fontSize: 24),
             ),
           ],
@@ -129,7 +191,7 @@ class ProductPage extends StatelessWidget {
 
   Text _buildPrice() {
     return Text(
-      '${product.price.toStringAsFixed(2)}\$',
+      '${widget.product.price.toStringAsFixed(2)}\$',
       style: const TextStyle(
         color: AppColors.green,
         fontWeight: FontWeight.bold,
