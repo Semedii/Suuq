@@ -15,4 +15,7 @@ class StorageService{
     Future<bool> clear() async {
     return await _pref.clear();
   }
+    Future<String?> getString(String key) async {
+    return _pref.getString(key);
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/login/login_notifier.dart';
+import 'package:suuq/notifiers/myProfile/my_profile_notifier.dart';
+import 'package:suuq/notifiers/myProfile/my_profile_state.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/string_utilities.dart';
 
@@ -9,23 +11,38 @@ class MyProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // var loginSuccessSate =
-    //     ref.read(loginInNotifierProvider) as LoginSuccessState;
+    final profileState = ref.watch(myProfileNotifierProvider);
     return Scaffold(
-      body: Container(
-        color: AppColors.lightestGrey,
-        child: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildHeader(context,"s"),
-                  _buildMenuList(context, ref),
-                ],
-              ),
+      body: _mapStateToWidget(context,ref, profileState),
+    );
+  }
+    Widget _mapStateToWidget(
+    BuildContext context,
+    WidgetRef ref,
+    MyProfileState state,
+  ) {
+    if (state is MyProfileInitialState) {
+      ref.read(myProfileNotifierProvider.notifier).initPage();
+    } else if (state is MyProfileLoadedState) {
+      return _buildProfilePageBody(context,state, ref);
+    }
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Container _buildProfilePageBody(BuildContext context, MyProfileLoadedState state ,WidgetRef ref) {
+    return Container(
+      color: AppColors.lightestGrey,
+      child: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildHeader(context, state.userName),
+                _buildMenuList(context, ref),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

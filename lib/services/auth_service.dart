@@ -46,8 +46,12 @@ class AuthService {
       );
       final User? firebaseUser = userCredential.user;
       if (firebaseUser != null) {
-       UserModel? user = await _authDataService.fetchCurrentUser(email);
-        return user;
+        UserModel? user = await _authDataService.fetchCurrentUser(email);
+        if (user != null) {
+          Global.storageService.setString("sellerName", user.name!);
+          Global.storageService.setString("sellerEmail", email);
+          return user;
+        }
       }
     } on FirebaseException catch (e) {
       FirebaseExceptionHandler.handleFirebaseError(e);
@@ -55,8 +59,17 @@ class AuthService {
     return null;
   }
 
+  Future<void> changePassword(String newPassword) async {
+    final userCredential = FirebaseAuth.instance.currentUser;
+    try {
+      await userCredential?.updatePassword(newPassword);
+    } on FirebaseException catch (e) {
+      FirebaseExceptionHandler.handleFirebaseError(e);
+    }
+  }
+
   Future<void> logout() async {
     await _auth.signOut();
-   Global.storageService.clear();
+    Global.storageService.clear();
   }
 }

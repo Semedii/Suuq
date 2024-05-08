@@ -28,10 +28,24 @@ class AuthDataService {
             fromFirestore: UserModel.fromFirestore,
             toFirestore: (UserModel user, options) => user.toFirestore(),
           )
-          .doc();
+          .doc(user.email);
       await docRef.set(user);
     } catch (e) {
       print("Error fetching products: $e");
     }
+  }
+
+  Future<void> updateUserInfo(
+      {required String email,
+      required String phoneNumber,
+      required String address,
+      required String name}) async {
+    final updatedData = {"phone_number": phoneNumber, "address": address, "name": name};
+   await db
+        .collection('users')
+        .doc('customersDoc')
+        .collection("customers")
+        .doc(email)
+        .update(updatedData);
   }
 }
