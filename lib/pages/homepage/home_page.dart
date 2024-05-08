@@ -45,8 +45,13 @@ class HomePage extends ConsumerWidget {
         child: Column(
           children: [
             _buildNiche("Alaabta guriga", state.homeAccessories),
-            _buildNiche("Clothes", state.cosmetics),
+            _buildNiche("Electronics", state.electronics),
+            _buildNiche("Alaabta Kijada", state.kitchenAccessories),
             _buildNiche("Kabo", state.shoes),
+            _buildNiche("Alaabta Jimicsiga", state.gymAccessories),
+             _buildNiche("Cosmetics", state.cosmetics),
+             _buildNiche("Dhar", state.clothes),
+            
           ],
         ),
       ),

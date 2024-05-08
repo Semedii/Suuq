@@ -24,7 +24,11 @@ class HomeNotifier extends _$HomeNotifier {
     final List<Product?> shoes = await _productDataService
         .fetchProductsByCategory(categoryToString(Category.shoes));
     final List<Product?> cosmetics = await _productDataService
+        .fetchProductsByCategory(categoryToString(Category.cosmetics));
+        final List<Product?> clothes = await _productDataService
         .fetchProductsByCategory(categoryToString(Category.clothes));
+        final List<Product?> gymAccessories = await _productDataService
+        .fetchProductsByCategory(categoryToString(Category.gymAccessories));
 
     state = HomeStateLoaded(
       homeAccessories: homeAccessories,
@@ -32,6 +36,8 @@ class HomeNotifier extends _$HomeNotifier {
       electronics: electronics,
       cosmetics: cosmetics,
       shoes: shoes,
+      clothes: clothes,
+      gymAccessories: gymAccessories,
     );
   }
 }

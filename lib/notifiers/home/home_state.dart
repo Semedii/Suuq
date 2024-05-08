@@ -12,13 +12,17 @@ class HomeStateLoaded extends HomeState {
   final List<Product?> kitchenAccessories;
   final List<Product?> shoes;
   final List<Product?> cosmetics;
+  final List<Product?> gymAccessories;
+  final List<Product?> clothes;
 
   HomeStateLoaded(
       {this.homeAccessories = const [],
       this.electronics = const [],
       this.kitchenAccessories = const [],
       this.shoes = const [],
-      this.cosmetics = const []});
+      this.cosmetics = const [],
+      this.gymAccessories = const [],
+      this.clothes = const []});
 
   HomeStateLoaded copyWith({
     List<Product?>? homeAccessories,
@@ -26,6 +30,8 @@ class HomeStateLoaded extends HomeState {
     List<Product?>? kitchenAccessories,
     List<Product?>? shoes,
     List<Product?>? cosmetics,
+    List<Product?>? clothes,
+    List<Product?>? gymAccessories,
   }) {
     return HomeStateLoaded(
       homeAccessories: homeAccessories ?? this.homeAccessories,
@@ -33,6 +39,8 @@ class HomeStateLoaded extends HomeState {
       kitchenAccessories: kitchenAccessories ?? this.kitchenAccessories,
       shoes: shoes ?? this.shoes,
       cosmetics: cosmetics ?? this.cosmetics,
+      gymAccessories: gymAccessories ?? this.gymAccessories,
+      clothes: clothes ?? this.clothes,
     );
   }
 }
