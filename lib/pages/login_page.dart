@@ -19,7 +19,6 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var loginState = ref.watch(loginInNotifierProvider);
-    print("state is $loginState");
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
@@ -30,19 +29,21 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  Column _buildLoginForm(
+  SingleChildScrollView _buildLoginForm(
       BuildContext context, WidgetRef ref, LoginInitialState loginState) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _getEmailField(loginState, localizations, ref),
-        _getPasswordField(loginState, localizations, ref),
-        _getForgotPasswordText(localizations),
-        _getLoginButton(localizations, ref),
-        _getSignupButton(localizations, context)
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _getEmailField(loginState, localizations, ref),
+          _getPasswordField(loginState, localizations, ref),
+          _getForgotPasswordText(localizations),
+          _getLoginButton(localizations, ref),
+          _getSignupButton(localizations, context)
+        ],
+      ),
     );
   }
 
