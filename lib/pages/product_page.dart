@@ -21,7 +21,7 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
-    bool isImageAvailable = widget.product.imageUrl.length>4;
+    bool isImageAvailable = widget.product.imageUrl.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
         actions: [
