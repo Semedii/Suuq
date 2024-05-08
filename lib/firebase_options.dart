@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAQ2b-VVsLZsheUN--P_-QdP6UwulLhB4w',
-    appId: '1:612442301144:web:b5a264603eff5be3332dad',
-    messagingSenderId: '612442301144',
-    projectId: 'suuq-4b572',
-    authDomain: 'suuq-4b572.firebaseapp.com',
-    storageBucket: 'suuq-4b572.appspot.com',
-    measurementId: 'G-YVMV3GRHM1',
+    apiKey: 'AIzaSyACMucDU-97sAfF4MyB51fREf3z9ZW6fMA',
+    appId: '1:306904529292:web:26a30e598aee5a8dff7ea9',
+    messagingSenderId: '306904529292',
+    projectId: 'suuq-staging-770c6',
+    authDomain: 'suuq-staging-770c6.firebaseapp.com',
+    storageBucket: 'suuq-staging-770c6.appspot.com',
+    measurementId: 'G-TVF06MCNXF',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyALwn6CdBMVummiSu64rstx1iNWi0kEQ-Y',
-    appId: '1:612442301144:android:129be11d0b021bc6332dad',
-    messagingSenderId: '612442301144',
-    projectId: 'suuq-4b572',
-    storageBucket: 'suuq-4b572.appspot.com',
+    apiKey: 'AIzaSyA4fH2zua6DB__rHsdHu-h1vqLjzUiWu3s',
+    appId: '1:306904529292:android:972e9499ba47e6b0ff7ea9',
+    messagingSenderId: '306904529292',
+    projectId: 'suuq-staging-770c6',
+    storageBucket: 'suuq-staging-770c6.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDehpSgAAzHEjzlJ7MXK5m8KuOA-K533tY',
-    appId: '1:612442301144:ios:686cfd8c2f894f7a332dad',
-    messagingSenderId: '612442301144',
-    projectId: 'suuq-4b572',
-    storageBucket: 'suuq-4b572.appspot.com',
+    apiKey: 'AIzaSyBp2fWP3_rWkVkzVRCiZm4ShtQ8I1h_lNA',
+    appId: '1:306904529292:ios:f637b529e739383bff7ea9',
+    messagingSenderId: '306904529292',
+    projectId: 'suuq-staging-770c6',
+    storageBucket: 'suuq-staging-770c6.appspot.com',
     iosBundleId: 'com.example.suuq',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDehpSgAAzHEjzlJ7MXK5m8KuOA-K533tY',
-    appId: '1:612442301144:ios:686cfd8c2f894f7a332dad',
-    messagingSenderId: '612442301144',
-    projectId: 'suuq-4b572',
-    storageBucket: 'suuq-4b572.appspot.com',
+    apiKey: 'AIzaSyBp2fWP3_rWkVkzVRCiZm4ShtQ8I1h_lNA',
+    appId: '1:306904529292:ios:f637b529e739383bff7ea9',
+    messagingSenderId: '306904529292',
+    projectId: 'suuq-staging-770c6',
+    storageBucket: 'suuq-staging-770c6.appspot.com',
     iosBundleId: 'com.example.suuq',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAQ2b-VVsLZsheUN--P_-QdP6UwulLhB4w',
-    appId: '1:612442301144:web:ed730b7fcd87f983332dad',
-    messagingSenderId: '612442301144',
-    projectId: 'suuq-4b572',
-    authDomain: 'suuq-4b572.firebaseapp.com',
-    storageBucket: 'suuq-4b572.appspot.com',
-    measurementId: 'G-4S3YG48ZKJ',
+    apiKey: 'AIzaSyACMucDU-97sAfF4MyB51fREf3z9ZW6fMA',
+    appId: '1:306904529292:web:5da83a8e781bacceff7ea9',
+    messagingSenderId: '306904529292',
+    projectId: 'suuq-staging-770c6',
+    authDomain: 'suuq-staging-770c6.firebaseapp.com',
+    storageBucket: 'suuq-staging-770c6.appspot.com',
+    measurementId: 'G-FXE57GBN8S',
   );
+
 }

@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:suuq/global.dart';
 import 'package:suuq/router/app_router.dart';
 import 'package:suuq/utils/app_theme.dart';
 
-void main() async {
-  await Global.init();
-  runApp(ProviderScope(child: MyApp()));
-}
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
