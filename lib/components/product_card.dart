@@ -15,8 +15,9 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isImageAvailable = product.imageUrl.isNotEmpty;
     return GestureDetector(
-      onTap: ()=>AutoRouter.of(context).push(ProductRoute(product: product)),
+      onTap: () => AutoRouter.of(context).push(ProductRoute(product: product)),
       child: Card(
         child: SizedBox(
           width: 150,
@@ -24,12 +25,19 @@ class ProductCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.memory(
-                base64Decode(product.imageUrl.first??""),
-                height: 200,
-                width: 150,
-                fit: BoxFit.cover,
-              ),
+              isImageAvailable
+                  ? Image.memory(
+                      base64Decode(product.imageUrl.first ?? ""),
+                      height: 200,
+                      width: 150,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      "assets/images/noImageAvailable.jpeg",
+                      height: 200,
+                      width: 150,
+                      fit: BoxFit.cover,
+                    ),
               RichText(
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

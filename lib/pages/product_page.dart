@@ -13,14 +13,15 @@ class ProductPage extends StatefulWidget {
   const ProductPage(this.product, {super.key});
 
   final Product product;
-
+  
   @override
   State<ProductPage> createState() => _ProductPageState();
 }
-
+ 
 class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
+    bool isImageAvailable = widget.product.imageUrl.length>4;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -44,7 +45,7 @@ class _ProductPageState extends State<ProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      buildCarousel(context),
+                      buildCarousel(context, isImageAvailable),
                       _buildDescription(),
                       _buildReviews(),
                     ],
@@ -76,9 +77,9 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
-
+  bool isss = false;
   int _current = 0;
-  Widget buildCarousel(BuildContext context) {
+  Widget buildCarousel(BuildContext context, bool isImageAvailable) {
     return Column(
       children: [
         CarouselSlider(
@@ -89,18 +90,25 @@ class _ProductPageState extends State<ProductPage> {
                 return SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.6,
-                  child: Image.memory(
-                    base64Decode(url ?? ''),
-                    height: 200,
-                    width: 150,
-                    fit: BoxFit.cover,
-                  ),
+                  child: isImageAvailable
+                      ? Image.memory(
+                          base64Decode(url ?? ''),
+                          height: 200,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          "assets/images/noImageAvailable.jpeg",
+                          height: 200,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
                 );
               },
             );
           }).toList(),
         ),
-        _buildDotIndicator()
+        if (widget.product.imageUrl.length > 1) _buildDotIndicator()
       ],
     );
   }
