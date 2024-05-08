@@ -19,7 +19,7 @@ class HomePage extends ConsumerWidget {
     final homeState = ref.watch(homeNotifierProvider);
     return Scaffold(
         appBar: const PreferredSize(
-          preferredSize: Size(double.infinity, 60),
+          preferredSize: Size(double.infinity, 80),
           child: HomePageAppBar(),
         ),
         body: _mapStateToWidget(homeState, ref));

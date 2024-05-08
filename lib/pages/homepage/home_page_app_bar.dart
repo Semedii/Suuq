@@ -47,10 +47,11 @@ class HomePageAppBar extends StatelessWidget {
 
   TextField _buildSearchField() {
     return TextField(
+      readOnly: true,
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColors.white,
-        hintText: "Search products...",
+        fillColor: AppColors.lightestGrey,
+        hintText: "Search coming soon...",
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
