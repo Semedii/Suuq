@@ -71,32 +71,35 @@ class CartPage extends ConsumerWidget {
     ]));
   }
 
-  Column _buildCartList(
+  Widget _buildCartList(
     BuildContext context,
     CartIdleState state,
     WidgetRef ref,
   ) {
-    return Column(
-      children: [
-        Expanded(
-          child: Stack(children: [
-            SingleChildScrollView(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: state.cartList
-                      .map((e) => _buildCartCard(e!, ref))
-                      .toList()),
-            ),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Expanded(
-                  child: _buildTotalAndCheckoutButton(context, state),
-                ))
-          ]),
-        ),
-      ],
+    return Padding(
+      padding: AppStyles.edgeInsetsH4,
+      child: Column(
+        children: [
+          Expanded(
+            child: Stack(children: [
+              SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: state.cartList
+                        .map((e) => _buildCartCard(e!, ref))
+                        .toList()),
+              ),
+              Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Expanded(
+                    child: _buildTotalAndCheckoutButton(context, state),
+                  ))
+            ]),
+          ),
+        ],
+      ),
     );
   }
 
@@ -116,18 +119,21 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Row _buildTotalAndCheckoutButton(BuildContext context, CartIdleState state) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Column(
-          children: [
-            _buildTotalText(),
-            _buildPrice(state.getTotalPrice, fontSize: 20),
-          ],
-        ),
-        _buildButton(context, state.getTotalPrice)
-      ],
+  Widget _buildTotalAndCheckoutButton(BuildContext context, CartIdleState state) {
+    return Container(
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Column(
+            children: [
+              _buildTotalText(),
+              _buildPrice(state.getTotalPrice, fontSize: 20),
+            ],
+          ),
+          _buildButton(context, state.getTotalPrice)
+        ],
+      ),
     );
   }
 
