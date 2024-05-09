@@ -7,6 +7,7 @@ class HomeStateInitial extends HomeState {}
 class HomeStateLoading extends HomeState {}
 
 class HomeStateLoaded extends HomeState {
+  final int numberItemsInCart;
   final List<Product?> homeAccessories;
   final List<Product?> electronics;
   final List<Product?> kitchenAccessories;
@@ -15,14 +16,16 @@ class HomeStateLoaded extends HomeState {
   final List<Product?> gymAccessories;
   final List<Product?> clothes;
 
-  HomeStateLoaded(
-      {this.homeAccessories = const [],
-      this.electronics = const [],
-      this.kitchenAccessories = const [],
-      this.shoes = const [],
-      this.cosmetics = const [],
-      this.gymAccessories = const [],
-      this.clothes = const []});
+  HomeStateLoaded({
+    this.numberItemsInCart = 0,
+    this.homeAccessories = const [],
+    this.electronics = const [],
+    this.kitchenAccessories = const [],
+    this.shoes = const [],
+    this.cosmetics = const [],
+    this.gymAccessories = const [],
+    this.clothes = const [],
+  });
 
   HomeStateLoaded copyWith({
     List<Product?>? homeAccessories,

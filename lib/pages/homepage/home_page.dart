@@ -17,12 +17,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeNotifierProvider);
-    return Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size(double.infinity, 80),
-          child: HomePageAppBar(),
-        ),
-        body: _mapStateToWidget(homeState, ref));
+    return  _mapStateToWidget(homeState, ref);
   }
 
   Widget _mapStateToWidget(HomeState state, WidgetRef ref) {
@@ -38,28 +33,34 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Padding _buildHomePageBody(HomeStateLoaded state) {
-    return Padding(
-      padding: AppStyles.edgeInsets4,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildNiche("Alaabta guriga", state.homeAccessories),
-            _buildNiche("Electronics", state.electronics),
-            _buildNiche("Alaabta Kijada", state.kitchenAccessories),
-            _buildNiche("Kabo", state.shoes),
-            _buildNiche("Alaabta Jimicsiga", state.gymAccessories),
-             _buildNiche("Cosmetics", state.cosmetics),
-             _buildNiche("Dhar", state.clothes),
-            
-          ],
+  Widget _buildHomePageBody(HomeStateLoaded state) {
+    return Scaffold(
+        appBar:  PreferredSize(
+          preferredSize: const Size(double.infinity, 80),
+          child: HomePageAppBar(numberItemsInCart: state.numberItemsInCart,),
         ),
-      ),
-    );
+        body: Padding(
+          padding: AppStyles.edgeInsets4,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildNiche("Alaabta guriga", state.homeAccessories),
+                _buildNiche("Electronics", state.electronics),
+                _buildNiche("Alaabta Kijada", state.kitchenAccessories),
+                _buildNiche("Kabo", state.shoes),
+                _buildNiche("Alaabta Jimicsiga", state.gymAccessories),
+                _buildNiche("Cosmetics", state.cosmetics),
+                _buildNiche("Dhar", state.clothes),
+              ],
+            ),
+          ),
+        ));
   }
 
-  SizedBox _buildNiche(String nicheName, List<Product?> products,
-      ) {
+  SizedBox _buildNiche(
+    String nicheName,
+    List<Product?> products,
+  ) {
     return SizedBox(
       height: 300,
       child: Column(
@@ -87,7 +88,9 @@ class HomePage extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return product!=null? ProductCard(product: product):const Text("not found");
+                return product != null
+                    ? ProductCard(product: product)
+                    : const Text("not found");
               },
             ),
           ),
