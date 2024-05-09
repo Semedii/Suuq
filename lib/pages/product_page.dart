@@ -4,7 +4,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/product.dart';
+import 'package:suuq/notifiers/home/home_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/services/cart_manager.dart';
 import 'package:suuq/utils/app_colors.dart';
@@ -62,21 +64,26 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Container _buildBottomBar() {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 4),
-      color: AppColors.lightestGrey,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildPrice(),
-          _buildButton("Buy Now",
-              onTap: () => AutoRouter.of(context).push(CheckOutRoute(totalAmount: 23))),
-          _buildButton("To Cart", isTransparent: true, onTap: () {
-            CartManager().addItemToCart(widget.product);
-          }),
-        ],
-      ),
+  Widget _buildBottomBar() {
+    return Consumer(
+      builder: (context, ref, _) {
+        return Container(
+          padding: const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 4),
+          color: AppColors.lightestGrey,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildPrice(),
+              _buildButton("Buy Now",
+                  onTap: () => AutoRouter.of(context).push(CheckOutRoute(totalAmount: 23))),
+              _buildButton("To Cart", isTransparent: true, onTap: () {
+                CartManager().addItemToCart(widget.product);
+                ref.read(homeNotifierProvider.notifier).cartItemsUpdated();
+              }),
+            ],
+          ),
+        );
+      }
     );
   }
 

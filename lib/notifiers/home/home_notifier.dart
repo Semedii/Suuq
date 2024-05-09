@@ -45,4 +45,8 @@ class HomeNotifier extends _$HomeNotifier {
       gymAccessories: gymAccessories,
     );
   }
+  cartItemsUpdated()async{
+     List<Product?> cartItems = await _cartManager.getCartItems();
+     state = (state as HomeStateLoaded).copyWith(numberItemsInCart: cartItems.length);
+  }
 }

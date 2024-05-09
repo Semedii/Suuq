@@ -35,6 +35,7 @@ class HomeStateLoaded extends HomeState {
     List<Product?>? cosmetics,
     List<Product?>? clothes,
     List<Product?>? gymAccessories,
+    int? numberItemsInCart,
   }) {
     return HomeStateLoaded(
       homeAccessories: homeAccessories ?? this.homeAccessories,
@@ -44,6 +45,7 @@ class HomeStateLoaded extends HomeState {
       cosmetics: cosmetics ?? this.cosmetics,
       gymAccessories: gymAccessories ?? this.gymAccessories,
       clothes: clothes ?? this.clothes,
+      numberItemsInCart: numberItemsInCart??this.numberItemsInCart,
     );
   }
 }
