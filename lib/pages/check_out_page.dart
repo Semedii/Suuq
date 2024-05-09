@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:suuq/components/app_button.dart';
 import 'package:suuq/components/app_checkbox.dart';
 import 'package:suuq/components/app_textfield.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 @RoutePage()
@@ -23,8 +24,9 @@ class CheckOutPage extends StatelessWidget {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                _buildPrice(totalAmount),
                 const SizedBox(height: 16),
                 _buildChoosePaymentSection(),
                 const SizedBox(height: 24),
@@ -142,6 +144,16 @@ class CheckOutPage extends StatelessWidget {
           onPressed();
         }
       },
+    );
+  }
+    Text _buildPrice(double price, {double fontSize = 16}) {
+    return Text(
+      "$price\$",
+      style: TextStyle(
+        color: AppColors.green,
+        fontWeight: FontWeight.bold,
+        fontSize: fontSize,
+      ),
     );
   }
 }
