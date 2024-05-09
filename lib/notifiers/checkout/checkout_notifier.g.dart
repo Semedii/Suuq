@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'my_profile_notifier.dart';
+part of 'checkout_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myProfileNotifierHash() => r'a8824fb9ae3f55e27f51801ab0528c8477f6b2b7';
+String _$checkoutNotifierHash() => r'81ba872d7361acef855fffd83bd612277d42e7ca';
 
-/// See also [MyProfileNotifier].
-@ProviderFor(MyProfileNotifier)
-final myProfileNotifierProvider =
-    AutoDisposeNotifierProvider<MyProfileNotifier, MyProfileState>.internal(
-  MyProfileNotifier.new,
-  name: r'myProfileNotifierProvider',
+/// See also [CheckoutNotifier].
+@ProviderFor(CheckoutNotifier)
+final checkoutNotifierProvider =
+    AutoDisposeNotifierProvider<CheckoutNotifier, CheckoutState>.internal(
+  CheckoutNotifier.new,
+  name: r'checkoutNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$myProfileNotifierHash,
+      : _$checkoutNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$MyProfileNotifier = AutoDisposeNotifier<MyProfileState>;
+typedef _$CheckoutNotifier = AutoDisposeNotifier<CheckoutState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
