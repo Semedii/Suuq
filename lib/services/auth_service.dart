@@ -49,8 +49,8 @@ class AuthService {
       final User? firebaseUser = userCredential.user;
       if (firebaseUser != null) {
         UserModel user = await _authDataService.fetchCurrentUser(email);
-        Global.storageService.setString("sellerName", user.name!);
-        Global.storageService.setString("sellerEmail", email);
+        Global.storageService.setString("userName", user.name!);
+        Global.storageService.setString("userEmail", email);
         return user;
             }
     } on FirebaseException catch (e) {
