@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,23 +36,7 @@ class CartPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: RichText(
-            text: TextSpan(children: [
-          const TextSpan(
-              text: "My Cart",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600)),
-          TextSpan(
-              text: isCartListAvailable
-                  ? "- ${state.cartList.length} products"
-                  : StringUtilities.emptyString,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ))
-        ])),
+        title: _buildAppBarTitle(isCartListAvailable, state),
       ),
       body: isCartListAvailable
           ? _buildCartList(state, ref)
@@ -58,20 +44,22 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Column _noItemsFoundPage() {
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.shopping_cart_rounded,
-          size: 60,
-        ),
-        SizedBox(
-          height: 50,
-        ),
-        Center(child: Text("No items in your Cart"))
-      ],
-    );
+  RichText _buildAppBarTitle(bool isCartListAvailable, CartIdleState state) {
+    return RichText(
+        text: TextSpan(children: [
+      const TextSpan(
+          text: "My Cart",
+          style: TextStyle(
+              color: Colors.black, fontSize: 24, fontWeight: FontWeight.w600)),
+      TextSpan(
+          text: isCartListAvailable
+              ? "- ${state.cartList.length} products"
+              : StringUtilities.emptyString,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+          ))
+    ]));
   }
 
   Column _buildCartList(CartIdleState state, WidgetRef ref) {
@@ -91,26 +79,49 @@ class CartPage extends ConsumerWidget {
                 left: 0,
                 right: 0,
                 child: Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        children: [
-                          const Text(
-                            "Total:",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                          _buildPrice(state.getTotalPrice, fontSize: 20),
-                        ],
-                      ),
-                      _buildButton("Proceed to Checkout")
-                    ],
-                  ),
+                  child: _buildTotalAndCheckoutButton(state),
                 ))
           ]),
         ),
       ],
+    );
+  }
+
+  Column _noItemsFoundPage() {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.shopping_cart_rounded,
+          size: 60,
+        ),
+        SizedBox(
+          height: 50,
+        ),
+        Center(child: Text("No items in your Cart"))
+      ],
+    );
+  }
+
+  Row _buildTotalAndCheckoutButton(CartIdleState state) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column(
+          children: [
+            _buildTotalText(),
+            _buildPrice(state.getTotalPrice, fontSize: 20),
+          ],
+        ),
+        _buildButton("Proceed to Checkout")
+      ],
+    );
+  }
+
+  Text _buildTotalText() {
+    return const Text(
+      "Total:",
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
 
@@ -120,7 +131,7 @@ class CartPage extends ConsumerWidget {
         height: 130,
         child: Row(
           children: [
-            _buildImage(product.imageUrl.first??''),
+            _buildImage(product.imageUrl.first ?? ''),
             _buildInfoSection(product.sellerName, product.description),
             _buildPriceAndDelete(product, ref),
           ],
@@ -129,12 +140,12 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Container _buildImage(String imageUrl) {
-    return Container(
+  SizedBox _buildImage(String imageUrl) {
+    return SizedBox(
       width: 100,
       height: 130,
-      child: Image.asset(
-        imageUrl,
+      child: Image.memory(
+        base64Decode(imageUrl),
         fit: BoxFit.cover,
       ),
     );

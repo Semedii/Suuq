@@ -10,7 +10,7 @@ class CartManager {
    Future<void> addItemToCart(Product product) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> cart = prefs.getStringList(_cartKey) ?? [];
-    cart.add(jsonEncode(product.toFirestore()));
+    cart.add(jsonEncode(product.toJson()));
     await prefs.setStringList(_cartKey, cart);
     toastInfo("added to cart successfully");
   }

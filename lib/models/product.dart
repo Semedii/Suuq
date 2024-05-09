@@ -41,13 +41,23 @@ class Product {
       "category": categoryToString(category),
     };
   }
+    Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "seller_name": sellerName,
+      "image": imageUrl,
+      "description": description,
+      "price": price.toStringAsFixed(2),
+      "category": categoryToString(category),
+    };
+  }
   //for sharedpref
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'],
       sellerName: json['seller_name'],
       description: json['description'],
-      imageUrl: json['image'],
+      imageUrl: json['image'].cast<String>(),
       price: double.parse(json['price']),
       category: getCategoryFromString(json['category']),
     );
