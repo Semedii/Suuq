@@ -27,9 +27,11 @@ class AuthService {
           name: displayName,
           email: firebaseUser.email,
           phoneNumber: firebaseUser.phoneNumber,
+          joinedDate: DateTime.now(),
           avatar: firebaseUser.photoURL,
         );
         await _authDataService.addNewUser(newUser);
+        return newUser;
       }
     } on FirebaseException catch (e) {
       FirebaseExceptionHandler.handleFirebaseError(e);
@@ -46,13 +48,11 @@ class AuthService {
       );
       final User? firebaseUser = userCredential.user;
       if (firebaseUser != null) {
-        UserModel? user = await _authDataService.fetchCurrentUser(email);
-        if (user != null) {
-          Global.storageService.setString("sellerName", user.name!);
-          Global.storageService.setString("sellerEmail", email);
-          return user;
-        }
-      }
+        UserModel user = await _authDataService.fetchCurrentUser(email);
+        Global.storageService.setString("sellerName", user.name!);
+        Global.storageService.setString("sellerEmail", email);
+        return user;
+            }
     } on FirebaseException catch (e) {
       FirebaseExceptionHandler.handleFirebaseError(e);
     }
