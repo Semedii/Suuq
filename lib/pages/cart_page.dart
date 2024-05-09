@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/cart/cart_notifier.dart';
 import 'package:suuq/notifiers/cart/cart_state.dart';
+import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/string_utilities.dart';
@@ -17,21 +18,29 @@ class CartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartNotifierProvider);
-    return _mapStateToWidget(ref, cartState);
+    return _mapStateToWidget(context, ref, cartState);
   }
 
-  Widget _mapStateToWidget(WidgetRef ref, CartState state) {
+  Widget _mapStateToWidget(
+    BuildContext context,
+    WidgetRef ref,
+    CartState state,
+  ) {
     if (state is CartInitialState) {
       ref.watch(cartNotifierProvider.notifier).initPage();
     }
     if (state is CartIdleState) {
-      return _buildCartPage(state, ref);
+      return _buildCartPage(context, state, ref);
     } else {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
   }
 
-  Scaffold _buildCartPage(CartIdleState state, WidgetRef ref) {
+  Scaffold _buildCartPage(
+    BuildContext context,
+    CartIdleState state,
+    WidgetRef ref,
+  ) {
     final bool isCartListAvailable = state.cartList.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +48,7 @@ class CartPage extends ConsumerWidget {
         title: _buildAppBarTitle(isCartListAvailable, state),
       ),
       body: isCartListAvailable
-          ? _buildCartList(state, ref)
+          ? _buildCartList(context, state, ref)
           : _noItemsFoundPage(),
     );
   }
@@ -62,7 +71,11 @@ class CartPage extends ConsumerWidget {
     ]));
   }
 
-  Column _buildCartList(CartIdleState state, WidgetRef ref) {
+  Column _buildCartList(
+    BuildContext context,
+    CartIdleState state,
+    WidgetRef ref,
+  ) {
     return Column(
       children: [
         Expanded(
@@ -79,7 +92,7 @@ class CartPage extends ConsumerWidget {
                 left: 0,
                 right: 0,
                 child: Expanded(
-                  child: _buildTotalAndCheckoutButton(state),
+                  child: _buildTotalAndCheckoutButton(context, state),
                 ))
           ]),
         ),
@@ -103,7 +116,7 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Row _buildTotalAndCheckoutButton(CartIdleState state) {
+  Row _buildTotalAndCheckoutButton(BuildContext context, CartIdleState state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -113,7 +126,7 @@ class CartPage extends ConsumerWidget {
             _buildPrice(state.getTotalPrice, fontSize: 20),
           ],
         ),
-        _buildButton("Proceed to Checkout")
+        _buildButton(context, state.getTotalPrice)
       ],
     );
   }
@@ -225,21 +238,21 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildButton(String title,
-      {bool isTransparent = false, void Function()? onTap}) {
+  Widget _buildButton(BuildContext context, double totalPrice) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () => AutoRouter.of(context).push(
+        CheckOutRoute(totalAmount: totalPrice),
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
-          color: isTransparent ? null : Colors.green,
-          border: isTransparent ? Border.all() : null,
+          color: Colors.green,
           borderRadius: BorderRadius.circular(4),
         ),
-        child: Text(
-          title,
+        child: const Text(
+          "Proceed to Checkout",
           style: TextStyle(
-            color: isTransparent ? Colors.black : Colors.white,
+            color: Colors.white,
             fontSize: 20,
           ),
         ),
