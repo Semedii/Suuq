@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:suuq/models/product.dart';
+import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/services/cart_manager.dart';
 import 'package:suuq/utils/app_colors.dart';
 
@@ -13,11 +14,11 @@ class ProductPage extends StatefulWidget {
   const ProductPage(this.product, {super.key});
 
   final Product product;
-  
+
   @override
   State<ProductPage> createState() => _ProductPageState();
 }
- 
+
 class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class _ProductPageState extends State<ProductPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () => throw UnimplementedError(),
+            onPressed: () => AutoRouter.of(context).push(const CartRoute()),
             icon: const Icon(Icons.shopping_cart),
           ),
           IconButton(
@@ -69,7 +70,8 @@ class _ProductPageState extends State<ProductPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildPrice(),
-          _buildButton("Buy Now"),
+          _buildButton("Buy Now",
+              onTap: () => AutoRouter.of(context).push(CheckOutRoute(totalAmount: 23))),
           _buildButton("To Cart", isTransparent: true, onTap: () {
             CartManager().addItemToCart(widget.product);
           }),
@@ -77,6 +79,7 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
+
   bool isss = false;
   int _current = 0;
   Widget buildCarousel(BuildContext context, bool isImageAvailable) {
