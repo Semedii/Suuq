@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
@@ -12,43 +11,13 @@ import 'package:suuq/utils/enums/payment_option_enum.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-@RoutePage()
-class CheckOutPage extends ConsumerWidget {
+class PaymentStep extends ConsumerWidget {
+  PaymentStep({required this.totalAmount, super.key});
   final double totalAmount;
-  CheckOutPage({super.key, required this.totalAmount});
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final checkoutState = ref.watch(checkoutNotifierProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Checkout"),
-      ),
-      body: _mapStateToWidget(context, checkoutState, ref),
-    );
-  }
-
-  Widget _mapStateToWidget(
-    BuildContext context,
-    CheckoutState state,
-    WidgetRef ref,
-  ) {
-    if (state is CheckoutInitialState) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(checkoutNotifierProvider.notifier).initPage();
-      });
-    } else if (state is CheckouLoadedState) {
-      return _buildCheckoutPage(context, state, ref);
-    }
-    return const Center(child: CircularProgressIndicator());
-  }
-
-  Padding _buildCheckoutPage(
-    BuildContext context,
-    CheckouLoadedState state,
-    WidgetRef ref,
-  ) {
+    final state = ref.watch(checkoutNotifierProvider) as CheckoutLoadedState;
     AppLocalizations localizations = AppLocalizations.of(context)!;
     bool isOutOfWorkingHours =
         DateTime.now().hour > 21 || DateTime.now().hour < 7;
@@ -62,18 +31,13 @@ class CheckOutPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildPrice(totalAmount),
-                const SizedBox(height: 16),
                 _buildChoosePaymentSection(state, ref),
-                const SizedBox(height: 24),
+                const SizedBox(height: 12),
                 _buildAddressField(state.deliveryAddress, ref, localizations),
-                const SizedBox(height: 16),
                 _buildNameField(state.sendersName, ref, localizations),
-                const SizedBox(height: 16),
                 _buildPhoneNumberFIeld(state.sendersPhone, ref, localizations),
-                const SizedBox(height: 24),
                 if (isOutOfWorkingHours) _buildTimeDisclaimer(),
-                const SizedBox(height: 24),
-                _buildSendButton(),
+                _buildSendButton(ref),
               ],
             ),
           ),
@@ -149,18 +113,7 @@ class CheckOutPage extends ConsumerWidget {
     );
   }
 
-  AppButton _buildSendButton() {
-    return AppButton(
-      title: "Send Payment",
-      onTap: () {
-        if (_formKey.currentState!.validate()) {
-          print("sent");
-        }
-      },
-    );
-  }
-
-  _buildChoosePaymentSection(CheckouLoadedState state, WidgetRef ref) {
+  _buildChoosePaymentSection(CheckoutLoadedState state, WidgetRef ref) {
     return Column(
       children: [
         _buildPaymentMethodText(),
@@ -200,13 +153,14 @@ class CheckOutPage extends ConsumerWidget {
 
   _buildPaymentChip({
     required PaymentOption paymentOption,
-    required CheckouLoadedState state,
+    required CheckoutLoadedState state,
     required Function(bool)? onSelected,
   }) {
     return ChoiceChip(
       label: Text(paymentOptionToString(paymentOption)),
       selected: state.paymentOption == paymentOption,
       onSelected: onSelected,
+      selectedColor: AppColors.green.shade300,
     );
   }
 
@@ -218,6 +172,17 @@ class CheckOutPage extends ConsumerWidget {
         fontWeight: FontWeight.bold,
         fontSize: fontSize,
       ),
+    );
+  }
+
+  AppButton _buildSendButton(WidgetRef ref) {
+    return AppButton(
+      title: "Send Payment",
+      onTap: () {
+        if (_formKey.currentState!.validate()) {
+          ref.read(checkoutNotifierProvider.notifier).onSendButtonPressed();
+        }
+      },
     );
   }
 }

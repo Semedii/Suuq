@@ -12,7 +12,7 @@ import 'package:auto_route/auto_route.dart' as _i10;
 import 'package:flutter/material.dart' as _i11;
 import 'package:suuq/models/product.dart' as _i12;
 import 'package:suuq/pages/cart_page.dart' as _i2;
-import 'package:suuq/pages/check_out_page.dart' as _i3;
+import 'package:suuq/pages/checkout_page/check_out_page.dart' as _i3;
 import 'package:suuq/pages/homepage/home_page.dart' as _i4;
 import 'package:suuq/pages/login_page.dart' as _i5;
 import 'package:suuq/pages/main_page.dart' as _i6;

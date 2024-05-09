@@ -6,26 +6,30 @@ class CheckoutInitialState extends CheckoutState {}
 
 class CheckoutLoadingState extends CheckoutState {}
 
-class CheckouLoadedState extends CheckoutState {
+class CheckoutLoadedState extends CheckoutState {
+  final int stepIndex;
   final PaymentOption? paymentOption;
   final String? deliveryAddress;
   final String? sendersName;
   final String? sendersPhone;
 
-  CheckouLoadedState({
+  CheckoutLoadedState({
+    this.stepIndex=0,
      this.paymentOption,
      this.deliveryAddress,
      this.sendersName,
      this.sendersPhone,
   });
 
-  CheckouLoadedState copyWith({
+  CheckoutLoadedState copyWith({
+    int? stepIndex,
     PaymentOption? paymentOption,
     String? deliveryAddress,
     String? sendersName,
     String? sendersPhone,
   }) {
-    return CheckouLoadedState(
+    return CheckoutLoadedState(
+      stepIndex: stepIndex??this.stepIndex,
       paymentOption: paymentOption ?? this.paymentOption,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
       sendersName: sendersName ?? this.sendersName,
