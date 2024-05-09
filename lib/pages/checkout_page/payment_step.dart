@@ -37,7 +37,7 @@ class PaymentStep extends ConsumerWidget {
                 _buildNameField(state.sendersName, ref, localizations),
                 _buildPhoneNumberFIeld(state.sendersPhone, ref, localizations),
                 if (isOutOfWorkingHours) _buildTimeDisclaimer(),
-                _buildSendButton(ref),
+                _buildSendButton(state.isSendButtonLoading, ref),
               ],
             ),
           ),
@@ -175,8 +175,9 @@ class PaymentStep extends ConsumerWidget {
     );
   }
 
-  AppButton _buildSendButton(WidgetRef ref) {
+  AppButton _buildSendButton(bool isLoading, WidgetRef ref) {
     return AppButton(
+      isLoading: isLoading,
       title: "Send Payment",
       onTap: () {
         if (_formKey.currentState!.validate()) {

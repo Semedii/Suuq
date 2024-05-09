@@ -12,13 +12,15 @@ class CheckoutLoadedState extends CheckoutState {
   final String? deliveryAddress;
   final String? sendersName;
   final String? sendersPhone;
+  final bool isSendButtonLoading;
 
   CheckoutLoadedState({
-    this.stepIndex=0,
-     this.paymentOption,
-     this.deliveryAddress,
-     this.sendersName,
-     this.sendersPhone,
+    this.stepIndex = 0,
+    this.paymentOption,
+    this.deliveryAddress,
+    this.sendersName,
+    this.sendersPhone,
+    this.isSendButtonLoading = false,
   });
 
   CheckoutLoadedState copyWith({
@@ -27,13 +29,15 @@ class CheckoutLoadedState extends CheckoutState {
     String? deliveryAddress,
     String? sendersName,
     String? sendersPhone,
+    bool? isSendButtonLoading,
   }) {
     return CheckoutLoadedState(
-      stepIndex: stepIndex??this.stepIndex,
+      stepIndex: stepIndex ?? this.stepIndex,
       paymentOption: paymentOption ?? this.paymentOption,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
       sendersName: sendersName ?? this.sendersName,
       sendersPhone: sendersPhone ?? this.sendersPhone,
+      isSendButtonLoading: isSendButtonLoading ?? this.isSendButtonLoading,
     );
   }
 }

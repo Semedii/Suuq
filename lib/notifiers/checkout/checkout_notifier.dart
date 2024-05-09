@@ -43,8 +43,10 @@ class CheckoutNotifier extends _$CheckoutNotifier {
     state = (state as CheckoutLoadedState).copyWith(sendersPhone: sendersPhone);
   }
   
-  onSendButtonPressed(){
-    state =(state as CheckoutLoadedState).copyWith(stepIndex: 1);
+  onSendButtonPressed()async{
+    state  =(state as CheckoutLoadedState).copyWith(isSendButtonLoading: true);
+    await Future.delayed(const Duration(seconds: 5));
+    state =(state as CheckoutLoadedState).copyWith(stepIndex: 1, isSendButtonLoading: false);
   }
   onStepTapped(int index){
      state =(state as CheckoutLoadedState).copyWith(stepIndex: index);

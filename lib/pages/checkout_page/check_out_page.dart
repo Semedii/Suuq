@@ -5,6 +5,7 @@ import 'package:suuq/notifiers/checkout/checkout_notifier.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/pages/checkout_page/confirmation_step.dart';
 import 'package:suuq/pages/checkout_page/payment_step.dart';
+import 'package:suuq/utils/app_colors.dart';
 
 @RoutePage()
 class CheckOutPage extends ConsumerWidget {
@@ -43,26 +44,33 @@ class CheckOutPage extends ConsumerWidget {
     CheckoutLoadedState state,
     WidgetRef ref,
   ) {
-    return Stepper(
-      onStepTapped: ref.read(checkoutNotifierProvider.notifier).onStepTapped,
-      currentStep: state.stepIndex,
-      controlsBuilder: (context, details) {
-        return const SizedBox.shrink();
-      },
-      type: StepperType.horizontal,
-      steps: [
-        Step(
-          title: const Text("Payment"),
-          content: PaymentStep(totalAmount: totalAmount),
-          isActive: state.stepIndex == 0,
-          state: state.stepIndex > 0 ? StepState.complete : StepState.indexed,
-        ),
-        Step(
-            title: const Text("Confirmaion"),
-            content: const ConfirmationStep(),
-            isActive: state.stepIndex == 1,
-            state: StepState.indexed),
-      ],
+    return Theme(
+      data: ThemeData(
+        colorScheme: const ColorScheme.light(
+          primary: AppColors.green,
+        )
+      ),
+      child: Stepper(
+        onStepTapped: ref.read(checkoutNotifierProvider.notifier).onStepTapped,
+        currentStep: state.stepIndex,
+        controlsBuilder: (context, details) {
+          return const SizedBox.shrink();
+        },
+        type: StepperType.horizontal,
+        steps: [
+          Step(
+            title: const Text("Payment"),
+            content: PaymentStep(totalAmount: totalAmount),
+            isActive: state.stepIndex == 0,
+            state: state.stepIndex > 0 ? StepState.complete : StepState.indexed,
+          ),
+          Step(
+              title: const Text("Confirmaion"),
+              content: const ConfirmationStep(),
+              isActive: state.stepIndex == 1,
+              state: StepState.indexed),
+        ],
+      ),
     );
   }
 }

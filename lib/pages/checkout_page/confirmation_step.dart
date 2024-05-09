@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suuq/utils/app_colors.dart';
 
 class ConfirmationStep extends StatelessWidget {
   const ConfirmationStep({super.key});
@@ -14,11 +15,19 @@ class ConfirmationStep extends StatelessWidget {
           _buildTitle(),
           const SizedBox(height: 16),
           _buildDescriptionText(),
-          TextButton(onPressed: (){}, child: Text("Call us instead?"))
+          _callUsTextButton()
         ],
       ),
     );
   }
+
+  TextButton _callUsTextButton() => TextButton(
+        onPressed: () {},
+        child: const Text(
+          "Call us instead?",
+          style: TextStyle(color: AppColors.darkGrey),
+        ),
+      );
 
   Icon _buildIcon() {
     return const Icon(
