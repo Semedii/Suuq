@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:suuq/global.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/notifiers/myProfile/my_profile_state.dart';
 import 'package:suuq/services/auth_data_service.dart';
@@ -17,14 +17,13 @@ class MyProfileNotifier extends _$MyProfileNotifier {
     return MyProfileInitialState();
   }
 
-  initPage() async {
-    final String? userEmail =
-        await Global.storageService.getString('userEmail');
+  initPage() async { 
+    final String? userEmail = FirebaseAuth.instance.currentUser?.email;
     final UserModel user = await _authDataService.fetchCurrentUser(userEmail!);
     state = MyProfileLoadedState(
         userName: user.name!,
         userEmail: user.email!,
-        userPhoneNumber: user.phoneNumber!,
+        userPhoneNumber: user.phoneNumber,
         userJoinedDate: user.joinedDate!,
         userAddress: user.address,
         userAvatar: user.avatar);
@@ -60,7 +59,7 @@ class MyProfileNotifier extends _$MyProfileNotifier {
     state = currentState.copyWith(issaveButtonLoading: true);
     await _authDataService.updateUserInfo(
         email: currentState.userEmail,
-        phoneNumber: currentState.userPhoneNumber,
+        phoneNumber: currentState.userPhoneNumber!,
         address: currentState.userAddress!,
         name: currentState.userName);
     state = currentState.copyWith(issaveButtonLoading: false);

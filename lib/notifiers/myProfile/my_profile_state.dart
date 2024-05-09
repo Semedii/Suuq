@@ -7,7 +7,7 @@ class MyProfileLoadingState extends MyProfileState {}
 class MyProfileLoadedState extends MyProfileState {
   final String userName;
   final String userEmail;
-  final String userPhoneNumber;
+  final String? userPhoneNumber;
   final String? userAddress;
   final String? userAvatar;
   final DateTime userJoinedDate;
