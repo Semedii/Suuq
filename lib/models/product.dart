@@ -41,7 +41,7 @@ class Product {
       "category": categoryToString(category),
     };
   }
-    Map<String, dynamic> toJson() {
+    Map<String, dynamic> toJson( id) {
     return {
       "id": id,
       "seller_name": sellerName,

@@ -10,7 +10,7 @@ class CartManager {
    Future<void> addItemToCart(Product product) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> cart = prefs.getStringList(_cartKey) ?? [];
-    cart.add(jsonEncode(product.toJson()));
+    cart.add(jsonEncode(product.toJson(cart.length.toString())));
     await prefs.setStringList(_cartKey, cart);
     toastInfo("added to cart successfully");
   }
@@ -36,6 +36,6 @@ class CartManager {
 
   // Function to check equality between two product objects
   bool _areProductsEqual(Product? product1, Product? product2) {
-    return product1?.description == product2?.description;
+    return product1?.id == product2?.id;
   }
 }
