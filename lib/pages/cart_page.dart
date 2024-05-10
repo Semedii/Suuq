@@ -131,7 +131,7 @@ class CartPage extends ConsumerWidget {
               _buildPrice(state.getTotalPrice, fontSize: 20),
             ],
           ),
-          _buildButton(context, state.getTotalPrice)
+          _buildButton(context, state)
         ],
       ),
     );
@@ -244,10 +244,10 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildButton(BuildContext context, double totalPrice) {
+  Widget _buildButton(BuildContext context,CartIdleState state) {
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
-        CheckOutRoute(totalAmount: totalPrice),
+        CheckOutRoute(totalAmount: state.getTotalPrice, products: state.cartList),
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),

@@ -45,6 +45,7 @@ abstract class $AppRouter extends _i11.RootStackRouter {
         routeData: routeData,
         child: _i3.CheckOutPage(
           key: args.key,
+          products: args.products,
           totalAmount: args.totalAmount,
         ),
       );
@@ -135,12 +136,14 @@ class CartRoute extends _i11.PageRouteInfo<void> {
 class CheckOutRoute extends _i11.PageRouteInfo<CheckOutRouteArgs> {
   CheckOutRoute({
     _i12.Key? key,
+    required List<_i13.Product?> products,
     required double totalAmount,
     List<_i11.PageRouteInfo>? children,
   }) : super(
           CheckOutRoute.name,
           args: CheckOutRouteArgs(
             key: key,
+            products: products,
             totalAmount: totalAmount,
           ),
           initialChildren: children,
@@ -155,16 +158,19 @@ class CheckOutRoute extends _i11.PageRouteInfo<CheckOutRouteArgs> {
 class CheckOutRouteArgs {
   const CheckOutRouteArgs({
     this.key,
+    required this.products,
     required this.totalAmount,
   });
 
   final _i12.Key? key;
 
+  final List<_i13.Product?> products;
+
   final double totalAmount;
 
   @override
   String toString() {
-    return 'CheckOutRouteArgs{key: $key, totalAmount: $totalAmount}';
+    return 'CheckOutRouteArgs{key: $key, products: $products, totalAmount: $totalAmount}';
   }
 }
 

@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq/models/merchant_data.dart';
+import 'package:suuq/models/order.dart';
+import 'package:suuq/models/product.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/services/merchant_data_service.dart';
+import 'package:suuq/services/order_data_service.dart';
 import 'package:suuq/utils/enums/currency_enum.dart';
 import 'package:suuq/utils/enums/payment_option_enum.dart';
 
@@ -14,6 +17,9 @@ part 'checkout_notifier.g.dart';
 class CheckoutNotifier extends _$CheckoutNotifier {
   final AuthDataService _authDataService = AuthDataService();
   final MerchantDataService _merchantDataService = MerchantDataService();
+  final OrderDataService _orderDataService = OrderDataService();
+
+  late UserModel user;
   @override
   CheckoutState build() {
     return CheckoutInitialState();
@@ -22,7 +28,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   initPage() async {
     state = CheckoutLoadingState();
     final String? userEmail = FirebaseAuth.instance.currentUser?.email;
-    final UserModel user = await _authDataService.fetchCurrentUser(userEmail!);
+    user = await _authDataService.fetchCurrentUser(userEmail!);
     final MerchantData merchantData =
         await _merchantDataService.fetchMerchantData();
     state = CheckoutLoadedState(
@@ -64,9 +70,15 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   }
 
   onStepTapped(int index) {
-    if(index<1){
+    if (index < 1) {
       state = (state as CheckoutLoadedState).copyWith(stepIndex: index);
     }
-    
+  }
+
+  onPaymentSent(List<Product?> products, double totalPrice) {
+    var lastState = state as CheckoutLoadedState;
+    final newOrder =
+        OrderModel(sendersPhone: lastState.sendersPhone!, customer: user, address: lastState.deliveryAddress!, orderedDate: DateTime.now(), products: products, totalPrice: totalPrice);
+    _orderDataService.addNewOrder(newOrder);
   }
 }

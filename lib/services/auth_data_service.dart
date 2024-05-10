@@ -9,7 +9,7 @@ class AuthDataService {
         .collectionGroup("customers")
         .where('email', isEqualTo: email.toLowerCase())
         .withConverter(
-          fromFirestore: UserModel.fromFirestore,
+          fromFirestore: (snapshot, option)=> UserModel.fromFirestore(snapshot: snapshot),
           toFirestore: (userModel, _) => UserModel().toFirestore(),
         );
 
@@ -25,7 +25,7 @@ class AuthDataService {
           .doc('customersDoc')
           .collection('customers')
           .withConverter(
-            fromFirestore: UserModel.fromFirestore,
+            fromFirestore: (snapshot, option)=> UserModel.fromFirestore(snapshot: snapshot),
             toFirestore: (UserModel user, options) => user.toFirestore(),
           )
           .doc(user.email);

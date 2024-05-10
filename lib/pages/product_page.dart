@@ -65,26 +65,26 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Widget _buildBottomBar() {
-    return Consumer(
-      builder: (context, ref, _) {
-        return Container(
-          padding: const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 4),
-          color: AppColors.lightestGrey,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildPrice(),
-              _buildButton("Buy Now",
-                  onTap: () => AutoRouter.of(context).push(CheckOutRoute(totalAmount: 23))),
-              _buildButton("To Cart", isTransparent: true, onTap: () {
-                CartManager().addItemToCart(widget.product);
-                ref.read(homeNotifierProvider.notifier).cartItemsUpdated();
-              }),
-            ],
-          ),
-        );
-      }
-    );
+    return Consumer(builder: (context, ref, _) {
+      return Container(
+        padding: const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 4),
+        color: AppColors.lightestGrey,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildPrice(),
+            _buildButton("Buy Now",
+                onTap: () => AutoRouter.of(context).push(CheckOutRoute(
+                    totalAmount: widget.product.price,
+                    products: [widget.product]))),
+            _buildButton("To Cart", isTransparent: true, onTap: () {
+              CartManager().addItemToCart(widget.product);
+              ref.read(homeNotifierProvider.notifier).cartItemsUpdated();
+            }),
+          ],
+        ),
+      );
+    });
   }
 
   bool isss = false;

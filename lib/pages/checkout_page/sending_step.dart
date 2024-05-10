@@ -1,12 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/router/app_router.gr.dart';
 
-class SendingStep extends StatelessWidget {
-  const SendingStep({super.key});
-
+class SendingStep extends ConsumerWidget {
+  const SendingStep({required this.onPaymentSent, super.key});
+  final VoidCallback onPaymentSent;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -15,15 +16,16 @@ class SendingStep extends StatelessWidget {
           const SizedBox(height: 24),
           _buildDesriptionText(),
           const SizedBox(height: 24),
-          _buildSentButton(context),
+          _buildSentButton(context,ref),
         ],
       ),
     );
   }
 
-  ElevatedButton _buildSentButton(BuildContext context) {
+  ElevatedButton _buildSentButton(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
       onPressed: () {
+      onPaymentSent();
         AutoRouter.of(context).replace(const ConfirmationRoute());
       },
       child: const Text("Payment Sent"),

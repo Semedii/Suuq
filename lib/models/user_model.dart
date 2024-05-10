@@ -11,9 +11,10 @@ class UserModel {
 
   UserModel({this.joinedDate, this.address, this.id, this.name, this.email, this.phoneNumber, this.avatar});
 
-  factory UserModel.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  factory UserModel.fromFirestore({
+   required DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
+  }
   ) {
     final data = snapshot.data();
      Timestamp createdDate = data?['joined_date'];
