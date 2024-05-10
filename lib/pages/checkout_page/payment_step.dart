@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
@@ -33,7 +34,7 @@ class PaymentStep extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildPrice(totalAmount),
-                _buildChoosePaymentSection(state, ref),
+                _buildChoosePaymentSection(state, ref, localizations),
                 _buildCurrencySection(state, ref),
                 const SizedBox(height: 12),
                 _buildAddressField(state.deliveryAddress, ref, localizations),
@@ -116,28 +117,29 @@ class PaymentStep extends ConsumerWidget {
     );
   }
 
-  _buildChoosePaymentSection(CheckoutLoadedState state, WidgetRef ref) {
+  _buildChoosePaymentSection(
+    CheckoutLoadedState state,
+    WidgetRef ref,
+    AppLocalizations localizations,
+  ) {
     return Column(
       children: [
         _buildPaymentMethodText(),
         const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildPaymentChip(
-              state: state,
-              paymentOption: PaymentOption.zaad,
-              onSelected: (s) => ref
-                  .read(checkoutNotifierProvider.notifier)
-                  .onPaymenOptionChanged(PaymentOption.zaad),
-            ),
-            _buildPaymentChip(
-              state: state,
-              paymentOption: PaymentOption.edahab,
-              onSelected: (_) => ref
-                  .read(checkoutNotifierProvider.notifier)
-                  .onPaymenOptionChanged(PaymentOption.edahab),
-            ),
+        FormBuilderChoiceChip(
+          alignment: WrapAlignment.spaceAround,
+          decoration: const InputDecoration(border: InputBorder.none),
+          backgroundColor: Colors.transparent,
+          selectedColor: AppColors.green.shade300,
+          onChanged: (paymentOption) =>
+              ref.read(checkoutNotifierProvider.notifier).onPaymenOptionChanged(
+                    getPaymentOptionFromString(paymentOption!),
+                  ),
+          validator: (value) => FieldValidators.required(value, localizations),
+          name: "paymentMethod",
+          options: const [
+            FormBuilderChipOption(value: "Zaad"),
+            FormBuilderChipOption(value: "Edahab"),
           ],
         ),
       ],
@@ -151,19 +153,6 @@ class PaymentStep extends ConsumerWidget {
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
-    );
-  }
-
-  _buildPaymentChip({
-    required PaymentOption paymentOption,
-    required CheckoutLoadedState state,
-    required Function(bool)? onSelected,
-  }) {
-    return ChoiceChip(
-      label: Text(paymentOptionToString(paymentOption)),
-      selected: state.paymentOption == paymentOption,
-      onSelected: onSelected,
-      selectedColor: AppColors.green.shade300,
     );
   }
 
