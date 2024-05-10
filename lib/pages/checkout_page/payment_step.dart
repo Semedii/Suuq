@@ -14,9 +14,9 @@ import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PaymentStep extends ConsumerWidget {
-  PaymentStep({required this.totalAmount, super.key});
+  const PaymentStep({required this.totalAmount, super.key});
   final double totalAmount;
-  final _formKey = GlobalKey<FormState>();
+  static final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(checkoutNotifierProvider) as CheckoutLoadedState;
@@ -231,8 +231,10 @@ class PaymentStep extends ConsumerWidget {
         isLoading: state.isSendButtonLoading,
         title: "Send Payment",
         onTap: () async {
-          await FlutterPhoneDirectCaller.callNumber(sendCode);
-          ref.read(checkoutNotifierProvider.notifier).onSendButtonPressed();
+          if (_formKey.currentState!.validate()) {
+            await FlutterPhoneDirectCaller.callNumber(sendCode);
+            ref.read(checkoutNotifierProvider.notifier).onSendButtonPressed();
+          }
         });
   }
 }

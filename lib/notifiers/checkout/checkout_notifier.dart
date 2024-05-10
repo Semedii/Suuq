@@ -58,7 +58,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
 
   onSendButtonPressed() async {
     state = (state as CheckoutLoadedState).copyWith(isSendButtonLoading: true);
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 1));
     state = (state as CheckoutLoadedState)
         .copyWith(stepIndex: 1, isSendButtonLoading: false);
   }

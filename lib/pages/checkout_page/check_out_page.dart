@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/checkout/checkout_notifier.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
-import 'package:suuq/pages/checkout_page/confirmation_step.dart';
+import 'package:suuq/pages/checkout_page/payment_instruction.dart';
 import 'package:suuq/pages/checkout_page/payment_step.dart';
 import 'package:suuq/utils/app_colors.dart';
 
@@ -46,10 +46,9 @@ class CheckOutPage extends ConsumerWidget {
   ) {
     return Theme(
       data: ThemeData(
-        colorScheme: const ColorScheme.light(
-          primary: AppColors.green,
-        )
-      ),
+          colorScheme: const ColorScheme.light(
+        primary: AppColors.green,
+      )),
       child: Stepper(
         onStepTapped: ref.read(checkoutNotifierProvider.notifier).onStepTapped,
         currentStep: state.stepIndex,
@@ -65,10 +64,9 @@ class CheckOutPage extends ConsumerWidget {
             state: state.stepIndex > 0 ? StepState.complete : StepState.indexed,
           ),
           Step(
-              title: const Text("Confirmaion"),
-              content: const ConfirmationStep(),
-              isActive: state.stepIndex == 1,
-              state: StepState.indexed),
+              title: const Text("Sending"),
+              content: const PaymentInstructionScreen(),
+              isActive: state.stepIndex == 1)
         ],
       ),
     );
