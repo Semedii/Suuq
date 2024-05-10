@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/checkout/checkout_notifier.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
-import 'package:suuq/pages/checkout_page/payment_instruction.dart';
+import 'package:suuq/pages/checkout_page/sending_step.dart';
 import 'package:suuq/pages/checkout_page/payment_step.dart';
 import 'package:suuq/utils/app_colors.dart';
 
@@ -65,7 +65,7 @@ class CheckOutPage extends ConsumerWidget {
           ),
           Step(
               title: const Text("Sending"),
-              content: const PaymentInstructionScreen(),
+              content: const SendingStep(),
               isActive: state.stepIndex == 1)
         ],
       ),

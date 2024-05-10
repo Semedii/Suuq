@@ -1,22 +1,29 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:suuq/components/app_button.dart';
+import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 
-class ConfirmationStep extends StatelessWidget {
-  const ConfirmationStep({super.key});
+@RoutePage()
+class ConfirmationPage extends StatelessWidget {
+  const ConfirmationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildIcon(),
-          const SizedBox(height: 24),
-          _buildTitle(),
-          const SizedBox(height: 16),
-          _buildDescriptionText(),
-          _callUsTextButton()
-        ],
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildIcon(),
+            const SizedBox(height: 24),
+            _buildTitle(),
+            const SizedBox(height: 16),
+            _buildDescriptionText(),
+            _callUsTextButton(),
+            AppButton(title: "Back to homepage", onTap: (){AutoRouter.of(context).replace(const MainRoute());})
+          ],
+        ),
       ),
     );
   }

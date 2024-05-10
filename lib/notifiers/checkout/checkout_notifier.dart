@@ -64,6 +64,9 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   }
 
   onStepTapped(int index) {
-    state = (state as CheckoutLoadedState).copyWith(stepIndex: index);
+    if(index<1){
+      state = (state as CheckoutLoadedState).copyWith(stepIndex: index);
+    }
+    
   }
 }
