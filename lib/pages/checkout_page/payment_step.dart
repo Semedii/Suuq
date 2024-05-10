@@ -13,7 +13,6 @@ import 'package:suuq/utils/enums/payment_option_enum.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class PaymentStep extends ConsumerWidget {
   PaymentStep({required this.totalAmount, super.key});
   final double totalAmount;
@@ -35,6 +34,7 @@ class PaymentStep extends ConsumerWidget {
               children: [
                 _buildPrice(totalAmount),
                 _buildChoosePaymentSection(state, ref),
+                _buildCurrencySection(state, ref),
                 const SizedBox(height: 12),
                 _buildAddressField(state.deliveryAddress, ref, localizations),
                 _buildNameField(state.sendersName, ref, localizations),
@@ -167,6 +167,46 @@ class PaymentStep extends ConsumerWidget {
     );
   }
 
+  _buildCurrencySection(CheckoutLoadedState state, WidgetRef ref) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildRadio(
+          state.currency ?? Currency.shilling,
+          Currency.shilling,
+          "Shilling",
+          onChanged:
+              ref.read(checkoutNotifierProvider.notifier).onCurrencyChanged,
+        ),
+        _buildRadio(
+          state.currency ?? Currency.shilling,
+          Currency.dollar,
+          "Dollar",
+          onChanged:
+              ref.read(checkoutNotifierProvider.notifier).onCurrencyChanged,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRadio(
+    Currency currentValue,
+    Currency radioValue,
+    String title, {
+    void Function(Currency?)? onChanged,
+  }) {
+    return Row(
+      children: [
+        Radio<Currency>(
+          value: radioValue,
+          groupValue: currentValue,
+          onChanged: onChanged,
+        ),
+        Text(title),
+      ],
+    );
+  }
+
   Text _buildPrice(double price, {double fontSize = 16}) {
     return Text(
       "$price\$",
@@ -183,16 +223,16 @@ class PaymentStep extends ConsumerWidget {
     WidgetRef ref,
   ) {
     final bool isDollar = state.currency == Currency.dollar;
+
     final sendCode = isDollar
         ? "*880*${state.zaadNumber}*$totalAmount"
-        :"*220*${state.zaadNumber}*${(totalAmount*state.exchangeRate).toInt()}#";
+        : "*220*${state.zaadNumber}*${(totalAmount * state.exchangeRate).toInt()}#";
     return AppButton(
-      isLoading: state.isSendButtonLoading,
-      title: "Send Payment",
-      onTap: () async {
-        await FlutterPhoneDirectCaller.callNumber(sendCode);
+        isLoading: state.isSendButtonLoading,
+        title: "Send Payment",
+        onTap: () async {
+          await FlutterPhoneDirectCaller.callNumber(sendCode);
           ref.read(checkoutNotifierProvider.notifier).onSendButtonPressed();
-        }
-    );
+        });
   }
 }

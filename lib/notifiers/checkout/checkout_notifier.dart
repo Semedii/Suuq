@@ -5,6 +5,7 @@ import 'package:suuq/models/user_model.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/services/merchant_data_service.dart';
+import 'package:suuq/utils/enums/currency_enum.dart';
 import 'package:suuq/utils/enums/payment_option_enum.dart';
 
 part 'checkout_notifier.g.dart';
@@ -49,6 +50,10 @@ class CheckoutNotifier extends _$CheckoutNotifier {
 
   onSendersPhoneChanged(String sendersPhone) {
     state = (state as CheckoutLoadedState).copyWith(sendersPhone: sendersPhone);
+  }
+
+  onCurrencyChanged(Currency? currency) {
+    state = (state as CheckoutLoadedState).copyWith(currency: currency);
   }
 
   onSendButtonPressed() async {
