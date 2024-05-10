@@ -17,4 +17,21 @@ final FirebaseFirestore db = FirebaseFirestore.instance;
       print("Error fetching products: $e");
     }
   }
+    Future<List<OrderModel?>> fetchUsersOrders(String email) async {
+    try {
+      final collectionRef = db
+          .collection("Orders")
+          .withConverter(
+            fromFirestore: OrderModel.fromFirestore,
+            toFirestore: (order, _) => order.toFirestore(),
+          );
+
+      final querySnapshot = await collectionRef.get();
+      List<OrderModel> orders = querySnapshot.docs.map((doc) => doc.data()).toList();
+      return orders;
+    } catch (e) {
+      print("Error fetching products: $e");
+      return [];
+    }
+  }
 }

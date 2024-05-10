@@ -51,10 +51,10 @@ class Product {
       "category": categoryToString(category),
     };
   }
-  //for sharedpref
+  //for sharedpref and orderservice
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
+      id: json['id']??"",
       sellerName: json['seller_name'],
       description: json['description'],
       imageUrl: json['image'].cast<String>(),

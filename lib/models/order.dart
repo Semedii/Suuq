@@ -10,6 +10,7 @@ class OrderModel {
   double totalPrice;
   String address;
   DateTime orderedDate;
+  String status;
 
   OrderModel({
     this.id,
@@ -18,7 +19,8 @@ class OrderModel {
     required this.products,
     required this.totalPrice,
     required this.address,
-   required this.orderedDate,
+    required this.orderedDate,
+    this.status = "pending",
   });
 
   factory OrderModel.fromFirestore(
@@ -28,17 +30,17 @@ class OrderModel {
     final data = snapshot.data();
     Timestamp orderedDate = data?['orderedDate'];
     return OrderModel(
-      id: snapshot.id,
-      sendersPhone: data?['sendersName'],
-      customer: UserModel.fromFirestore(snapshot: data?['customer']),
-      products: (data?['products'] as List<dynamic>?)
-          ?.map((productData) =>
-              Product.fromFirestore((productData), options))
-          .toList() ?? [],
-      totalPrice: double.parse(data?['totalPrice'].toString() ?? "0"),
-      address: data?['address'],
-      orderedDate: orderedDate.toDate()
-    );
+        id: snapshot.id,
+        sendersPhone: data?['sendersPhone'],
+        customer: UserModel.fromJson(data?['customer']),
+        products: (data?['products'] as List<dynamic>?)
+                ?.map((productData) => Product.fromJson(productData))
+                .toList() ??
+            [],
+        totalPrice: double.parse(data?['totalPrice'].toString() ?? "0"),
+        address: data?['address'],
+        orderedDate: orderedDate.toDate(),
+        status: data?['status']);
   }
 
   Map<String, dynamic> toFirestore() {
@@ -48,6 +50,8 @@ class OrderModel {
       "totalPrice": totalPrice.toStringAsFixed(2),
       "address": address,
       "orderedDate": orderedDate,
-      'sendersPhone': sendersPhone    };
+      'sendersPhone': sendersPhone,
+      'status': status
+    };
   }
 }
