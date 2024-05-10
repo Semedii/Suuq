@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
 import 'package:suuq/components/app_checkbox.dart';
@@ -7,11 +8,10 @@ import 'package:suuq/notifiers/checkout/checkout_notifier.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:suuq/utils/enums/currency_enum.dart';
 import 'package:suuq/utils/enums/payment_option_enum.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 class PaymentStep extends ConsumerWidget {
   PaymentStep({required this.totalAmount, super.key});
   final double totalAmount;
@@ -38,7 +38,7 @@ class PaymentStep extends ConsumerWidget {
                 _buildNameField(state.sendersName, ref, localizations),
                 _buildPhoneNumberFIeld(state.sendersPhone, ref, localizations),
                 if (isOutOfWorkingHours) _buildTimeDisclaimer(),
-                _buildSendButton(state.isSendButtonLoading, ref),
+                _buildSendButton(state, ref),
               ],
             ),
           ),
@@ -176,18 +176,21 @@ class PaymentStep extends ConsumerWidget {
     );
   }
 
-  AppButton _buildSendButton(bool isLoading, WidgetRef ref) {
+  AppButton _buildSendButton(
+    CheckoutLoadedState state,
+    WidgetRef ref,
+  ) {
+    final bool isDollar = state.currency == Currency.dollar;
+    final sendCode = isDollar
+        ? "*880*${state.zaadNumber}*$totalAmount"
+        :"*220*${state.zaadNumber}*${(totalAmount*state.exchangeRate).toInt()}#";
     return AppButton(
-      isLoading: isLoading,
+      isLoading: state.isSendButtonLoading,
       title: "Send Payment",
       onTap: () async {
-        if (_formKey.currentState!.validate()) {
-          if (await canLaunchUrl(Uri.parse('tel:+905525111172'))) {
-            launchUrl(Uri.parse('tel:+905525111172'));
-          }
+        await FlutterPhoneDirectCaller.callNumber(sendCode);
           ref.read(checkoutNotifierProvider.notifier).onSendButtonPressed();
         }
-      },
     );
   }
 }
