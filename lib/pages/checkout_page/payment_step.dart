@@ -10,6 +10,7 @@ import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/enums/payment_option_enum.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PaymentStep extends ConsumerWidget {
   PaymentStep({required this.totalAmount, super.key});
@@ -179,8 +180,11 @@ class PaymentStep extends ConsumerWidget {
     return AppButton(
       isLoading: isLoading,
       title: "Send Payment",
-      onTap: () {
+      onTap: () async {
         if (_formKey.currentState!.validate()) {
+          if (await canLaunchUrl(Uri.parse('tel:+905525111172'))) {
+            launchUrl(Uri.parse('tel:+905525111172'));
+          }
           ref.read(checkoutNotifierProvider.notifier).onSendButtonPressed();
         }
       },
