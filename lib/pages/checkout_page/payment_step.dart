@@ -12,6 +12,8 @@ import 'package:suuq/utils/enums/currency_enum.dart';
 import 'package:suuq/utils/enums/payment_option_enum.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 class PaymentStep extends ConsumerWidget {
   PaymentStep({required this.totalAmount, super.key});
   final double totalAmount;
