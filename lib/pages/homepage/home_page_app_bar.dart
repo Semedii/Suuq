@@ -14,19 +14,17 @@ class HomePageAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: AppStyles.edgeInsetsT40,
-      child: Expanded(
-        child: Container(
-          padding: AppStyles.edgeInsets4,
-          color: AppColors.lightestGrey,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: _buildSearchField(),
-              ),
-              _buildCartButton(context),
-            ],
-          ),
+      child: Container(
+        padding: AppStyles.edgeInsets4,
+        color: AppColors.lightestGrey,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: _buildSearchField(),
+            ),
+            _buildCartButton(context),
+          ],
         ),
       ),
     );
