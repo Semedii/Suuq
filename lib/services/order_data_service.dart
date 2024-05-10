@@ -6,7 +6,7 @@ final FirebaseFirestore db = FirebaseFirestore.instance;
     Future<void> addNewOrder(OrderModel order) async {
     try {
       final docRef = db
-          .collection("Orders")
+          .collection("orders")
           .withConverter(
              fromFirestore:OrderModel.fromFirestore,
             toFirestore: (OrderModel order, options) => order.toFirestore(),
@@ -20,7 +20,7 @@ final FirebaseFirestore db = FirebaseFirestore.instance;
     Future<List<OrderModel?>> fetchUsersOrders(String email) async {
     try {
       final collectionRef = db
-          .collection("Orders")
+          .collection("orders")
           .withConverter(
             fromFirestore: OrderModel.fromFirestore,
             toFirestore: (order, _) => order.toFirestore(),

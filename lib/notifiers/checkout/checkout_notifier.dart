@@ -38,6 +38,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
       deliveryAddress: user.address,
       sendersName: user.name,
       sendersPhone: user.phoneNumber,
+      currency: Currency.shilling
     );
   }
 
@@ -70,15 +71,23 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   }
 
   onStepTapped(int index) {
-    if (index < 1) {
-      state = (state as CheckoutLoadedState).copyWith(stepIndex: index);
-    }
+     if (index < 1) {
+    state = (state as CheckoutLoadedState).copyWith(stepIndex: index);
+     }
   }
 
   onPaymentSent(List<Product?> products, double totalPrice) {
     var lastState = state as CheckoutLoadedState;
-    final newOrder =
-        OrderModel(sendersPhone: lastState.sendersPhone!, customer: user, address: lastState.deliveryAddress!, orderedDate: DateTime.now(), products: products, totalPrice: totalPrice);
+    final newOrder = OrderModel(
+      sendersPhone: lastState.sendersPhone!,
+      customer: user,
+      address: lastState.deliveryAddress!,
+      orderedDate: DateTime.now(),
+      products: products,
+      totalPrice: totalPrice,
+      currency: lastState.currency!,
+      paymentOption: lastState.paymentOption!,
+    );
     _orderDataService.addNewOrder(newOrder);
   }
 }

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq/models/user_model.dart';
+import 'package:suuq/utils/enums/currency_enum.dart';
+import 'package:suuq/utils/enums/payment_option_enum.dart';
 import 'product.dart';
 
 class OrderModel {
@@ -11,6 +13,8 @@ class OrderModel {
   String address;
   DateTime orderedDate;
   String status;
+  PaymentOption paymentOption;
+  Currency currency;
 
   OrderModel({
     this.id,
@@ -21,6 +25,8 @@ class OrderModel {
     required this.address,
     required this.orderedDate,
     this.status = "pending",
+    required this.paymentOption,
+    required this.currency,
   });
 
   factory OrderModel.fromFirestore(
@@ -40,7 +46,9 @@ class OrderModel {
         totalPrice: double.parse(data?['totalPrice'].toString() ?? "0"),
         address: data?['address'],
         orderedDate: orderedDate.toDate(),
-        status: data?['status']);
+        status: data?['status'],
+        currency: getCurrencyFromString(data?['currency']),
+        paymentOption: getPaymentOptionFromString(data?['paymentOption']) );
   }
 
   Map<String, dynamic> toFirestore() {
@@ -51,7 +59,9 @@ class OrderModel {
       "address": address,
       "orderedDate": orderedDate,
       'sendersPhone': sendersPhone,
-      'status': status
+      'status': status,
+      'paymentOption': paymentOptionToString(paymentOption),
+      'currency': currencyToString(currency),
     };
   }
 }
