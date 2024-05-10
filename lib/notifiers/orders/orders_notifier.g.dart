@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'checkout_notifier.dart';
+part of 'orders_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$checkoutNotifierHash() => r'74b53c9bc9417d915b01a99bd06f3b2e246783d8';
+String _$ordersNotifierHash() => r'855c13e27284825b5281e9300a27f7f557da3532';
 
-/// See also [CheckoutNotifier].
-@ProviderFor(CheckoutNotifier)
-final checkoutNotifierProvider =
-    AutoDisposeNotifierProvider<CheckoutNotifier, CheckoutState>.internal(
-  CheckoutNotifier.new,
-  name: r'checkoutNotifierProvider',
+/// See also [OrdersNotifier].
+@ProviderFor(OrdersNotifier)
+final ordersNotifierProvider =
+    AutoDisposeNotifierProvider<OrdersNotifier, OrdersState>.internal(
+  OrdersNotifier.new,
+  name: r'ordersNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$checkoutNotifierHash,
+      : _$ordersNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CheckoutNotifier = AutoDisposeNotifier<CheckoutState>;
+typedef _$OrdersNotifier = AutoDisposeNotifier<OrdersState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

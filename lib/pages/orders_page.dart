@@ -1,79 +1,122 @@
 import 'package:flutter/material.dart';
-import 'package:suuq/models/product.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:suuq/models/order.dart';
+import 'package:suuq/notifiers/orders/orders_notifier.dart';
+import 'package:suuq/notifiers/orders/orders_state.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
-import 'package:suuq/utils/enums/category_enum.dart';
 
-class OrdersPage extends StatelessWidget {
-  OrdersPage({super.key});
+class OrdersPage extends ConsumerWidget {
+  const OrdersPage({super.key});
 
-  final Product product = Product(
-      sellerName: "Shaal Online Market",
-      imageUrl: ["assets/images/boy.png"],
-      description:
-          "Surwaal fiican oo cad Surwaal Surwaal Surwaal  fiican oo cad Surwaal fiican oo cad",
-      price: 2,
-      category: Category.clothes);
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final orderState = ref.watch(ordersNotifierProvider);
+    return _mapStateToWidget(
+      context,
+      orderState,
+      ref,
+    );
+  }
+
+  Widget _mapStateToWidget(
+    BuildContext context,
+    OrdersState state,
+    WidgetRef ref,
+  ) {
+    if (state is OrdersInitialState) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(ordersNotifierProvider.notifier).initPage();
+      });
+    } else if (state is OrdersLoadedState) {
+      return _buildOrderList(state);
+    }
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Padding _buildOrderList(OrdersLoadedState state) {
     return Padding(
       padding: AppStyles.edgeInsetsH16V24,
       child: Column(
         children: [
-          Card(
-              child: Row(
-            children: [
-              _buildImage(),
-              _buildInfo(),
-            ],
-          ))
+          Expanded(
+            child: ListView.builder(
+              itemCount: state.orders.length,
+              itemBuilder: (context, index) {
+                final order = state.orders[index];
+                return order != null
+                    ? _buildOrderCard(order)
+                    : Container(
+                        width: 200,
+                        height: 200,
+                        color: Colors.red,
+                      );
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Image _buildImage() {
-    return Image.asset(
-      product.imageUrl.first ?? "",
-      height: 100,
-      width: 150,
+  _buildOrderCard(OrderModel order) {
+    return Column(
+      children: [
+        Card(
+            child: Row(
+          children: [
+            _buildInfo(order),
+          ],
+        ))
+      ],
     );
   }
 
-  Expanded _buildInfo() {
+
+  Expanded _buildInfo(OrderModel order) {
     return Expanded(
       child: SizedBox(
-        height: 100,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildSellerName(),
-            _buildDescription(),
-            _buildPrice(),
-            _buildDateAndStatus()
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ...order.products
+                  .map((element) => _buildSellerName(element?.sellerName)),
+              ...order.products
+                  .map((element) => _buildDescription(element?.description)),
+              _buildPrice(order.totalPrice),
+              _buildDateAndStatus(order)
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Text _buildSellerName() {
+  Text _buildSellerName(String? sellerName) {
     return Text(
-      product.sellerName,
+      sellerName ?? "",
       style: const TextStyle(fontWeight: FontWeight.bold),
     );
   }
 
-  Text _buildDescription() => Text(
-        product.description,
+  Widget _buildDescription(String? description) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Text(
+        "- $description",
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
-      );
+      ),
+    );
+  }
 
-  Text _buildPrice() {
+  Text _buildPrice(double? totalAmount) {
     return Text(
-      "${product.price.toString()} \$",
+      "${totalAmount.toString()} \$",
       style: const TextStyle(
         color: AppColors.green,
         fontWeight: FontWeight.bold,
@@ -81,14 +124,14 @@ class OrdersPage extends StatelessWidget {
     );
   }
 
-  Row _buildDateAndStatus() {
-    return const Row(
+  Row _buildDateAndStatus(OrderModel? order) {
+    return Row(
       children: [
-        Text("07/05/2023"),
-        Spacer(),
+        Text(DateFormat("dd/MM/yyyy hh:mm a").format(order!.orderedDate)),
+       const Spacer(),
         Text(
-          "Pending",
-          style: TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
+          order.status,
+          style: const TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
         )
       ],
     );
