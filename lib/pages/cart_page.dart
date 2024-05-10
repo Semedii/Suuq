@@ -93,9 +93,7 @@ class CartPage extends ConsumerWidget {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  child: Expanded(
-                    child: _buildTotalAndCheckoutButton(context, state),
-                  ))
+                  child: _buildTotalAndCheckoutButton(context, state))
             ]),
           ),
         ],
