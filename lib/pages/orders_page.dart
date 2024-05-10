@@ -39,22 +39,25 @@ class OrdersPage extends ConsumerWidget {
     return Padding(
       padding: AppStyles.edgeInsetsH16V24,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: state.orders.length,
-              itemBuilder: (context, index) {
-                final order = state.orders[index];
-                return order != null
-                    ? _buildOrderCard(order)
-                    : Container(
-                        width: 200,
-                        height: 200,
-                        color: Colors.red,
-                      );
-              },
-            ),
-          ),
+          state.orders.isNotEmpty
+              ? Expanded(
+                  child: ListView.builder(
+                    itemCount: state.orders.length,
+                    itemBuilder: (context, index) {
+                      final order = state.orders[index];
+                      return order != null
+                          ? _buildOrderCard(order)
+                          : const SizedBox.shrink();
+                    },
+                  ),
+                )
+              : const Center(
+                  child: Text(
+                  "No Orders found. Please place your first order and win a price",
+                  textAlign: TextAlign.center,
+                ))
         ],
       ),
     );
@@ -72,7 +75,6 @@ class OrdersPage extends ConsumerWidget {
       ],
     );
   }
-
 
   Expanded _buildInfo(OrderModel order) {
     return Expanded(
@@ -128,7 +130,7 @@ class OrdersPage extends ConsumerWidget {
     return Row(
       children: [
         Text(DateFormat("dd/MM/yyyy hh:mm a").format(order!.orderedDate)),
-       const Spacer(),
+        const Spacer(),
         Text(
           order.status,
           style: const TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
