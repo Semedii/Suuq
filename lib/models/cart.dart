@@ -5,21 +5,13 @@ class Cart {
   final String id;
   final String customerEmail;
   final String productId;
-  final String productDescription;
-  final String sellerName;
-  final double price;
-  final String? firstImage;
-  final Category productCategory;
+  final Category category;
 
   Cart({
      this.id="",
     required this.customerEmail,
     required this.productId,
-    required this.productDescription,
-    required this.sellerName,
-    required this.price,
-    required this.productCategory,
-    this.firstImage,
+    required this.category,
   });
 
   factory Cart.fromFirestore(
@@ -31,11 +23,7 @@ class Cart {
         id: snapshot.id,
         customerEmail: data?['customerEmail'],
         productId: data?['productId'],
-        productDescription: data?['productDescription'],
-        sellerName: data?['sellerName'],
-        price: data?['price'],
-        productCategory: getCategoryFromString(data?['productCategory']),
-        firstImage: data?['firstImage']);
+        category: getCategoryFromString(data?['category']),);
   }
 
   Map<String, dynamic> toFirestore() {
@@ -43,11 +31,6 @@ class Cart {
       "id": id,
       'customerEmail': customerEmail,
       "productId": productId,
-      "productDescription": productDescription,
-      "sellerName": sellerName,
-      "price": price,
-      'firstImage': firstImage,
-      'productCategory': categoryToString(productCategory),
-    };
+      'category': categoryToString(category)};
   }
 }

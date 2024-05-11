@@ -8,25 +8,22 @@ class CartProductHelper {
     Cart cart = Cart(
         customerEmail: userEmail!,
         productId: product.id,
-        productDescription: product.description,
-        sellerName: product.sellerName,
-        price: product.price,
-        productCategory: product.category);
+        category: product.category);
 
     return cart;
   }
 
   static List<Product?> getProductsFromCart(List<Cart?> cartList) {
-    if (cartList.isNotEmpty) {
-      return cartList
-          .map((cart) => Product(
-              sellerName: cart!.sellerName,
-              imageUrl: [cart.firstImage],
-              description: cart.productDescription,
-              price: cart.price,
-              category: cart.productCategory))
-          .toList();
-    }
+    // if (cartList.isNotEmpty) {
+    //   return cartList
+    //       .map((cart) => Product(
+    //           sellerName: cart!.sellerName,
+    //           imageUrl: [cart.firstImage],
+    //           description: cart.productDescription,
+    //           price: cart.price,
+    //           category: cart.productCategory))
+    //       .toList();
+    // }
     return [];
   }
 }

@@ -1,15 +1,15 @@
-import 'package:suuq/models/cart.dart';
+import 'package:suuq/models/product.dart';
 
 abstract class CartState {}
 
 class CartInitialState extends CartState{}
 
 class CartIdleState extends CartState {
-  final List<Cart?> cartList;
+  final List<Product?> cartList;
 
   CartIdleState({this.cartList = const []});
 
-  CartIdleState copyWith({List<Cart?>? cartList}) {
+  CartIdleState copyWith({List<Product?>? cartList}) {
     return CartIdleState(
       cartList: cartList ?? this.cartList,
     );
@@ -17,7 +17,7 @@ class CartIdleState extends CartState {
 
 double get getTotalPrice {
     double totalPrice = 0.0;
-    for (Cart? cart in cartList) {
+    for (Product? cart in cartList) {
       if (cart != null) {
         totalPrice += cart.price;
       }
