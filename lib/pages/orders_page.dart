@@ -6,6 +6,7 @@ import 'package:suuq/notifiers/orders/orders_notifier.dart';
 import 'package:suuq/notifiers/orders/orders_state.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:suuq/utils/string_utilities.dart';
 
 class OrdersPage extends ConsumerWidget {
   const OrdersPage({super.key});
@@ -35,16 +36,23 @@ class OrdersPage extends ConsumerWidget {
     return const Center(child: CircularProgressIndicator());
   }
 
-  Padding _buildOrderList(OrdersLoadedState state, WidgetRef ref) {
-    return Padding(
-      padding: AppStyles.edgeInsetsH16V24,
-      child: RefreshIndicator(
-        onRefresh: ()async{
-           ref.read(ordersNotifierProvider.notifier).initPage();
-        },
+  Widget _buildOrderList(OrdersLoadedState state, WidgetRef ref) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.read(ordersNotifierProvider.notifier).initPage();
+      },
+      child: Padding(
+        padding: AppStyles.edgeInsetsH16V24,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text(
+              "My Orders",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600),
+            ),
             state.orders.isNotEmpty
                 ? Expanded(
                     child: ListView.builder(
@@ -105,7 +113,7 @@ class OrdersPage extends ConsumerWidget {
 
   Text _buildSellerName(String? sellerName) {
     return Text(
-      sellerName ?? "",
+      sellerName ?? StringUtilities.emptyString,
       style: const TextStyle(fontWeight: FontWeight.bold),
     );
   }
@@ -137,7 +145,7 @@ class OrdersPage extends ConsumerWidget {
         Text(DateFormat("dd/MM/yyyy hh:mm a").format(order!.orderedDate)),
         const Spacer(),
         Text(
-          order.status,
+          order.status.capitalize(),
           style: const TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
         )
       ],
