@@ -73,9 +73,10 @@ class _ProductPageState extends State<ProductPage> {
           children: [
             _buildPrice(),
             _buildButton("Buy Now",
-                onTap: () => AutoRouter.of(context).push(CheckOutRoute(
-                    totalAmount: widget.product.price,
-                    products: [widget.product]))),
+                // onTap: () => AutoRouter.of(context).push(CheckOutRoute(
+                //     totalAmount: widget.product.price,
+                //     products: [widget.product])),
+                    ),
             _buildButton("To Cart", isTransparent: true, onTap: () {
               ref.read(homeNotifierProvider.notifier).addToCart(widget.product);
             }),

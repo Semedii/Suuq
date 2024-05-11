@@ -64,6 +64,7 @@ class HomeNotifier extends _$HomeNotifier {
         productDescription: product.description,
         sellerName: product.sellerName,
         price: product.price,
+        productCategory: product.category,
         firstImage: product.imageUrl.first!);
    await _cartDataService.addNewProductToCart(cart);
    await _cartItemsUpdated();

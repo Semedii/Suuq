@@ -6,7 +6,7 @@ part of 'home_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeNotifierHash() => r'a9c31a9cb1c4573451681b5884ff4e0e9864642d';
+String _$homeNotifierHash() => r'37748340cb5176c336444fdcd5cd8b2ea86c9d68';
 
 /// See also [HomeNotifier].
 @ProviderFor(HomeNotifier)

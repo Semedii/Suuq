@@ -10,7 +10,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i11;
 import 'package:flutter/material.dart' as _i12;
-import 'package:suuq/models/product.dart' as _i13;
+import 'package:suuq/models/cart.dart' as _i13;
+import 'package:suuq/models/product.dart' as _i14;
 import 'package:suuq/pages/cart_page.dart' as _i2;
 import 'package:suuq/pages/checkout_page/check_out_page.dart' as _i3;
 import 'package:suuq/pages/checkout_page/confirmation_page.dart' as _i4;
@@ -45,7 +46,7 @@ abstract class $AppRouter extends _i11.RootStackRouter {
         routeData: routeData,
         child: _i3.CheckOutPage(
           key: args.key,
-          products: args.products,
+          cartList: args.cartList,
           totalAmount: args.totalAmount,
         ),
       );
@@ -136,14 +137,14 @@ class CartRoute extends _i11.PageRouteInfo<void> {
 class CheckOutRoute extends _i11.PageRouteInfo<CheckOutRouteArgs> {
   CheckOutRoute({
     _i12.Key? key,
-    required List<_i13.Product?> products,
+    required List<_i13.Cart?> cartList,
     required double totalAmount,
     List<_i11.PageRouteInfo>? children,
   }) : super(
           CheckOutRoute.name,
           args: CheckOutRouteArgs(
             key: key,
-            products: products,
+            cartList: cartList,
             totalAmount: totalAmount,
           ),
           initialChildren: children,
@@ -158,19 +159,19 @@ class CheckOutRoute extends _i11.PageRouteInfo<CheckOutRouteArgs> {
 class CheckOutRouteArgs {
   const CheckOutRouteArgs({
     this.key,
-    required this.products,
+    required this.cartList,
     required this.totalAmount,
   });
 
   final _i12.Key? key;
 
-  final List<_i13.Product?> products;
+  final List<_i13.Cart?> cartList;
 
   final double totalAmount;
 
   @override
   String toString() {
-    return 'CheckOutRouteArgs{key: $key, products: $products, totalAmount: $totalAmount}';
+    return 'CheckOutRouteArgs{key: $key, cartList: $cartList, totalAmount: $totalAmount}';
   }
 }
 
@@ -234,7 +235,7 @@ class MainRoute extends _i11.PageRouteInfo<void> {
 /// [_i8.ProductPage]
 class ProductRoute extends _i11.PageRouteInfo<ProductRouteArgs> {
   ProductRoute({
-    required _i13.Product product,
+    required _i14.Product product,
     _i12.Key? key,
     List<_i11.PageRouteInfo>? children,
   }) : super(
@@ -258,7 +259,7 @@ class ProductRouteArgs {
     this.key,
   });
 
-  final _i13.Product product;
+  final _i14.Product product;
 
   final _i12.Key? key;
 

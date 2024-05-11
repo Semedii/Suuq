@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/cart.dart';
 import 'package:suuq/notifiers/cart/cart_notifier.dart';
 import 'package:suuq/notifiers/cart/cart_state.dart';
+import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/string_utilities.dart';
@@ -243,9 +244,9 @@ class CartPage extends ConsumerWidget {
 
   Widget _buildButton(BuildContext context,CartIdleState state) {
     return GestureDetector(
-      // onTap: () => AutoRouter.of(context).push(
-      //   CheckOutRoute(totalAmount: state.getTotalPrice, products: state.cartList),
-      // ),
+      onTap: () => AutoRouter.of(context).push(
+        CheckOutRoute(totalAmount: state.getTotalPrice, cartList: state.cartList),
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
