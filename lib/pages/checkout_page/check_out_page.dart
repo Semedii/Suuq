@@ -2,12 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/cart.dart';
-import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/checkout/checkout_notifier.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/pages/checkout_page/sending_step.dart';
 import 'package:suuq/pages/checkout_page/payment_step.dart';
 import 'package:suuq/utils/app_colors.dart';
+import 'package:suuq/utils/cart_product_helper.dart';
 
 @RoutePage()
 class CheckOutPage extends ConsumerWidget {
@@ -72,23 +72,11 @@ class CheckOutPage extends ConsumerWidget {
               content: SendingStep(
                 onPaymentSent: () => ref
                     .read(checkoutNotifierProvider.notifier)
-                    .onPaymentSent(_getProductsFromCart(cartList), totalAmount),
+                    .onPaymentSent(CartProductHelper.getProductsFromCart(cartList), totalAmount),
               ),
               isActive: state.stepIndex == 1)
         ],
       ),
     );
-  }
-
-   List<Product?> _getProductsFromCart(List<Cart?> cartList) {
-    if (cartList.isNotEmpty) {
-    return  cartList.map((cart) => Product(
-          sellerName: cart!.sellerName,
-          imageUrl: [cart.firstImage],
-          description: cart.productDescription,
-          price: cart.price,
-          category: cart.productCategory)).toList();
-    }
-    return [];
   }
 }

@@ -9,6 +9,7 @@ import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
+import 'package:suuq/utils/cart_product_helper.dart';
 
 @RoutePage()
 class ProductPage extends StatefulWidget {
@@ -72,11 +73,12 @@ class _ProductPageState extends State<ProductPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildPrice(),
-            _buildButton("Buy Now",
-                // onTap: () => AutoRouter.of(context).push(CheckOutRoute(
-                //     totalAmount: widget.product.price,
-                //     products: [widget.product])),
-                    ),
+            _buildButton(
+              "Buy Now",
+              onTap: () => AutoRouter.of(context).push(CheckOutRoute(
+                  totalAmount: widget.product.price,
+                  cartList: [CartProductHelper.getCartFromProduct(widget.product)])),
+            ),
             _buildButton("To Cart", isTransparent: true, onTap: () {
               ref.read(homeNotifierProvider.notifier).addToCart(widget.product);
             }),
