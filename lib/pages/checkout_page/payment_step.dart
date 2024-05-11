@@ -211,19 +211,39 @@ class PaymentStep extends ConsumerWidget {
     CheckoutLoadedState state,
     WidgetRef ref,
   ) {
-    final bool isDollar = state.currency == Currency.dollar;
-
-    final sendCode = isDollar
-        ? "*880*${state.zaadNumber}*$totalAmount"
-        : "*220*${state.zaadNumber}*${(totalAmount * state.exchangeRate).toInt()}#";
     return AppButton(
         isLoading: state.isSendButtonLoading,
         title: "Send Payment",
         onTap: () async {
           if (_formKey.currentState!.validate()) {
-            await FlutterPhoneDirectCaller.callNumber(sendCode);
+            await FlutterPhoneDirectCaller.callNumber(
+                _getZaadEdahabCodes(state));
             ref.read(checkoutNotifierProvider.notifier).onSendButtonPressed();
           }
         });
+  }
+
+  String _getZaadEdahabCodes(CheckoutLoadedState state) {
+    final bool isDollar = state.currency == Currency.dollar;
+    int? cents = _getCents();
+    final dollarCodeWithoutCents =
+        "*880*${state.zaadNumber}*${totalAmount.toInt()}#";
+    final dollarCodeWithCents =
+        "*880*${state.zaadNumber}*${totalAmount.toInt()}*$cents#";
+    final dollarCode =
+        cents == null ? dollarCodeWithoutCents : dollarCodeWithCents;
+    final shillingCode =
+        "*220*${state.zaadNumber}*${(totalAmount * state.exchangeRate).toInt()}#";
+
+    return isDollar ? dollarCode : shillingCode;
+  }
+
+  int? _getCents() {
+    final String decimal = (totalAmount - totalAmount.floor()).toString();
+    final int cents = int.parse(decimal.split('.').last);
+    if (cents > 0) {
+      return cents;
+    }
+    return null;
   }
 }

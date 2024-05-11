@@ -23,12 +23,13 @@ class Product {
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
+   final bool isPriceString = data?['price'].runtimeType==String;
     return Product(
       id: snapshot.id,
       sellerName: data?['seller_name'],
       imageUrl: data?['image'].cast<String>(),
       description: data?['description'],
-      price: double.parse(data?['price']),
+      price: isPriceString?  double.parse(data?['price']):  data?['price'],
       category: getCategoryFromString(data?['category']),
     );
   }
