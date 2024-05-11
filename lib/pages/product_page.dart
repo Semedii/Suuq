@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
-import 'package:suuq/services/cart_manager.dart';
 import 'package:suuq/utils/app_colors.dart';
 
 @RoutePage()
@@ -78,8 +77,7 @@ class _ProductPageState extends State<ProductPage> {
                     totalAmount: widget.product.price,
                     products: [widget.product]))),
             _buildButton("To Cart", isTransparent: true, onTap: () {
-              CartManager().addItemToCart(widget.product);
-              ref.read(homeNotifierProvider.notifier).cartItemsUpdated();
+              ref.read(homeNotifierProvider.notifier).addToCart(widget.product);
             }),
           ],
         ),

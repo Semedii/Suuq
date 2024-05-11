@@ -38,14 +38,4 @@ class ProductDataService {
     }
   }
 
-  Future<void> addProduct(Product product) async {
-    final docRef = db
-        .collection("products")
-        .withConverter(
-          fromFirestore: Product.fromFirestore,
-          toFirestore: (Product item, options) => product.toFirestore(),
-        )
-        .doc();
-    await docRef.set(product);
-  }
 }

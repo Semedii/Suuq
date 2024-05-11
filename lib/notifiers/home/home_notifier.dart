@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:suuq/models/cart.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_state.dart';
-import 'package:suuq/services/cart_manager.dart';
+import 'package:suuq/services/cart_data_service.dart';
 import 'package:suuq/services/product_data_service.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 part 'home_notifier.g.dart';
@@ -9,7 +11,9 @@ part 'home_notifier.g.dart';
 @Riverpod()
 class HomeNotifier extends _$HomeNotifier {
   final ProductDataService _productDataService = ProductDataService();
-  final CartManager _cartManager = CartManager();
+  final CartDataService _cartDataService = CartDataService();
+
+  late String? userEmail;
   @override
   HomeState build() {
     return HomeStateInitial();
@@ -17,7 +21,8 @@ class HomeNotifier extends _$HomeNotifier {
 
   initPage() async {
     state = HomeStateLoading();
-    List<Product?> cartItems = await _cartManager.getCartItems();
+    userEmail = FirebaseAuth.instance.currentUser?.email;
+    List<Cart?> cartItems = await _cartDataService.fetchUsersCart(userEmail!);
     int numberItemsInCart = cartItems.length;
     final List<Product?> homeAccessories = await _productDataService
         .fetchProductsByCategory(categoryToString(Category.homeAccessories));
@@ -45,8 +50,22 @@ class HomeNotifier extends _$HomeNotifier {
       gymAccessories: gymAccessories,
     );
   }
-  cartItemsUpdated()async{
-     List<Product?> cartItems = await _cartManager.getCartItems();
-     state = (state as HomeStateLoaded).copyWith(numberItemsInCart: cartItems.length);
+
+  _cartItemsUpdated() async {
+    List<Cart?> cartItems = await _cartDataService.fetchUsersCart(userEmail!);
+    state = (state as HomeStateLoaded)
+        .copyWith(numberItemsInCart: cartItems.length);
+  }
+
+  void addToCart(Product product) async{
+    Cart cart = Cart(
+        customerEmail: userEmail!,
+        productId: product.id,
+        productDescription: product.description,
+        sellerName: product.sellerName,
+        price: product.price,
+        firstImage: product.imageUrl.first!);
+   await _cartDataService.addNewProductToCart(cart);
+   await _cartItemsUpdated();
   }
 }

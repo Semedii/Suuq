@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:suuq/models/product.dart';
+import 'package:suuq/models/cart.dart';
 import 'package:suuq/notifiers/cart/cart_notifier.dart';
 import 'package:suuq/notifiers/cart/cart_state.dart';
-import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/string_utilities.dart';
@@ -142,15 +141,15 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Card _buildCartCard(Product product, WidgetRef ref) {
+  Card _buildCartCard(Cart cart, WidgetRef ref) {
     return Card(
       child: SizedBox(
         height: 130,
         child: Row(
           children: [
-            _buildImage(product.imageUrl.first ?? ''),
-            _buildInfoSection(product.sellerName, product.description),
-            _buildPriceAndDelete(product, ref),
+            _buildImage(cart.firstImage ?? ''),
+            _buildInfoSection(cart.sellerName, cart.productDescription),
+            _buildPriceAndDelete(cart, ref),
           ],
         ),
       ),
@@ -216,7 +215,7 @@ class CartPage extends ConsumerWidget {
   }
 
   Column _buildPriceAndDelete(
-    Product product,
+    Cart cart,
     WidgetRef ref,
   ) {
     return Column(
@@ -224,9 +223,9 @@ class CartPage extends ConsumerWidget {
       children: [
         IconButton(
             onPressed: () =>
-                ref.read(cartNotifierProvider.notifier).removeFromCart(product),
+                ref.read(cartNotifierProvider.notifier).removeFromCart(cart),
             icon: const Icon(Icons.delete)),
-        _buildPrice(product.price),
+        _buildPrice(cart.price),
       ],
     );
   }
@@ -244,9 +243,9 @@ class CartPage extends ConsumerWidget {
 
   Widget _buildButton(BuildContext context,CartIdleState state) {
     return GestureDetector(
-      onTap: () => AutoRouter.of(context).push(
-        CheckOutRoute(totalAmount: state.getTotalPrice, products: state.cartList),
-      ),
+      // onTap: () => AutoRouter.of(context).push(
+      //   CheckOutRoute(totalAmount: state.getTotalPrice, products: state.cartList),
+      // ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
