@@ -6,6 +6,7 @@ import 'package:suuq/models/product.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/services/auth_data_service.dart';
+import 'package:suuq/services/cart_data_service.dart';
 import 'package:suuq/services/merchant_data_service.dart';
 import 'package:suuq/services/order_data_service.dart';
 import 'package:suuq/utils/enums/currency_enum.dart';
@@ -18,8 +19,10 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   final AuthDataService _authDataService = AuthDataService();
   final MerchantDataService _merchantDataService = MerchantDataService();
   final OrderDataService _orderDataService = OrderDataService();
+  final CartDataService _cartDataService = CartDataService();
 
   late UserModel user;
+  late String? userEmail;
   @override
   CheckoutState build() {
     return CheckoutInitialState();
@@ -27,19 +30,18 @@ class CheckoutNotifier extends _$CheckoutNotifier {
 
   initPage() async {
     state = CheckoutLoadingState();
-    final String? userEmail = FirebaseAuth.instance.currentUser?.email;
+    userEmail = FirebaseAuth.instance.currentUser?.email;
     user = await _authDataService.fetchCurrentUser(userEmail!);
     final MerchantData merchantData =
         await _merchantDataService.fetchMerchantData();
     state = CheckoutLoadedState(
-      zaadNumber: merchantData.zaadNumber,
-      edahabNumber: merchantData.edahabNumber,
-      exchangeRate: merchantData.exchangeRate,
-      deliveryAddress: user.address,
-      sendersName: user.name,
-      sendersPhone: user.phoneNumber,
-      currency: Currency.shilling
-    );
+        zaadNumber: merchantData.zaadNumber,
+        edahabNumber: merchantData.edahabNumber,
+        exchangeRate: merchantData.exchangeRate,
+        deliveryAddress: user.address,
+        sendersName: user.name,
+        sendersPhone: user.phoneNumber,
+        currency: Currency.shilling);
   }
 
   onPaymenOptionChanged(PaymentOption option) {
@@ -71,12 +73,12 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   }
 
   onStepTapped(int index) {
-     if (index < 1) {
-    state = (state as CheckoutLoadedState).copyWith(stepIndex: index);
-     }
+    if (index < 1) {
+      state = (state as CheckoutLoadedState).copyWith(stepIndex: index);
+    }
   }
 
-  onPaymentSent(List<Product?> products, double totalPrice) {
+  onPaymentSent(List<Product?> products, double totalPrice) async {
     var lastState = state as CheckoutLoadedState;
     final newOrder = OrderModel(
       sendersPhone: lastState.sendersPhone!,
@@ -88,6 +90,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
       currency: lastState.currency!,
       paymentOption: lastState.paymentOption!,
     );
-    _orderDataService.addNewOrder(newOrder);
+    await _orderDataService.addNewOrder(newOrder);
+    await _cartDataService.clearCart(userEmail!);
   }
 }

@@ -78,25 +78,30 @@ class CartPage extends ConsumerWidget {
   ) {
     return Padding(
       padding: AppStyles.edgeInsetsH4,
-      child: Column(
-        children: [
-          Expanded(
-            child: Stack(children: [
-              SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: state.cartList
-                        .map((e) => _buildCartCard(e!, ref))
-                        .toList()),
-              ),
-              Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: _buildTotalAndCheckoutButton(context, state))
-            ]),
-          ),
-        ],
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref.read(cartNotifierProvider.notifier).initPage();
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(children: [
+                SingleChildScrollView(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: state.cartList
+                          .map((e) => _buildCartCard(e!, ref))
+                          .toList()),
+                ),
+                Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: _buildTotalAndCheckoutButton(context, state))
+              ]),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -117,7 +122,8 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildTotalAndCheckoutButton(BuildContext context, CartIdleState state) {
+  Widget _buildTotalAndCheckoutButton(
+      BuildContext context, CartIdleState state) {
     return Container(
       color: Colors.white,
       child: Row(
@@ -242,10 +248,11 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildButton(BuildContext context,CartIdleState state) {
+  Widget _buildButton(BuildContext context, CartIdleState state) {
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
-        CheckOutRoute(totalAmount: state.getTotalPrice, cartList: state.cartList),
+        CheckOutRoute(
+            totalAmount: state.getTotalPrice, cartList: state.cartList),
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
