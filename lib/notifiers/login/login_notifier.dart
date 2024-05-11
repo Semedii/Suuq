@@ -30,7 +30,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
       if(user!=null){
         state = LoginSuccessState(user);
       }else {
-        state = LoginFailureState('login failed');
+        state = lastState;
       }
     } catch (e) {
       throw Exception(e);
