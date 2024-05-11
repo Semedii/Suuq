@@ -30,35 +30,40 @@ class OrdersPage extends ConsumerWidget {
         ref.read(ordersNotifierProvider.notifier).initPage();
       });
     } else if (state is OrdersLoadedState) {
-      return _buildOrderList(state);
+      return _buildOrderList(state, ref);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Padding _buildOrderList(OrdersLoadedState state) {
+  Padding _buildOrderList(OrdersLoadedState state, WidgetRef ref) {
     return Padding(
       padding: AppStyles.edgeInsetsH16V24,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          state.orders.isNotEmpty
-              ? Expanded(
-                  child: ListView.builder(
-                    itemCount: state.orders.length,
-                    itemBuilder: (context, index) {
-                      final order = state.orders[index];
-                      return order != null
-                          ? _buildOrderCard(order)
-                          : const SizedBox.shrink();
-                    },
-                  ),
-                )
-              : const Center(
-                  child: Text(
-                  "No Orders found. Please place your first order and win a price",
-                  textAlign: TextAlign.center,
-                ))
-        ],
+      child: RefreshIndicator(
+        onRefresh: ()async{
+           ref.read(ordersNotifierProvider.notifier).initPage();
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            state.orders.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: state.orders.length,
+                      itemBuilder: (context, index) {
+                        final order = state.orders[index];
+                        return order != null
+                            ? _buildOrderCard(order)
+                            : const SizedBox.shrink();
+                      },
+                    ),
+                  )
+                : const Center(
+                    child: Text(
+                    "No Orders found. Please place your first order and win a price",
+                    textAlign: TextAlign.center,
+                  ))
+          ],
+        ),
       ),
     );
   }

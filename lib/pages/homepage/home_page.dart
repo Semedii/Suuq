@@ -26,14 +26,14 @@ class HomePage extends ConsumerWidget {
         ref.read(homeNotifierProvider.notifier).initPage();
       });
     } else if (state is HomeStateLoaded) {
-      return _buildHomePageBody(state);
+      return _buildHomePageBody(state,ref);
     }
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildHomePageBody(HomeStateLoaded state) {
+  Widget _buildHomePageBody(HomeStateLoaded state, WidgetRef ref) {
     return Scaffold(
         appBar:  PreferredSize(
           preferredSize: const Size(double.infinity, 80),
@@ -41,17 +41,22 @@ class HomePage extends ConsumerWidget {
         ),
         body: Padding(
           padding: AppStyles.edgeInsets4,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildNiche("Alaabta guriga", state.homeAccessories),
-                _buildNiche("Electronics", state.electronics),
-                _buildNiche("Alaabta Kijada", state.kitchenAccessories),
-                _buildNiche("Kabo", state.shoes),
-                _buildNiche("Alaabta Jimicsiga", state.gymAccessories),
-                _buildNiche("Cosmetics", state.cosmetics),
-                _buildNiche("Dhar", state.clothes),
-              ],
+          child: RefreshIndicator(
+            onRefresh: ()async{
+              ref.read(homeNotifierProvider.notifier).initPage();
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildNiche("Alaabta guriga", state.homeAccessories),
+                  _buildNiche("Electronics", state.electronics),
+                  _buildNiche("Alaabta Kijada", state.kitchenAccessories),
+                  _buildNiche("Kabo", state.shoes),
+                  _buildNiche("Alaabta Jimicsiga", state.gymAccessories),
+                  _buildNiche("Cosmetics", state.cosmetics),
+                  _buildNiche("Dhar", state.clothes),
+                ],
+              ),
             ),
           ),
         ));
