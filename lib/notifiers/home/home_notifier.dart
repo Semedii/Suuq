@@ -6,6 +6,7 @@ import 'package:suuq/notifiers/home/home_state.dart';
 import 'package:suuq/services/cart_data_service.dart';
 import 'package:suuq/services/product_data_service.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
+import 'package:suuq/utils/pop_up_message.dart';
 part 'home_notifier.g.dart';
 
 @Riverpod()
@@ -57,12 +58,24 @@ class HomeNotifier extends _$HomeNotifier {
         .copyWith(numberItemsInCart: cartItems.length);
   }
 
-  void addToCart(Product product) async{
-    Cart cart = Cart(
-        customerEmail: userEmail!,
-        productId: product.id,
-        category: product.category);
-   await _cartDataService.addNewProductToCart(cart);
-   await _cartItemsUpdated();
+  void addToCart(Product product) async {
+    List<Cart?> carts = await _cartDataService.fetchUsersCart(userEmail!);
+    List<String> sellersInCart = [];
+    for (int i = 0; i < carts.length; i++) {
+      Product? product = await _productDataService.fetchProductsById(
+          carts[i]!.productId, carts[i]!.category);
+      sellersInCart.add(product.sellerName);
+    }
+    if (sellersInCart.isNotEmpty &&
+        !sellersInCart.contains(product.sellerName)) {
+      toastInfo("Products from other stores are there");
+    } else {
+      Cart cart = Cart(
+          customerEmail: userEmail!,
+          productId: product.id,
+          category: product.category);
+      await _cartDataService.addNewProductToCart(cart);
+      await _cartItemsUpdated();
+    }
   }
 }
