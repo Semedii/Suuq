@@ -91,6 +91,11 @@ class CheckoutNotifier extends _$CheckoutNotifier {
       currency: lastState.currency!,
       paymentOption: lastState.paymentOption!,
     );
+    await _authDataService.updatePhoneAndAdress(
+      email: userEmail!,
+      address: lastState.deliveryAddress,
+      phoneNumber: lastState.sendersPhone,
+    );
     await _orderDataService.addNewOrder(newOrder);
     await _cartDataService.clearCart(userEmail!);
   }

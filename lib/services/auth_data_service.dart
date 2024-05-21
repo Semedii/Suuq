@@ -9,7 +9,8 @@ class AuthDataService {
         .collectionGroup("customers")
         .where('email', isEqualTo: email.toLowerCase())
         .withConverter(
-          fromFirestore: (snapshot, option)=> UserModel.fromFirestore(snapshot: snapshot),
+          fromFirestore: (snapshot, option) =>
+              UserModel.fromFirestore(snapshot: snapshot),
           toFirestore: (userModel, _) => UserModel().toFirestore(),
         );
 
@@ -25,7 +26,8 @@ class AuthDataService {
           .doc('customersDoc')
           .collection('customers')
           .withConverter(
-            fromFirestore: (snapshot, option)=> UserModel.fromFirestore(snapshot: snapshot),
+            fromFirestore: (snapshot, option) =>
+                UserModel.fromFirestore(snapshot: snapshot),
             toFirestore: (UserModel user, options) => user.toFirestore(),
           )
           .doc(user.email);
@@ -40,8 +42,23 @@ class AuthDataService {
       required String phoneNumber,
       required String address,
       required String name}) async {
-    final updatedData = {"phone_number": phoneNumber, "address": address, "name": name};
-   await db
+    final updatedData = {
+      "phone_number": phoneNumber,
+      "address": address,
+      "name": name
+    };
+    await db
+        .collection('users')
+        .doc('customersDoc')
+        .collection("customers")
+        .doc(email)
+        .update(updatedData);
+  }
+
+  Future<void> updatePhoneAndAdress(
+      {required String email, String? phoneNumber, String? address}) async {
+    final updatedData = {"phone_number": phoneNumber, "address": address};
+    await db
         .collection('users')
         .doc('customersDoc')
         .collection("customers")
