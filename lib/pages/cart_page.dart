@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/cart_product.dart';
 import 'package:suuq/notifiers/cart/cart_notifier.dart';
 import 'package:suuq/notifiers/cart/cart_state.dart';
+import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/string_utilities.dart';
@@ -228,8 +229,9 @@ class CartPage extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         IconButton(
-            onPressed: () =>
-            ref.read(cartNotifierProvider.notifier).removeFromCart(cartProduct.id),
+            onPressed: () => ref
+                .read(cartNotifierProvider.notifier)
+                .removeFromCart(cartProduct.id),
             icon: const Icon(Icons.delete)),
         _buildPrice(cartProduct.price),
       ],
@@ -249,10 +251,11 @@ class CartPage extends ConsumerWidget {
 
   Widget _buildButton(BuildContext context, CartIdleState state) {
     return GestureDetector(
-      // onTap: () => AutoRouter.of(context).push(
-      //   CheckOutRoute(
-      //       totalAmount: state.getTotalPrice, cartList: state.cartList),
-      // ),
+      onTap: () => AutoRouter.of(context).push(
+        CheckOutRoute(
+            cartProductList: state.cartProductList,
+            totalAmount: state.getTotalPrice),
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(

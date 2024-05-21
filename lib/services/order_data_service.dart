@@ -30,7 +30,7 @@ class OrderDataService {
           querySnapshot.docs.map((doc) => doc.data()).toList();
       return orders;
     } catch (e) {
-      print("Error fetching products: $e");
+      print("Error fetching orders: $e");
       return [];
     }
   }

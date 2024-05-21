@@ -98,9 +98,8 @@ class OrdersPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              ...order.products
-                  .map((element) => _buildSellerName(element?.sellerName)),
-              ...order.products
+               _buildSellerName(order.cartProducts.first?.sellerName),
+              ...order.cartProducts
                   .map((element) => _buildDescription(element?.description)),
               _buildPrice(order.totalPrice),
               _buildDateAndStatus(order)

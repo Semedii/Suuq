@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:suuq/models/cart_product.dart';
 import 'package:suuq/models/merchant_data.dart';
 import 'package:suuq/models/order.dart';
-import 'package:suuq/models/product.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/services/auth_data_service.dart';
@@ -78,14 +78,14 @@ class CheckoutNotifier extends _$CheckoutNotifier {
     }
   }
 
-  onPaymentSent(List<Product?> products, double totalPrice) async {
+  onPaymentSent(List<CartProduct?> cartProductList, double totalPrice) async {
     var lastState = state as CheckoutLoadedState;
     final newOrder = OrderModel(
       sendersPhone: lastState.sendersPhone!,
       customer: user,
       address: lastState.deliveryAddress!,
       orderedDate: DateTime.now(),
-      products: products,
+      cartProducts: cartProductList,
       totalPrice: totalPrice,
       currency: lastState.currency!,
       paymentOption: lastState.paymentOption!,

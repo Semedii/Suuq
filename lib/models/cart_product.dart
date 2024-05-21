@@ -18,7 +18,28 @@ class CartProduct {
     required this.category,
   });
 
-  static mapProductToCartProduct(String? id, Product product) {
+  factory CartProduct.fromJson(Map<String, dynamic> json) {
+    return CartProduct(
+      id: json['id'] ?? "",
+      sellerName: json['seller_name'],
+      description: json['description'],
+      imageUrl: json['image'],
+      price: double.parse(json['price']),
+      category: getCategoryFromString(json['category']),
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      "seller_name": sellerName,
+      "image": imageUrl,
+      "description": description,
+      "price": price.toStringAsFixed(2),
+      "category": categoryToString(category),
+    };
+  }
+
+  static mapProductToCartProduct({String? id, required Product product}) {
     return CartProduct(
       id: id,
       sellerName: product.sellerName,

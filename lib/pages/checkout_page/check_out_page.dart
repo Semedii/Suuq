@@ -1,20 +1,22 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:suuq/models/cart.dart';
+import 'package:suuq/models/cart_product.dart';
 import 'package:suuq/notifiers/checkout/checkout_notifier.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/pages/checkout_page/sending_step.dart';
 import 'package:suuq/pages/checkout_page/payment_step.dart';
 import 'package:suuq/utils/app_colors.dart';
-import 'package:suuq/utils/cart_product_helper.dart';
 
 @RoutePage()
 class CheckOutPage extends ConsumerWidget {
-  final List<Cart?> cartList;
+  final List<CartProduct?> cartProductList;
   final double totalAmount;
-  const CheckOutPage(
-      {super.key, required this.cartList, required this.totalAmount});
+  const CheckOutPage({
+    super.key,
+    required this.cartProductList,
+    required this.totalAmount,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -72,7 +74,7 @@ class CheckOutPage extends ConsumerWidget {
               content: SendingStep(
                 onPaymentSent: () => ref
                     .read(checkoutNotifierProvider.notifier)
-                    .onPaymentSent(CartProductHelper.getProductsFromCart(cartList), totalAmount),
+                    .onPaymentSent(cartProductList, totalAmount),
               ),
               isActive: state.stepIndex == 1)
         ],

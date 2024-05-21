@@ -10,7 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i11;
 import 'package:flutter/material.dart' as _i12;
-import 'package:suuq/models/cart.dart' as _i13;
+import 'package:suuq/models/cart_product.dart' as _i13;
 import 'package:suuq/models/product.dart' as _i14;
 import 'package:suuq/pages/cart_page.dart' as _i2;
 import 'package:suuq/pages/checkout_page/check_out_page.dart' as _i3;
@@ -46,7 +46,7 @@ abstract class $AppRouter extends _i11.RootStackRouter {
         routeData: routeData,
         child: _i3.CheckOutPage(
           key: args.key,
-          cartList: args.cartList,
+          cartProductList: args.cartProductList,
           totalAmount: args.totalAmount,
         ),
       );
@@ -137,14 +137,14 @@ class CartRoute extends _i11.PageRouteInfo<void> {
 class CheckOutRoute extends _i11.PageRouteInfo<CheckOutRouteArgs> {
   CheckOutRoute({
     _i12.Key? key,
-    required List<_i13.Cart?> cartList,
+    required List<_i13.CartProduct?> cartProductList,
     required double totalAmount,
     List<_i11.PageRouteInfo>? children,
   }) : super(
           CheckOutRoute.name,
           args: CheckOutRouteArgs(
             key: key,
-            cartList: cartList,
+            cartProductList: cartProductList,
             totalAmount: totalAmount,
           ),
           initialChildren: children,
@@ -159,19 +159,19 @@ class CheckOutRoute extends _i11.PageRouteInfo<CheckOutRouteArgs> {
 class CheckOutRouteArgs {
   const CheckOutRouteArgs({
     this.key,
-    required this.cartList,
+    required this.cartProductList,
     required this.totalAmount,
   });
 
   final _i12.Key? key;
 
-  final List<_i13.Cart?> cartList;
+  final List<_i13.CartProduct?> cartProductList;
 
   final double totalAmount;
 
   @override
   String toString() {
-    return 'CheckOutRouteArgs{key: $key, cartList: $cartList, totalAmount: $totalAmount}';
+    return 'CheckOutRouteArgs{key: $key, cartProductList: $cartProductList, totalAmount: $totalAmount}';
   }
 }
 

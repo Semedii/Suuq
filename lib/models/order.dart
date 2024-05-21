@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:suuq/models/cart_product.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/utils/enums/currency_enum.dart';
 import 'package:suuq/utils/enums/payment_option_enum.dart';
-import 'product.dart';
 
 class OrderModel {
   String? id;
   UserModel customer;
   String sendersPhone;
-  List<Product?> products;
+  List<CartProduct?> cartProducts;
   double totalPrice;
   String address;
   DateTime orderedDate;
@@ -20,7 +20,7 @@ class OrderModel {
     this.id,
     required this.sendersPhone,
     required this.customer,
-    required this.products,
+    required this.cartProducts,
     required this.totalPrice,
     required this.address,
     required this.orderedDate,
@@ -39,8 +39,9 @@ class OrderModel {
         id: snapshot.id,
         sendersPhone: data?['sendersPhone'],
         customer: UserModel.fromJson(data?['customer']),
-        products: (data?['products'] as List<dynamic>?)
-                ?.map((productData) => Product.fromJson(productData))
+        cartProducts: (data?['cartProducts'] as List<dynamic>?)
+                ?.map((cartProductData) =>
+                    CartProduct.fromJson(cartProductData))
                 .toList() ??
             [],
         totalPrice: double.parse(data?['totalPrice'].toString() ?? "0"),
@@ -48,13 +49,15 @@ class OrderModel {
         orderedDate: orderedDate.toDate(),
         status: data?['status'],
         currency: getCurrencyFromString(data?['currency']),
-        paymentOption: getPaymentOptionFromString(data?['paymentOption']) );
+        paymentOption: getPaymentOptionFromString(data?['paymentOption']));
   }
 
   Map<String, dynamic> toFirestore() {
     return {
       "customer": customer.toFirestore(),
-      "products": products.map((product) => product?.toFirestore()).toList(),
+      "cartProducts": cartProducts
+          .map((cartProduct) => cartProduct?.toFirestore())
+          .toList(),
       "totalPrice": totalPrice.toStringAsFixed(2),
       "address": address,
       "orderedDate": orderedDate,
