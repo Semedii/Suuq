@@ -15,7 +15,7 @@ class OrdersNotifier extends _$OrdersNotifier{
   initPage()async{
     state = OrdersLoadingState();
     final String? userEmail = FirebaseAuth.instance.currentUser?.email;
-    List<OrderModel?> orderList = await _orderDataService.fetchUsersOrders(userEmail!);
+    List<OrderModel?> orderList = await _orderDataService.fetchCurrentUsersOrders(userEmail!);
     state = OrdersLoadedState(orders: orderList);
   }
 }

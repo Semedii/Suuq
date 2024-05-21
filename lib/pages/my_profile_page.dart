@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/login/login_notifier.dart';
 import 'package:suuq/notifiers/myProfile/my_profile_notifier.dart';
 import 'package:suuq/notifiers/myProfile/my_profile_state.dart';
+import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/string_utilities.dart';
 
@@ -101,7 +103,7 @@ class MyProfilePage extends ConsumerWidget {
               children: [
                 _getMenu(Icons.person, "Personal Information"),
                 _getMenu(Icons.lock, "Change Password"),
-                _getMenu(Icons.history, "Order History"),
+                _getMenu(Icons.history, "Order History", onTap:()=>AutoRouter.of(context).push(const OrderHistoryRoute())),
                 _getMenu(Icons.favorite, "Favorites"),
                 _getMenu(Icons.person, "About Suuq"),
                 _getMenu(
