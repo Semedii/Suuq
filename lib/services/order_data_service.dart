@@ -20,12 +20,12 @@ class OrderDataService {
 
   Future<List<OrderModel?>> fetchUsersOrders(String email) async {
     try {
-      final collectionRef = db.collection("orders").withConverter(
+      final collectionRef = db.collection("orders").orderBy('orderedDate', descending: true).withConverter(
             fromFirestore: OrderModel.fromFirestore,
             toFirestore: (order, _) => order.toFirestore(),
           );
       final querySnapshot =
-          await collectionRef.where("customer.email", isEqualTo: email).get();
+          await collectionRef.where("customer.email", isEqualTo: email).where("status", isNotEqualTo: "delivered").get();
       List<OrderModel> orders =
           querySnapshot.docs.map((doc) => doc.data()).toList();
       return orders;
