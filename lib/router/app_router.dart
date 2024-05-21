@@ -16,6 +16,7 @@ class AppRouter extends $AppRouter {
    AutoRoute(page: ProductRoute.page),
    AutoRoute(page: CheckOutRoute.page),
    AutoRoute(page: CartRoute.page),
-   AutoRoute(page: ConfirmationRoute.page)
+   AutoRoute(page: ConfirmationRoute.page),
+   AutoRoute(page: ShowAllRoute.page)
  ];
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
+import 'package:suuq/utils/app_styles.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -26,11 +27,11 @@ class ProductCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               isImageAvailable
-                  ? Image.memory(
-                      base64Decode(product.imageUrl.first ?? ""),
-                      height: 200,
-                      width: 150,
-                      fit: BoxFit.cover,
+                  ? Expanded(
+                      child: Image.memory(
+                        base64Decode(product.imageUrl.first ?? ""),
+                        fit: BoxFit.cover,
+                      ),
                     )
                   : Image.asset(
                       "assets/images/noImageAvailable.jpeg",
@@ -38,33 +39,39 @@ class ProductCard extends StatelessWidget {
                       width: 150,
                       fit: BoxFit.cover,
                     ),
-              RichText(
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: product.sellerName,
-                      style: const TextStyle(
-                        color: AppColors.black,
-                        fontWeight: FontWeight.bold,
+              Padding(
+                padding: AppStyles.edgeInsets4,
+                child: RichText(
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: product.sellerName.toUpperCase(),
+                        style: const TextStyle(
+                          color: AppColors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    TextSpan(
-                      text: " - ${product.description}",
-                      style: const TextStyle(
-                        color: AppColors.black,
+                      TextSpan(
+                        text: " - ${product.description}",
+                        style: const TextStyle(
+                          color: AppColors.black,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              Text(
-                "${product.price.toStringAsFixed(2)}\$",
-                style: const TextStyle(
-                  color: AppColors.green,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              Padding(
+                padding: AppStyles.edgeInsets4,
+                child: Text(
+                  "${product.price.toStringAsFixed(2)}\$",
+                  style: const TextStyle(
+                    color: AppColors.green,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ],

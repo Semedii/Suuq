@@ -7,6 +7,7 @@ import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_notifier.dart';
 import 'package:suuq/notifiers/home/home_state.dart';
 import 'package:suuq/pages/homepage/home_page_app_bar.dart';
+import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 
@@ -17,23 +18,23 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeNotifierProvider);
-    return  _mapStateToWidget(homeState, ref);
+    return  _mapStateToWidget(context, homeState, ref);
   }
 
-  Widget _mapStateToWidget(HomeState state, WidgetRef ref) {
+  Widget _mapStateToWidget(    BuildContext context, HomeState state, WidgetRef ref) {
     if (state is HomeStateInitial) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(homeNotifierProvider.notifier).initPage();
       });
     } else if (state is HomeStateLoaded) {
-      return _buildHomePageBody(state,ref);
+      return _buildHomePageBody(context, state,ref);
     }
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildHomePageBody(HomeStateLoaded state, WidgetRef ref) {
+  Widget _buildHomePageBody(BuildContext context, HomeStateLoaded state, WidgetRef ref) {
     return Scaffold(
         appBar:  PreferredSize(
           preferredSize: const Size(double.infinity, 80),
@@ -48,13 +49,13 @@ class HomePage extends ConsumerWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _buildNiche("Alaabta guriga", state.homeAccessories),
-                  _buildNiche("Electronics", state.electronics),
-                  _buildNiche("Alaabta Kijada", state.kitchenAccessories),
-                  _buildNiche("Kabo", state.shoes),
-                  _buildNiche("Alaabta Jimicsiga", state.gymAccessories),
-                  _buildNiche("Cosmetics", state.cosmetics),
-                  _buildNiche("Dhar", state.clothes),
+                  _buildNiche("Alaabta guriga", state.homeAccessories, context),
+                  _buildNiche("Electronics", state.electronics, context),
+                  _buildNiche("Alaabta Kijada", state.kitchenAccessories, context),
+                  _buildNiche("Kabo", state.shoes, context),
+                  _buildNiche("Alaabta Jimicsiga", state.gymAccessories, context),
+                  _buildNiche("Cosmetics", state.cosmetics, context),
+                  _buildNiche("Dhar", state.clothes, context),
                 ],
               ),
             ),
@@ -65,6 +66,7 @@ class HomePage extends ConsumerWidget {
   SizedBox _buildNiche(
     String nicheName,
     List<Product?> products,
+        BuildContext context,
   ) {
     return SizedBox(
       height: 300,
@@ -80,10 +82,13 @@ class HomePage extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Text(
-                "Show All",
-                style: TextStyle(
-                    color: AppColors.green, fontWeight: FontWeight.bold),
+              GestureDetector(
+                onTap:()=> AutoRouter.of(context).push(ShowAllRoute(categoryName: nicheName, products: products)),
+                child: const Text(
+                  "Show All",
+                  style: TextStyle(
+                      color: AppColors.green, fontWeight: FontWeight.bold),
+                ),
               )
             ],
           ),

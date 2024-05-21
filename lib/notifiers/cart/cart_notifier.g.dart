@@ -6,7 +6,7 @@ part of 'cart_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cartNotifierHash() => r'd1e1df2f319e3759856f7bd00fb5615db99080fb';
+String _$cartNotifierHash() => r'00e1dcca54a58a16eb3d5f4e9d6eb4dcc04069e6';
 
 /// See also [CartNotifier].
 @ProviderFor(CartNotifier)
