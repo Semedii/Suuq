@@ -10,7 +10,7 @@ class CartProduct {
   final Category category;
 
   CartProduct({
-    this.id,
+    required this.id,
     required this.sellerName,
     required this.imageUrl,
     required this.description,
@@ -20,7 +20,7 @@ class CartProduct {
 
   factory CartProduct.fromJson(Map<String, dynamic> json) {
     return CartProduct(
-      id: json['id'] ?? "",
+      id: json['id'],
       sellerName: json['seller_name'],
       description: json['description'],
       imageUrl: json['image'],
@@ -31,6 +31,7 @@ class CartProduct {
 
   Map<String, dynamic> toFirestore() {
     return {
+      "id": id,
       "seller_name": sellerName,
       "image": imageUrl,
       "description": description,
@@ -41,7 +42,7 @@ class CartProduct {
 
   static mapProductToCartProduct({String? id, required Product product}) {
     return CartProduct(
-      id: id,
+      id: id ?? product.id,
       sellerName: product.sellerName,
       imageUrl: product.imageUrl.first,
       description: product.description,
