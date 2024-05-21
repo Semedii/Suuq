@@ -6,6 +6,7 @@ import 'package:suuq/utils/enums/payment_option_enum.dart';
 
 class OrderModel {
   String? id;
+  String? sellerName;
   UserModel customer;
   String sendersPhone;
   List<CartProduct?> cartProducts;
@@ -19,6 +20,7 @@ class OrderModel {
   OrderModel({
     this.id,
     required this.sendersPhone,
+    this.sellerName,
     required this.customer,
     required this.cartProducts,
     required this.totalPrice,
@@ -39,6 +41,7 @@ class OrderModel {
         id: snapshot.id,
         sendersPhone: data?['sendersPhone'],
         customer: UserModel.fromJson(data?['customer']),
+        sellerName: data?['sellerName'],
         cartProducts: (data?['cartProducts'] as List<dynamic>?)
                 ?.map((cartProductData) =>
                     CartProduct.fromJson(cartProductData))
@@ -61,6 +64,7 @@ class OrderModel {
       "totalPrice": totalPrice.toStringAsFixed(2),
       "address": address,
       "orderedDate": orderedDate,
+      "sellerName": sellerName,
       'sendersPhone': sendersPhone,
       'status': status,
       'paymentOption': paymentOptionToString(paymentOption),

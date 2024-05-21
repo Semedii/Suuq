@@ -81,6 +81,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   onPaymentSent(List<CartProduct?> cartProductList, double totalPrice) async {
     var lastState = state as CheckoutLoadedState;
     final newOrder = OrderModel(
+      sellerName: cartProductList.first?.sellerName,
       sendersPhone: lastState.sendersPhone!,
       customer: user,
       address: lastState.deliveryAddress!,
