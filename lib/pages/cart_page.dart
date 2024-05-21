@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:suuq/models/cart.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/cart/cart_notifier.dart';
 import 'package:suuq/notifiers/cart/cart_state.dart';
-import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/string_utilities.dart';
@@ -85,9 +83,9 @@ class CartPage extends ConsumerWidget {
             child: Stack(children: [
               SingleChildScrollView(
                 child: RefreshIndicator(
-                   onRefresh: () async {
-                ref.read(cartNotifierProvider.notifier).initPage();
-              },
+                  onRefresh: () async {
+                    ref.read(cartNotifierProvider.notifier).initPage();
+                  },
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: state.cartList
