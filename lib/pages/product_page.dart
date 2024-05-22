@@ -71,21 +71,25 @@ class _ProductPageState extends State<ProductPage> {
       return Container(
         padding: const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 4),
         color: AppColors.lightestGrey,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
             _buildPrice(),
-            _buildButton(
-              localizations.buyNow,
-              onTap: () => AutoRouter.of(context).push(CheckOutRoute(
-                  totalAmount: widget.product.price,
-                  cartProductList: [
-                    CartProduct.mapProductToCartProduct(product: widget.product)
-                  ])),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildButton(
+                  localizations.buyNow,
+                  onTap: () => AutoRouter.of(context).push(CheckOutRoute(
+                      totalAmount: widget.product.price,
+                      cartProductList: [
+                        CartProduct.mapProductToCartProduct(product: widget.product)
+                      ])),
+                ),
+                _buildButton(localizations.addToCart, isTransparent: true, onTap: () {
+                  ref.read(homeNotifierProvider.notifier).addToCart(widget.product);
+                }),
+              ],
             ),
-            _buildButton(localizations.addToCart, isTransparent: true, onTap: () {
-              ref.read(homeNotifierProvider.notifier).addToCart(widget.product);
-            }),
           ],
         ),
       );
