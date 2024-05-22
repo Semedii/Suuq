@@ -67,7 +67,7 @@ class OrderModel {
       "orderedDate": orderedDate,
       "sellerName": sellerName,
       'sendersPhone': sendersPhone,
-      'status': status,
+      'status': status.name,
       'paymentOption': paymentOptionToString(paymentOption),
       'currency': currencyToString(currency),
     };
