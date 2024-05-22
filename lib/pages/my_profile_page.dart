@@ -110,6 +110,7 @@ class MyProfilePage extends ConsumerWidget {
               children: [
                 _getMenu(Icons.person, localizations.personalInformation),
                 _getMenu(Icons.lock, localizations.changePassword),
+                _getMenu(Icons.language, localizations.changeLanguage),
                 _getMenu(Icons.history, localizations.orderHistory,
                     onTap: () =>
                         AutoRouter.of(context).push(const OrderHistoryRoute())),
