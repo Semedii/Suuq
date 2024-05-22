@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:suuq/components/app_button.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class ConfirmationPage extends StatelessWidget {
@@ -10,6 +11,7 @@ class ConfirmationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
       body: Center(
         child: Column(
@@ -17,22 +19,22 @@ class ConfirmationPage extends StatelessWidget {
           children: [
             _buildIcon(),
             const SizedBox(height: 24),
-            _buildTitle(),
+            _buildTitle(localizations),
             const SizedBox(height: 16),
-            _buildDescriptionText(),
-            _callUsTextButton(),
-            AppButton(title: "Back to homepage", onTap: (){AutoRouter.of(context).replace(const MainRoute());})
+            _buildDescriptionText(localizations),
+            _callUsTextButton(localizations),
+            _buildBackToHomePageBtn(localizations, context)
           ],
         ),
       ),
     );
   }
 
-  TextButton _callUsTextButton() => TextButton(
+  TextButton _callUsTextButton(AppLocalizations localizations) => TextButton(
         onPressed: () {},
-        child: const Text(
-          "Call us instead?",
-          style: TextStyle(color: AppColors.darkGrey),
+        child: Text(
+          localizations.callUsInstead,
+          style: const TextStyle(color: AppColors.darkGrey),
         ),
       );
 
@@ -44,10 +46,10 @@ class ConfirmationPage extends StatelessWidget {
     );
   }
 
-  Text _buildTitle() {
-    return const Text(
-      "Thank you for shopping with us!",
-      style: TextStyle(
+  Text _buildTitle(AppLocalizations localizations) {
+    return Text(
+      localizations.thankYouForShopping,
+      style: const TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
       ),
@@ -55,11 +57,22 @@ class ConfirmationPage extends StatelessWidget {
     );
   }
 
-  Text _buildDescriptionText() {
-    return const Text(
-      "Your order has been received. We will confirm the payment and contact you within 5 minutes.",
-      style: TextStyle(fontSize: 16),
+  Text _buildDescriptionText(AppLocalizations localizations) {
+    return Text(
+      localizations.orderRecievedExplanation,
+      style: const TextStyle(fontSize: 16),
       textAlign: TextAlign.center,
     );
+  }
+
+  AppButton _buildBackToHomePageBtn(
+    AppLocalizations localizations,
+    BuildContext context,
+  ) {
+    return AppButton(
+        title: localizations.backToHomePage,
+        onTap: () {
+          AutoRouter.of(context).replace(const MainRoute());
+        });
   }
 }

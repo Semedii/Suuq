@@ -7,6 +7,7 @@ import 'package:suuq/notifiers/orders/orders_state.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/string_utilities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrdersPage extends ConsumerWidget {
   const OrdersPage({super.key});
@@ -31,12 +32,14 @@ class OrdersPage extends ConsumerWidget {
         ref.read(ordersNotifierProvider.notifier).initPage();
       });
     } else if (state is OrdersLoadedState) {
-      return _buildOrderList(state, ref);
+      return _buildOrderList(context, state, ref);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget _buildOrderList(OrdersLoadedState state, WidgetRef ref) {
+  Widget _buildOrderList(
+      BuildContext context, OrdersLoadedState state, WidgetRef ref) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return RefreshIndicator(
       onRefresh: () async {
         ref.read(ordersNotifierProvider.notifier).initPage();
@@ -46,9 +49,9 @@ class OrdersPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "My Orders",
-              style: TextStyle(
+            Text(
+              localizations.activeOrders,
+              style: const TextStyle(
                   color: Colors.black,
                   fontSize: 24,
                   fontWeight: FontWeight.w600),
@@ -65,9 +68,9 @@ class OrdersPage extends ConsumerWidget {
                       },
                     ),
                   )
-                : const Center(
+                : Center(
                     child: Text(
-                    "No Orders found. Please place your first order and win a price",
+                    localizations.noActiveOrders,
                     textAlign: TextAlign.center,
                   ))
           ],
@@ -98,7 +101,8 @@ class OrdersPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildSellerName(order.cartProducts.first?.sellerName.toUpperCase()),
+              _buildSellerName(
+                  order.cartProducts.first?.sellerName.toUpperCase()),
               const Divider(),
               ...order.cartProducts
                   .map((element) => _buildDescription(element?.description)),

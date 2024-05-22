@@ -6,6 +6,7 @@ import 'package:suuq/pages/homepage/home_page.dart';
 import 'package:suuq/pages/my_profile_page.dart';
 import 'package:suuq/pages/orders_page.dart';
 import 'package:suuq/utils/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class MainPage extends ConsumerWidget {
@@ -15,10 +16,11 @@ class MainPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     final indexBottomNavbar = ref.watch(bottomNavBarNotifierProvider);
     final bodies = [
       const HomePage(),
-       OrdersPage(),
+      const OrdersPage(),
       const MyProfilePage(),
     ];
     return Scaffold(
@@ -26,11 +28,19 @@ class MainPage extends ConsumerWidget {
         currentIndex: indexBottomNavbar,
         onTap: ref.read(bottomNavBarNotifierProvider.notifier).onTap,
         selectedItemColor: AppColors.black,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopify_sharp), label: "My Orders"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "My Profile")
+            icon: const Icon(Icons.home),
+            label: localizations.home,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.shopify_sharp),
+            label: localizations.activeOrders,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.person),
+            label: localizations.myProfile,
+          )
         ],
       ),
       body: bodies[indexBottomNavbar],

@@ -10,6 +10,7 @@ import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/string_utilities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class CartPage extends ConsumerWidget {
@@ -45,24 +46,33 @@ class CartPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: _buildAppBarTitle(isCartListAvailable, state),
+        title: _buildAppBarTitle(context, isCartListAvailable, state),
       ),
       body: isCartListAvailable
           ? _buildCartList(context, state, ref)
-          : _noItemsFoundPage(),
+          : _noItemsFoundPage(context),
     );
   }
 
-  RichText _buildAppBarTitle(bool isCartListAvailable, CartIdleState state) {
+  RichText _buildAppBarTitle(
+    BuildContext context,
+    bool isCartListAvailable,
+    CartIdleState state,
+  ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return RichText(
         text: TextSpan(children: [
-      const TextSpan(
-          text: "My Cart",
-          style: TextStyle(
-              color: Colors.black, fontSize: 24, fontWeight: FontWeight.w600)),
+      TextSpan(
+        text: localizations.myCart,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       TextSpan(
           text: isCartListAvailable
-              ? "- ${state.cartProductList.length} products"
+              ? "- ${state.cartProductList.length} ${localizations.product}"
               : StringUtilities.emptyString,
           style: const TextStyle(
             color: Colors.black,
@@ -90,7 +100,7 @@ class CartPage extends ConsumerWidget {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: state.cartProductList
-                          .map((e) => _buildCartCard(e!, ref))
+                          .map((e) => _buildCartCard(context, e!, ref))
                           .toList()),
                 ),
               ),
@@ -106,18 +116,19 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Column _noItemsFoundPage() {
-    return const Column(
+  Column _noItemsFoundPage(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
+        const Icon(
           Icons.shopping_cart_rounded,
           size: 60,
         ),
-        SizedBox(
+        const SizedBox(
           height: 50,
         ),
-        Center(child: Text("No items in your Cart"))
+        Center(child: Text(localizations.noItemsInYourCart))
       ],
     );
   }
@@ -131,7 +142,7 @@ class CartPage extends ConsumerWidget {
         children: [
           Column(
             children: [
-              _buildTotalText(),
+              _buildTotalText(context),
               _buildPrice(state.getTotalPrice, fontSize: 20),
             ],
           ),
@@ -141,21 +152,24 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Text _buildTotalText() {
-    return const Text(
-      "Total:",
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+  Text _buildTotalText(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    return Text(
+      localizations.total+StringUtilities.colon,
+      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
 
-  Card _buildCartCard(CartProduct cartProduct, WidgetRef ref) {
+  Card _buildCartCard(
+      BuildContext context, CartProduct cartProduct, WidgetRef ref) {
     return Card(
       child: SizedBox(
         height: 130,
         child: Row(
           children: [
             _buildImage(cartProduct.imageUrl ?? ''),
-            _buildInfoSection(cartProduct.sellerName, cartProduct.description),
+            _buildInfoSection(
+                context, cartProduct.sellerName, cartProduct.description),
             _buildPriceAndDelete(cartProduct, ref),
           ],
         ),
@@ -174,7 +188,8 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Expanded _buildInfoSection(String sellerName, String description) {
+  Expanded _buildInfoSection(
+      BuildContext context, String sellerName, String description) {
     return Expanded(
       child: Padding(
         padding: AppStyles.edgeInsets4,
@@ -182,20 +197,21 @@ class CartPage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildProductInfo(sellerName, description),
-            _buildDeliveryInfo()
+            _buildDeliveryInfo(context)
           ],
         ),
       ),
     );
   }
 
-  Row _buildDeliveryInfo() {
-    return const Row(
+  Row _buildDeliveryInfo(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    return Row(
       children: [
-        Icon(Icons.motorcycle_sharp),
+        const Icon(Icons.motorcycle_sharp),
         Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text("Delivery within one day"),
+          padding: const EdgeInsets.all(8.0),
+          child: Text(localizations.deliveryWithinOneDay),
         )
       ],
     );
@@ -250,6 +266,7 @@ class CartPage extends ConsumerWidget {
   }
 
   Widget _buildButton(BuildContext context, CartIdleState state) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () => AutoRouter.of(context).push(
         CheckOutRoute(
@@ -262,9 +279,9 @@ class CartPage extends ConsumerWidget {
           color: Colors.green,
           borderRadius: BorderRadius.circular(4),
         ),
-        child: const Text(
-          "Proceed to Checkout",
-          style: TextStyle(
+        child: Text(
+          localizations.proceedToCheckout,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
           ),

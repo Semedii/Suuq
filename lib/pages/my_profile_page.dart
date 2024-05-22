@@ -7,6 +7,7 @@ import 'package:suuq/notifiers/myProfile/my_profile_state.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/string_utilities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyProfilePage extends ConsumerWidget {
   const MyProfilePage({super.key});
@@ -15,10 +16,11 @@ class MyProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profileState = ref.watch(myProfileNotifierProvider);
     return Scaffold(
-      body: _mapStateToWidget(context,ref, profileState),
+      body: _mapStateToWidget(context, ref, profileState),
     );
   }
-    Widget _mapStateToWidget(
+
+  Widget _mapStateToWidget(
     BuildContext context,
     WidgetRef ref,
     MyProfileState state,
@@ -26,12 +28,16 @@ class MyProfilePage extends ConsumerWidget {
     if (state is MyProfileInitialState) {
       ref.read(myProfileNotifierProvider.notifier).initPage();
     } else if (state is MyProfileLoadedState) {
-      return _buildProfilePageBody(context,state, ref);
+      return _buildProfilePageBody(context, state, ref);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Container _buildProfilePageBody(BuildContext context, MyProfileLoadedState state ,WidgetRef ref) {
+  Container _buildProfilePageBody(
+    BuildContext context,
+    MyProfileLoadedState state,
+    WidgetRef ref,
+  ) {
     return Container(
       color: AppColors.lightestGrey,
       child: Column(
@@ -93,6 +99,7 @@ class MyProfilePage extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Positioned(
         top: MediaQuery.of(context).size.height * .42,
         child: SizedBox(
@@ -101,15 +108,18 @@ class MyProfilePage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _getMenu(Icons.person, "Personal Information"),
-                _getMenu(Icons.lock, "Change Password"),
-                _getMenu(Icons.history, "Order History", onTap:()=>AutoRouter.of(context).push(const OrderHistoryRoute())),
-                _getMenu(Icons.favorite, "Favorites"),
+                _getMenu(Icons.person, localizations.personalInformation),
+                _getMenu(Icons.lock, localizations.changePassword),
+                _getMenu(Icons.history, localizations.orderHistory,
+                    onTap: () =>
+                        AutoRouter.of(context).push(const OrderHistoryRoute())),
+                _getMenu(Icons.favorite, localizations.favorites),
                 _getMenu(Icons.person, "About Suuq"),
                 _getMenu(
                   Icons.logout_outlined,
-                  "Logout",
-                  onTap: ref.read(loginInNotifierProvider.notifier).handleLogout,
+                  localizations.logOut,
+                  onTap:
+                      ref.read(loginInNotifierProvider.notifier).handleLogout,
                 ),
               ],
             ),

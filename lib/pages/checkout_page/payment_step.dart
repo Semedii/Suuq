@@ -58,7 +58,7 @@ class PaymentStep extends ConsumerWidget {
     return AppTextField(
       initialValue: deliveryAddress,
       hintText: "Please enter the delivery address",
-      label: "Delivery Address",
+      label: localizations.deliveryAddress,
       validator: (value) => FieldValidators.required(value, localizations),
       onChanged:
           ref.read(checkoutNotifierProvider.notifier).onDeliveryAddressChanged,
@@ -73,7 +73,7 @@ class PaymentStep extends ConsumerWidget {
     return AppTextField(
       initialValue: sendersName,
       hintText: "Please enter the sender's full name",
-      label: "Sender's Name",
+      label:localizations.sendersName,
       validator: (value) => FieldValidators.required(value, localizations),
       onChanged:
           ref.read(checkoutNotifierProvider.notifier).onSendersNameChanged,
@@ -88,7 +88,7 @@ class PaymentStep extends ConsumerWidget {
     return AppTextField(
       initialValue: phoneMumber,
       hintText: "Please enter the Sender's Phone",
-      label: "Sender's Phone",
+      label: localizations.sendersPhone,
       validator: (value) => FieldValidators.required(value, localizations),
       onChanged:
           ref.read(checkoutNotifierProvider.notifier).onSendersPhoneChanged,

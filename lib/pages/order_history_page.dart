@@ -9,6 +9,7 @@ import 'package:suuq/notifiers/orders/orders_notifier.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/string_utilities.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class OrderHistoryPage extends ConsumerWidget {
@@ -16,10 +17,11 @@ class OrderHistoryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     final state = ref.watch(orderHistoryNotifierProvider);
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Order History"),
+          title: Text(localizations.orderHistory),
         ),
         body: _mapStateToWidget(
           context,
@@ -38,12 +40,17 @@ class OrderHistoryPage extends ConsumerWidget {
         ref.read(orderHistoryNotifierProvider.notifier).initPage();
       });
     } else if (state is OrderHistoryLoadedState) {
-      return _buildOrderList(state, ref);
+      return _buildOrderList(context, state, ref);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget _buildOrderList(OrderHistoryLoadedState state, WidgetRef ref) {
+  Widget _buildOrderList(
+    BuildContext context,
+    OrderHistoryLoadedState state,
+    WidgetRef ref,
+  ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return RefreshIndicator(
       onRefresh: () async {
         ref.read(ordersNotifierProvider.notifier).initPage();
@@ -64,9 +71,9 @@ class OrderHistoryPage extends ConsumerWidget {
                       },
                     ),
                   )
-                : const Center(
+                : Center(
                     child: Text(
-                    "No Orders found. Please place your first order and win a price",
+                    localizations.firstOrderDescription,
                     textAlign: TextAlign.center,
                   )),
           ],

@@ -10,6 +10,7 @@ import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class ProductPage extends StatefulWidget {
@@ -66,6 +67,7 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _buildBottomBar() {
     return Consumer(builder: (context, ref, _) {
+       AppLocalizations localizations = AppLocalizations.of(context)!;
       return Container(
         padding: const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 4),
         color: AppColors.lightestGrey,
@@ -74,14 +76,14 @@ class _ProductPageState extends State<ProductPage> {
           children: [
             _buildPrice(),
             _buildButton(
-              "Buy Now",
+              localizations.buyNow,
               onTap: () => AutoRouter.of(context).push(CheckOutRoute(
                   totalAmount: widget.product.price,
                   cartProductList: [
                     CartProduct.mapProductToCartProduct(product: widget.product)
                   ])),
             ),
-            _buildButton("To Cart", isTransparent: true, onTap: () {
+            _buildButton(localizations.addToCart, isTransparent: true, onTap: () {
               ref.read(homeNotifierProvider.notifier).addToCart(widget.product);
             }),
           ],
