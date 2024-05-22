@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq/models/cart_product.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/utils/enums/currency_enum.dart';
+import 'package:suuq/utils/enums/order_status_enum.dart';
 import 'package:suuq/utils/enums/payment_option_enum.dart';
 
 class OrderModel {
@@ -13,7 +14,7 @@ class OrderModel {
   double totalPrice;
   String address;
   DateTime orderedDate;
-  String status;
+  OrderStatus status;
   PaymentOption paymentOption;
   Currency currency;
 
@@ -26,7 +27,7 @@ class OrderModel {
     required this.totalPrice,
     required this.address,
     required this.orderedDate,
-    this.status = "pending",
+    this.status = OrderStatus.pending,
     required this.paymentOption,
     required this.currency,
   });
@@ -50,7 +51,7 @@ class OrderModel {
         totalPrice: double.parse(data?['totalPrice'].toString() ?? "0"),
         address: data?['address'],
         orderedDate: orderedDate.toDate(),
-        status: data?['status'],
+        status: OrderStatus.fromString(data?['status']),
         currency: getCurrencyFromString(data?['currency']),
         paymentOption: getPaymentOptionFromString(data?['paymentOption']));
   }

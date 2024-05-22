@@ -6,11 +6,12 @@ import 'package:suuq/notifiers/orders/orders_notifier.dart';
 import 'package:suuq/notifiers/orders/orders_state.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:suuq/utils/enums/order_status_enum.dart';
 import 'package:suuq/utils/string_utilities.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class OrdersPage extends ConsumerWidget {
-  const OrdersPage({super.key});
+class ActiveOrders extends ConsumerWidget {
+  const ActiveOrders({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,7 +64,7 @@ class OrdersPage extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final order = state.orders[index];
                         return order != null
-                            ? _buildOrderCard(order)
+                            ? _buildOrderCard(context, order)
                             : const SizedBox.shrink();
                       },
                     ),
@@ -79,20 +80,20 @@ class OrdersPage extends ConsumerWidget {
     );
   }
 
-  _buildOrderCard(OrderModel order) {
+  _buildOrderCard(BuildContext context, OrderModel order) {
     return Column(
       children: [
         Card(
             child: Row(
           children: [
-            _buildInfo(order),
+            _buildInfo(context, order),
           ],
         ))
       ],
     );
   }
 
-  Expanded _buildInfo(OrderModel order) {
+  Expanded _buildInfo(BuildContext context, OrderModel order) {
     return Expanded(
       child: SizedBox(
         child: Padding(
@@ -108,7 +109,7 @@ class OrdersPage extends ConsumerWidget {
                   .map((element) => _buildDescription(element?.description)),
               const Divider(),
               _buildPrice(order.totalPrice),
-              _buildDateAndStatus(order)
+              _buildDateAndStatus(context, order)
             ],
           ),
         ),
@@ -144,13 +145,15 @@ class OrdersPage extends ConsumerWidget {
     );
   }
 
-  Row _buildDateAndStatus(OrderModel? order) {
+  Row _buildDateAndStatus(BuildContext context, OrderModel? order) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Row(
       children: [
         Text(DateFormat("dd/MM/yyyy hh:mm a").format(order!.orderedDate)),
         const Spacer(),
+        order.status.icon,
         Text(
-          order.status.capitalize(),
+          OrderStatus.translateName(order.status, localizations),
           style: const TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
         )
       ],
