@@ -87,7 +87,7 @@ class CartPage extends ConsumerWidget {
     WidgetRef ref,
   ) {
     return Padding(
-      padding: AppStyles.edgeInsetsH4,
+      padding: AppStyles.edgeInsetsH16V24,
       child: Column(
         children: [
           Expanded(
@@ -204,16 +204,20 @@ class CartPage extends ConsumerWidget {
     );
   }
 
-  Row _buildDeliveryInfo(BuildContext context) {
+  Widget _buildDeliveryInfo(BuildContext context) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return Row(
-      children: [
-        const Icon(Icons.motorcycle_sharp),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(localizations.deliveryWithinOneDay),
-        )
-      ],
+    return Flexible(
+      child: Row(
+        children: [
+          const Icon(Icons.motorcycle_sharp),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(localizations.deliveryWithinOneDay),
+            ),
+          )
+        ],
+      ),
     );
   }
 
