@@ -108,12 +108,28 @@ class MyProfilePage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _getMenu(Icons.person, localizations.personalInformation, onTap: ()=> AutoRouter.of(context).push(PersonalInformationRoute())),
-                _getMenu(Icons.lock, localizations.changePassword),
+                _getMenu(
+                  Icons.person,
+                  localizations.personalInformation,
+                  onTap: () => AutoRouter.of(context).push(
+                    PersonalInformationRoute(),
+                  ),
+                ),
+                _getMenu(
+                  Icons.lock,
+                  localizations.changePassword,
+                  onTap: () => AutoRouter.of(context).push(
+                    ChangePasswordRoute(),
+                  ),
+                ),
                 _getMenu(Icons.language, localizations.changeLanguage),
-                _getMenu(Icons.history, localizations.orderHistory,
-                    onTap: () =>
-                        AutoRouter.of(context).push(const OrderHistoryRoute())),
+                _getMenu(
+                  Icons.history,
+                  localizations.orderHistory,
+                  onTap: () => AutoRouter.of(context).push(
+                    const OrderHistoryRoute(),
+                  ),
+                ),
                 _getMenu(Icons.favorite, localizations.favorites),
                 _getMenu(Icons.person, "About Suuq"),
                 _getMenu(
