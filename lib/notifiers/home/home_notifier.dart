@@ -68,7 +68,7 @@ class HomeNotifier extends _$HomeNotifier {
     }
     if (sellersInCart.isNotEmpty &&
         !sellersInCart.contains(product.sellerName)) {
-      toastInfo("Products from other stores are there");
+      toastInfo("Products from other stores are in the cart");
     } else {
       Cart cart = Cart(
           customerEmail: userEmail!,
