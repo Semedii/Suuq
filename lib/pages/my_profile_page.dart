@@ -2,8 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/notifiers/login/login_notifier.dart';
-import 'package:suuq/notifiers/myProfile/my_profile_notifier.dart';
-import 'package:suuq/notifiers/myProfile/my_profile_state.dart';
+import 'package:suuq/notifiers/myProfile/account_notifier.dart';
+import 'package:suuq/notifiers/myProfile/account_state.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/string_utilities.dart';
@@ -14,7 +14,7 @@ class MyProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(myProfileNotifierProvider);
+    final profileState = ref.watch(accountNotifierProvider);
     return Scaffold(
       body: _mapStateToWidget(context, ref, profileState),
     );
@@ -23,11 +23,11 @@ class MyProfilePage extends ConsumerWidget {
   Widget _mapStateToWidget(
     BuildContext context,
     WidgetRef ref,
-    MyProfileState state,
+    AccountState state,
   ) {
-    if (state is MyProfileInitialState) {
-      ref.read(myProfileNotifierProvider.notifier).initPage();
-    } else if (state is MyProfileLoadedState) {
+    if (state is AccountInitialState) {
+      ref.read(accountNotifierProvider.notifier).initPage();
+    } else if (state is AccountLoadedState) {
       return _buildProfilePageBody(context, state, ref);
     }
     return const Center(child: CircularProgressIndicator());
@@ -35,7 +35,7 @@ class MyProfilePage extends ConsumerWidget {
 
   Container _buildProfilePageBody(
     BuildContext context,
-    MyProfileLoadedState state,
+    AccountLoadedState state,
     WidgetRef ref,
   ) {
     return Container(
@@ -108,7 +108,7 @@ class MyProfilePage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _getMenu(Icons.person, localizations.personalInformation),
+                _getMenu(Icons.person, localizations.personalInformation, onTap: ()=> AutoRouter.of(context).push(PersonalInformationRoute())),
                 _getMenu(Icons.lock, localizations.changePassword),
                 _getMenu(Icons.language, localizations.changeLanguage),
                 _getMenu(Icons.history, localizations.orderHistory,

@@ -1,26 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq/models/user_model.dart';
-import 'package:suuq/notifiers/myProfile/my_profile_state.dart';
+import 'package:suuq/notifiers/myProfile/account_state.dart';
 import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/services/auth_service.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 
-part 'my_profile_notifier.g.dart';
+part 'account_notifier.g.dart';
 
 @Riverpod()
-class MyProfileNotifier extends _$MyProfileNotifier {
+class AccountNotifier extends _$AccountNotifier {
   final AuthDataService _authDataService = AuthDataService();
   final AuthService _authService = AuthService();
   @override
-  MyProfileState build() {
-    return MyProfileInitialState();
+  AccountState build() {
+    return AccountInitialState();
   }
 
   initPage() async { 
     final String? userEmail = FirebaseAuth.instance.currentUser?.email;
     final UserModel user = await _authDataService.fetchCurrentUser(userEmail!);
-    state = MyProfileLoadedState(
+    state = AccountLoadedState(
         userName: user.name!,
         userEmail: user.email!,
         userPhoneNumber: user.phoneNumber,
@@ -30,24 +30,24 @@ class MyProfileNotifier extends _$MyProfileNotifier {
   }
 
   onUserAddressChanged(String address) {
-    state = (state as MyProfileLoadedState).copyWith(userAddress: address);
+    state = (state as AccountLoadedState).copyWith(userAddress: address);
   }
 
   onPhoneNumberChanged(String phoneMumber) {
     state =
-        (state as MyProfileLoadedState).copyWith(userPhoneNumber: phoneMumber);
+        (state as AccountLoadedState).copyWith(userPhoneNumber: phoneMumber);
   }
 
   onNewPasswordChanged(String newPassword) {
-    state = (state as MyProfileLoadedState).copyWith(newPassword: newPassword);
+    state = (state as AccountLoadedState).copyWith(newPassword: newPassword);
   }
 
   onRePasswordChanged(String rePassword) {
-    state = (state as MyProfileLoadedState).copyWith(rePassword: rePassword);
+    state = (state as AccountLoadedState).copyWith(rePassword: rePassword);
   }
 
   onSavePassword() async {
-    var currentState = state as MyProfileLoadedState;
+    var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
     await _authService.changePassword(currentState.newPassword!);
     state = currentState.copyWith(issaveButtonLoading: false);
@@ -55,7 +55,7 @@ class MyProfileNotifier extends _$MyProfileNotifier {
   }
 
   onSaveButtonPressed() async {
-    var currentState = state as MyProfileLoadedState;
+    var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
     await _authDataService.updateUserInfo(
         email: currentState.userEmail,

@@ -1,10 +1,10 @@
-abstract class MyProfileState {}
+abstract class AccountState {}
 
-class MyProfileInitialState extends MyProfileState {}
+class AccountInitialState extends AccountState {}
 
-class MyProfileLoadingState extends MyProfileState {}
+class AccountLoadingState extends AccountState {}
 
-class MyProfileLoadedState extends MyProfileState {
+class AccountLoadedState extends AccountState {
   final String userName;
   final String userEmail;
   final String? userPhoneNumber;
@@ -17,7 +17,7 @@ class MyProfileLoadedState extends MyProfileState {
 
   
 
-  MyProfileLoadedState({
+  AccountLoadedState({
     required this.userName,
     required this.userEmail,
     required this.userPhoneNumber,
@@ -29,7 +29,7 @@ class MyProfileLoadedState extends MyProfileState {
     this.issaveButtonLoading=false,
   });
 
-  MyProfileLoadedState copyWith({
+  AccountLoadedState copyWith({
     String? userName,
     String? userEmail,
     String? userPhoneNumber,
@@ -40,7 +40,7 @@ class MyProfileLoadedState extends MyProfileState {
     String? newPassword,
     String? rePassword,
   }) {
-    return MyProfileLoadedState(
+    return AccountLoadedState(
       userName: userName ?? this.userName,
       userEmail: userEmail ?? this.userEmail,
       userPhoneNumber: userPhoneNumber ?? this.userPhoneNumber,

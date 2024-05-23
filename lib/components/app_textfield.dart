@@ -6,16 +6,18 @@ class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
     this.initialValue,
-    required this.hintText,
+    this.hintText,
     required this.label,
     this.prefixIcon,
     this.suffix,
     this.isObscureText = false,
+    this.isDisabled = false,
     this.onChanged,
     this.validator,
   });
   final String? initialValue;
-  final String hintText;
+  final bool isDisabled;
+  final String? hintText;
   final String label;
   final Icon? prefixIcon;
   final Widget? suffix;
@@ -37,6 +39,8 @@ class AppTextField extends StatelessWidget {
           TextFormField(
             initialValue: initialValue,
             decoration: InputDecoration(
+              filled: isDisabled,
+              fillColor: AppColors.lighterGrey,
               hintText: hintText,
               prefixIcon: prefixIcon,
               suffixIcon: suffix,
@@ -44,6 +48,7 @@ class AppTextField extends StatelessWidget {
               focusedBorder: _getBorder(),
             ),
             obscureText: isObscureText,
+            readOnly: isDisabled,
             onChanged: onChanged,
             validator: validator,
           ),
