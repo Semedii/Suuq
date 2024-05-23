@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:suuq/pages/change_language_page.dart';
 import 'package:suuq/router/app_router.gr.dart';
 
 
@@ -20,6 +21,7 @@ class AppRouter extends $AppRouter {
    AutoRoute(page: ShowAllRoute.page),
    AutoRoute(page: OrderHistoryRoute.page),
    AutoRoute(page: PersonalInformationRoute.page),
-   AutoRoute(page: ChangePasswordRoute.page)
+   AutoRoute(page: ChangePasswordRoute.page),
+   AutoRoute(page: ChangeLanguageRoute.page)
  ];
 }

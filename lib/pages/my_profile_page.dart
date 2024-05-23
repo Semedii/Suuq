@@ -124,7 +124,10 @@ class MyProfilePage extends ConsumerWidget {
                       ChangePasswordRoute(),
                     ),
                   ),
-                  _getMenu(Icons.language, localizations.changeLanguage),
+                  _getMenu(Icons.language, localizations.changeLanguage,
+                    onTap: () => AutoRouter.of(context).push(
+                     const ChangeLanguageRoute(),
+                    ),),
                   _getMenu(
                     Icons.history,
                     localizations.orderHistory,

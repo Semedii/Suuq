@@ -66,6 +66,7 @@
   "product": "Product",
   "requiredField": "This field is required",
   "save": "Save",
+  "selectLanguage": "Select a language",
   "sendPayment": "Send payment ",
   "sendersName": "Sender's name ",
   "sendersPhone": "Sender's phone",
