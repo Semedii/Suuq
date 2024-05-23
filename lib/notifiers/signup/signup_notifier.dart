@@ -4,6 +4,7 @@ import 'package:suuq/notifiers/signup/signup_state.dart';
 import 'package:suuq/services/auth_service.dart';
 import 'package:suuq/utils/firebase_exceptions.dart';
 import 'package:suuq/utils/pop_up_message.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 part 'signup_notifier.g.dart';
 
@@ -50,7 +51,7 @@ class SignupNotifier extends _$SignupNotifier {
         lastState.copyWith(isRePasswordHidden: !lastState.isRePasswordHidden);
   }
 
-  void onSignupPressed() async {
+  void onSignupPressed(AppLocalizations localizations) async {
     var lastState = state as SignupStateInitial;
     state = lastState.copyWith(isButtonLoading: true);
     try {
@@ -60,6 +61,7 @@ class SignupNotifier extends _$SignupNotifier {
         lastState.fullName,
         lastState.email,
         lastState.password,
+        localizations,
       );
       if(user!=null){
         state = SignupStateSuccess();
@@ -69,7 +71,7 @@ class SignupNotifier extends _$SignupNotifier {
       
       authService.logout();
     } on FirebaseAuthException catch (e) {
-      FirebaseExceptionHandler.handleFirebaseError(e);
+      FirebaseExceptionHandler.handleFirebaseError(e, localizations);
     } catch (e) {
       toastInfo("unknown error $e");
     }

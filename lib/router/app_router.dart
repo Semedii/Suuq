@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:suuq/pages/change_language_page.dart';
 import 'package:suuq/router/app_router.gr.dart';
 
 

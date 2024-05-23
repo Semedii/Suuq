@@ -4,10 +4,12 @@ import 'package:suuq/models/cart.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_state.dart';
 import 'package:suuq/services/cart_data_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq/services/product_data_service.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 part 'home_notifier.g.dart';
+
 
 @Riverpod()
 class HomeNotifier extends _$HomeNotifier {
@@ -58,7 +60,7 @@ class HomeNotifier extends _$HomeNotifier {
         .copyWith(numberItemsInCart: cartItems.length);
   }
 
-  void addToCart(Product product) async {
+  void addToCart(Product product, AppLocalizations localizations) async {
     List<Cart?> carts = await _cartDataService.fetchUsersCart(userEmail!);
     List<String> sellersInCart = [];
     for (int i = 0; i < carts.length; i++) {
@@ -68,13 +70,13 @@ class HomeNotifier extends _$HomeNotifier {
     }
     if (sellersInCart.isNotEmpty &&
         !sellersInCart.contains(product.sellerName)) {
-      toastInfo("Products from other stores are in the cart");
+      toastInfo(localizations.differentStoresInCart);
     } else {
       Cart cart = Cart(
           customerEmail: userEmail!,
           productId: product.id,
           category: product.category);
-      await _cartDataService.addNewProductToCart(cart);
+      await _cartDataService.addNewProductToCart(cart, localizations.successfullyUpdated);
       await _cartItemsUpdated();
     }
   }

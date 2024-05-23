@@ -5,6 +5,7 @@ import 'package:suuq/notifiers/myProfile/account_state.dart';
 import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/services/auth_service.dart';
 import 'package:suuq/utils/enums/language.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 
 part 'account_notifier.g.dart';
@@ -52,15 +53,15 @@ class AccountNotifier extends _$AccountNotifier {
     state = (state as AccountLoadedState).copyWith(language: language);
   }
 
-  onSavePassword() async {
+  onSavePassword(AppLocalizations localizations) async {
     var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
-    await _authService.changePassword(currentState.newPassword!);
+    await _authService.changePassword(currentState.newPassword!, localizations);
     state = currentState.copyWith(issaveButtonLoading: false);
-    toastInfo("Successfully updated");
+    toastInfo(localizations.successfullyUpdated);
   }
 
-  onSaveButtonPressed() async {
+  onSaveButtonPressed(String succesfullMessage) async {
     var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
     await _authDataService.updateUserInfo(
@@ -69,15 +70,15 @@ class AccountNotifier extends _$AccountNotifier {
         address: currentState.userAddress!,
         name: currentState.userName);
     state = currentState.copyWith(issaveButtonLoading: false);
-    toastInfo("Successfully updated");
+    toastInfo(succesfullMessage);
   }
 
-  onSaveLanguagePressed() async {
+  onSaveLanguagePressed(String succesfullMessage) async {
     var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
     await _authDataService.updateLanguage(
         email: currentState.userEmail, language: currentState.language);
     state = currentState.copyWith(issaveButtonLoading: false);
-    toastInfo("Successfully updated");
+    toastInfo(succesfullMessage);
   }
 }

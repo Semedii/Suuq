@@ -34,9 +34,9 @@ class ChangeLanguagePage extends ConsumerWidget {
             const Spacer(),
             AppButton(
               title: localizations.save,
-              onTap: ref
+              onTap: ()=> ref
                   .read(accountNotifierProvider.notifier)
-                  .onSaveLanguagePressed,
+                  .onSaveLanguagePressed(localizations.successfullyUpdated),
             )
           ],
         ),

@@ -86,7 +86,7 @@ class _ProductPageState extends State<ProductPage> {
                       ])),
                 ),
                 _buildButton(localizations.addToCart, isTransparent: true, onTap: () {
-                  ref.read(homeNotifierProvider.notifier).addToCart(widget.product);
+                  ref.read(homeNotifierProvider.notifier).addToCart(widget.product, localizations);
                 }),
               ],
             ),

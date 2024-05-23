@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:suuq/global.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/services/auth_data_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq/utils/firebase_exceptions.dart';
 
 class AuthService {
@@ -12,6 +13,7 @@ class AuthService {
     String displayName,
     String email,
     String password,
+    AppLocalizations localizations,
   ) async {
     try {
       UserCredential userCredential =
@@ -34,12 +36,12 @@ class AuthService {
         return newUser;
       }
     } on FirebaseException catch (e) {
-      FirebaseExceptionHandler.handleFirebaseError(e);
+      FirebaseExceptionHandler.handleFirebaseError(e, localizations);
     }
     return null;
   }
 
-  Future<UserModel?> login(String email, String password) async {
+  Future<UserModel?> login(String email, String password, AppLocalizations localizations) async {
     try {
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
@@ -52,17 +54,17 @@ class AuthService {
         return user;
             }
     } on FirebaseException catch (e) {
-      FirebaseExceptionHandler.handleFirebaseError(e);
+      FirebaseExceptionHandler.handleFirebaseError(e, localizations);
     }
     return null;
   }
 
-  Future<void> changePassword(String newPassword) async {
+  Future<void> changePassword(String newPassword, AppLocalizations localizations) async {
     final userCredential = FirebaseAuth.instance.currentUser;
     try {
       await userCredential?.updatePassword(newPassword);
     } on FirebaseException catch (e) {
-      FirebaseExceptionHandler.handleFirebaseError(e);
+      FirebaseExceptionHandler.handleFirebaseError(e, localizations);
     }
   }
 

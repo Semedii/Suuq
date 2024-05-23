@@ -4,7 +4,7 @@ import 'package:suuq/utils/pop_up_message.dart';
 
 class CartDataService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
-  Future<void> addNewProductToCart(Cart cart) async {
+  Future<void> addNewProductToCart(Cart cart, String succesfullMessage) async {
     try {
       final docRef = db
           .collection("cart")
@@ -14,7 +14,7 @@ class CartDataService {
           )
           .doc();
       await docRef.set(cart);
-      toastInfo("succesfully added to cart");
+      toastInfo(succesfullMessage);
     } catch (e) {
       print("Error fetching products: $e");
     }

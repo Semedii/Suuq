@@ -17,9 +17,11 @@
   "delivered": "Delivered",
   "deliveryAddress": "Delivery address",
   "deliveryWithinOneDay": "Delivery within one day",
+  "differentStoresInCart": "Product from different stores can't be in the cart.",
   "doesNotMatch": "Does not match, Please check again.",
   "electronics": "Electronics",
   "email": "Email",
+  "emailAlreadyInUse": "This email is already in-use",
   "enterDeliveryAddress": "Please enter the delivery address",
   "enterNewPasswordAgain": "Enter your new password again",
   "enterPinExplanation": "Please enter your pin and click the button below once it is sent so we can recieve you order.",
@@ -40,6 +42,7 @@
   "home": "Home",
   "homeAccessories": "Home Accessories",
   "iAccept": "I accept ",
+  "invalidEmail": "This email is invalid",
   "joinedDate": "Joined date",
   "kitchenAccessories": "Kitchen Accessories",
   "logOut": "Logout",
@@ -75,8 +78,10 @@
   "showAll": "Show all",
   "signup": "Signup",
   "succesfullyCreatedDescription": "Successfully created, please login",
+  "successfullyUpdated": "Successfully updated",
   "termsAndConditions": "the terms and conditions",
   "termsValidation": "You need to accept the terms",
   "thankYouForShopping": "Thank you for shopping with us",
-  "total": "Total"
+  "total": "Total",
+  "wrongEmailOrPassword": "Wrong email or password"
 }
