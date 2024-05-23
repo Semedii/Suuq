@@ -40,8 +40,8 @@ class PaymentStep extends ConsumerWidget {
                 _buildAddressField(state.deliveryAddress, ref, localizations),
                 _buildNameField(state.sendersName, ref, localizations),
                 _buildPhoneNumberFIeld(state.sendersPhone, ref, localizations),
-                if (isOutOfWorkingHours) _buildTimeDisclaimer(),
-                _buildSendButton(state, ref),
+                if (isOutOfWorkingHours) _buildTimeDisclaimer(localizations),
+                _buildSendButton(localizations, state, ref),
               ],
             ),
           ),
@@ -57,7 +57,7 @@ class PaymentStep extends ConsumerWidget {
   ) {
     return AppTextField(
       initialValue: deliveryAddress,
-      hintText: "Please enter the delivery address",
+      hintText: localizations.enterDeliveryAddress,
       label: localizations.deliveryAddress,
       validator: (value) => FieldValidators.required(value, localizations),
       onChanged:
@@ -72,8 +72,8 @@ class PaymentStep extends ConsumerWidget {
   ) {
     return AppTextField(
       initialValue: sendersName,
-      hintText: "Please enter the sender's full name",
-      label:localizations.sendersName,
+      hintText: localizations.enterYourFullName,
+      label: localizations.sendersName,
       validator: (value) => FieldValidators.required(value, localizations),
       onChanged:
           ref.read(checkoutNotifierProvider.notifier).onSendersNameChanged,
@@ -87,7 +87,7 @@ class PaymentStep extends ConsumerWidget {
   ) {
     return AppTextField(
       initialValue: phoneMumber,
-      hintText: "Please enter the Sender's Phone",
+      hintText: localizations.enterSendersPhone,
       label: localizations.sendersPhone,
       validator: (value) => FieldValidators.required(value, localizations),
       onChanged:
@@ -95,14 +95,14 @@ class PaymentStep extends ConsumerWidget {
     );
   }
 
-  Column _buildTimeDisclaimer() {
+  Column _buildTimeDisclaimer(AppLocalizations localizations) {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
           child: Text(
-            "Please note: Our customer service team is unavailable between 9:00 PM and 7:00 AM. Payments sent during this time will be confirmed the next business day.",
-            style: TextStyle(
+            localizations.outOfOfficeHoursNotice,
+            style: const TextStyle(
               color: Colors.red,
               fontSize: 14,
             ),
@@ -110,7 +110,7 @@ class PaymentStep extends ConsumerWidget {
         ),
         AppCheckBox(
           value: false,
-          title: const Text("I agree"),
+          title: Text(localizations.iAccept),
           onChanged: (value) {},
         )
       ],
@@ -124,7 +124,7 @@ class PaymentStep extends ConsumerWidget {
   ) {
     return Column(
       children: [
-        _buildPaymentMethodText(),
+        _buildPaymentMethodText(localizations),
         const SizedBox(height: 8),
         FormBuilderChoiceChip(
           alignment: WrapAlignment.spaceAround,
@@ -146,10 +146,10 @@ class PaymentStep extends ConsumerWidget {
     );
   }
 
-  Text _buildPaymentMethodText() {
-    return const Text(
-      "Choose Payment Method",
-      style: TextStyle(
+  Text _buildPaymentMethodText(AppLocalizations localizations) {
+    return Text(
+      localizations.choosePaymentMethod,
+      style: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
@@ -208,12 +208,13 @@ class PaymentStep extends ConsumerWidget {
   }
 
   AppButton _buildSendButton(
+    AppLocalizations localizations,
     CheckoutLoadedState state,
     WidgetRef ref,
   ) {
     return AppButton(
         isLoading: state.isSendButtonLoading,
-        title: "Send Payment",
+        title: localizations.sendPayment,
         onTap: () async {
           if (_formKey.currentState!.validate()) {
             await FlutterPhoneDirectCaller.callNumber(

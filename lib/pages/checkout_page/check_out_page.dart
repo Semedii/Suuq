@@ -7,6 +7,7 @@ import 'package:suuq/notifiers/checkout/checkout_state.dart';
 import 'package:suuq/pages/checkout_page/sending_step.dart';
 import 'package:suuq/pages/checkout_page/payment_step.dart';
 import 'package:suuq/utils/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class CheckOutPage extends ConsumerWidget {
@@ -21,10 +22,10 @@ class CheckOutPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final checkoutState = ref.watch(checkoutNotifierProvider);
-
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Checkout"),
+        title:  Text(localizations.checkout),
       ),
       body: _mapStateToWidget(context, checkoutState, ref),
     );
@@ -50,6 +51,7 @@ class CheckOutPage extends ConsumerWidget {
     CheckoutLoadedState state,
     WidgetRef ref,
   ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Theme(
       data: ThemeData(
           colorScheme: const ColorScheme.light(
@@ -64,13 +66,13 @@ class CheckOutPage extends ConsumerWidget {
         type: StepperType.horizontal,
         steps: [
           Step(
-            title: const Text("Payment"),
+            title:  Text(localizations.paymentMethod),
             content: PaymentStep(totalAmount: totalAmount),
             isActive: state.stepIndex == 0,
             state: state.stepIndex > 0 ? StepState.complete : StepState.indexed,
           ),
           Step(
-              title: const Text("Sending"),
+              title:  Text(localizations.sending),
               content: SendingStep(
                 onPaymentSent: () => ref
                     .read(checkoutNotifierProvider.notifier)

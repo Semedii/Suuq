@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/utils/string_utilities.dart';
 
 class HomePageAppBar extends StatelessWidget {
   const HomePageAppBar({
@@ -21,7 +23,7 @@ class HomePageAppBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: _buildSearchField(),
+              child: _buildSearchField(context),
             ),
             _buildCartButton(context),
           ],
@@ -43,13 +45,14 @@ class HomePageAppBar extends StatelessWidget {
         ],
       ));
 
-  TextField _buildSearchField() {
+  TextField _buildSearchField(BuildContext context) {
+     AppLocalizations localizations = AppLocalizations.of(context)!;
     return TextField(
       readOnly: true,
       decoration: InputDecoration(
         filled: true,
         fillColor: AppColors.lightestGrey,
-        hintText: "Search coming soon...",
+        hintText: localizations.comingSoon+StringUtilities.threeDots,
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
