@@ -102,43 +102,46 @@ class MyProfilePage extends ConsumerWidget {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Positioned(
         top: MediaQuery.of(context).size.height * .42,
+        bottom: 20,
         child: SizedBox(
           height: MediaQuery.of(context).size.height * .6,
           width: MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _getMenu(
-                  Icons.person,
-                  localizations.personalInformation,
-                  onTap: () => AutoRouter.of(context).push(
-                    PersonalInformationRoute(),
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _getMenu(
+                    Icons.person,
+                    localizations.personalInformation,
+                    onTap: () => AutoRouter.of(context).push(
+                      PersonalInformationRoute(),
+                    ),
                   ),
-                ),
-                _getMenu(
-                  Icons.lock,
-                  localizations.changePassword,
-                  onTap: () => AutoRouter.of(context).push(
-                    ChangePasswordRoute(),
+                  _getMenu(
+                    Icons.lock,
+                    localizations.changePassword,
+                    onTap: () => AutoRouter.of(context).push(
+                      ChangePasswordRoute(),
+                    ),
                   ),
-                ),
-                _getMenu(Icons.language, localizations.changeLanguage),
-                _getMenu(
-                  Icons.history,
-                  localizations.orderHistory,
-                  onTap: () => AutoRouter.of(context).push(
-                    const OrderHistoryRoute(),
+                  _getMenu(Icons.language, localizations.changeLanguage),
+                  _getMenu(
+                    Icons.history,
+                    localizations.orderHistory,
+                    onTap: () => AutoRouter.of(context).push(
+                      const OrderHistoryRoute(),
+                    ),
                   ),
-                ),
-                _getFavMenu(localizations),
-                _getMenu(Icons.person, "About Suuq"),
-                _getMenu(
-                  Icons.logout_outlined,
-                  localizations.logOut,
-                  onTap:
-                      ref.read(loginInNotifierProvider.notifier).handleLogout,
-                ),
-              ],
+                  _getFavMenu(localizations),
+                  _getMenu(Icons.person, "About Suuq"),
+                  _getMenu(
+                    Icons.logout_outlined,
+                    localizations.logOut,
+                    onTap:
+                        ref.read(loginInNotifierProvider.notifier).handleLogout,
+                  ),
+                ],
+              ),
             ),
           ),
         ));

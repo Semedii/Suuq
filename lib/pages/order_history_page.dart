@@ -58,10 +58,10 @@ class OrderHistoryPage extends ConsumerWidget {
       },
       child: Padding(
         padding: AppStyles.edgeInsetsH4,
-        child: Column(
-          children: [
-            state.orders.isNotEmpty
-                ? Expanded(
+        child: state.orders.isNotEmpty
+            ? Column(
+                children: [
+                  Expanded(
                     child: ListView.builder(
                       itemCount: state.orders.length,
                       itemBuilder: (context, index) {
@@ -72,13 +72,13 @@ class OrderHistoryPage extends ConsumerWidget {
                       },
                     ),
                   )
-                : Center(
-                    child: Text(
-                    localizations.firstOrderDescription,
-                    textAlign: TextAlign.center,
-                  )),
-          ],
-        ),
+                ],
+              )
+            : Center(
+                child: Text(
+                localizations.firstOrderDescription,
+                textAlign: TextAlign.center,
+              )),
       ),
     );
   }
@@ -149,14 +149,14 @@ class OrderHistoryPage extends ConsumerWidget {
   }
 
   Row _buildDateAndStatus(BuildContext context, OrderModel? order) {
-     AppLocalizations localizations = AppLocalizations.of(context)!;
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Row(
       children: [
         Text(DateFormat("dd/MM/yyyy hh:mm a").format(order!.orderedDate)),
         const Spacer(),
         order.status.icon,
         Text(
-           OrderStatus.translateName(order.status, localizations),
+          OrderStatus.translateName(order.status, localizations),
           style: const TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
         )
       ],
