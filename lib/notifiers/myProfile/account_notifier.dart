@@ -4,6 +4,7 @@ import 'package:suuq/models/user_model.dart';
 import 'package:suuq/notifiers/myProfile/account_state.dart';
 import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/services/auth_service.dart';
+import 'package:suuq/utils/enums/language.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 
 part 'account_notifier.g.dart';
@@ -17,12 +18,13 @@ class AccountNotifier extends _$AccountNotifier {
     return AccountInitialState();
   }
 
-  initPage() async { 
+  initPage() async {
     final String? userEmail = FirebaseAuth.instance.currentUser?.email;
     final UserModel user = await _authDataService.fetchCurrentUser(userEmail!);
     state = AccountLoadedState(
         userName: user.name!,
         userEmail: user.email!,
+        language: user.language,
         userPhoneNumber: user.phoneNumber,
         userJoinedDate: user.joinedDate!,
         userAddress: user.address,
@@ -46,6 +48,10 @@ class AccountNotifier extends _$AccountNotifier {
     state = (state as AccountLoadedState).copyWith(rePassword: rePassword);
   }
 
+  onChangeLanguage(Language? language) {
+    state = (state as AccountLoadedState).copyWith(language: language);
+  }
+
   onSavePassword() async {
     var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
@@ -62,6 +68,15 @@ class AccountNotifier extends _$AccountNotifier {
         phoneNumber: currentState.userPhoneNumber!,
         address: currentState.userAddress!,
         name: currentState.userName);
+    state = currentState.copyWith(issaveButtonLoading: false);
+    toastInfo("Successfully updated");
+  }
+
+  onSaveLanguagePressed() async {
+    var currentState = state as AccountLoadedState;
+    state = currentState.copyWith(issaveButtonLoading: true);
+    await _authDataService.updateLanguage(
+        email: currentState.userEmail, language: currentState.language);
     state = currentState.copyWith(issaveButtonLoading: false);
     toastInfo("Successfully updated");
   }

@@ -1,16 +1,21 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
+import 'package:suuq/notifiers/myProfile/account_notifier.dart';
+import 'package:suuq/notifiers/myProfile/account_state.dart';
 import 'package:suuq/utils/enums/language.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
-class ChangeLanguagePage extends StatelessWidget {
+class ChangeLanguagePage extends ConsumerWidget {
   const ChangeLanguagePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
+    AccountLoadedState state =
+        ref.watch(accountNotifierProvider) as AccountLoadedState;
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.changeLanguage),
@@ -25,30 +30,37 @@ class ChangeLanguagePage extends StatelessWidget {
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            _buildCurrencySection(),
+            _buildLanguageSection(state, ref),
             const Spacer(),
-            AppButton(title: localizations.save, onTap: () {})
+            AppButton(
+              title: localizations.save,
+              onTap: ref
+                  .read(accountNotifierProvider.notifier)
+                  .onSaveLanguagePressed,
+            )
           ],
         ),
       ),
     );
   }
 
-  _buildCurrencySection() {
+  _buildLanguageSection(AccountLoadedState state, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildRadio(
-          Language.somali,
+          state.language,
           Language.somali,
           "Somali",
-          onChanged: (s) {},
+          onChanged:
+              ref.read(accountNotifierProvider.notifier).onChangeLanguage,
         ),
         _buildRadio(
-          Language.english,
+          state.language,
           Language.english,
           "English",
-          onChanged: (s) {},
+          onChanged:
+              ref.read(accountNotifierProvider.notifier).onChangeLanguage,
         ),
       ],
     );

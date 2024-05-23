@@ -1,3 +1,5 @@
+import 'package:suuq/utils/enums/language.dart';
+
 abstract class AccountState {}
 
 class AccountInitialState extends AccountState {}
@@ -10,6 +12,7 @@ class AccountLoadedState extends AccountState {
   final String? userPhoneNumber;
   final String? userAddress;
   final String? userAvatar;
+  final Language language;
   final DateTime userJoinedDate;
   final bool issaveButtonLoading;
   final String? newPassword;
@@ -20,8 +23,9 @@ class AccountLoadedState extends AccountState {
   AccountLoadedState({
     required this.userName,
     required this.userEmail,
-    required this.userPhoneNumber,
+    this.userPhoneNumber,
     required this.userJoinedDate,
+    required this.language,
     this.newPassword,
     this.rePassword,
     this.userAddress,
@@ -39,10 +43,12 @@ class AccountLoadedState extends AccountState {
     bool? issaveButtonLoading,
     String? newPassword,
     String? rePassword,
+    Language? language,
   }) {
     return AccountLoadedState(
       userName: userName ?? this.userName,
       userEmail: userEmail ?? this.userEmail,
+      language: language?? this.language,
       userPhoneNumber: userPhoneNumber ?? this.userPhoneNumber,
       userJoinedDate: userJoinedDate ?? this.userJoinedDate,
       userAddress: userAddress ?? this.userAddress,

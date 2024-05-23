@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq/models/user_model.dart';
+import 'package:suuq/utils/enums/language.dart';
 
 class AuthDataService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -55,9 +56,25 @@ class AuthDataService {
         .update(updatedData);
   }
 
-  Future<void> updatePhoneAndAdress(
-      {required String email, String? phoneNumber, String? address}) async {
+  Future<void> updatePhoneAndAdress({
+    required String email,
+    String? phoneNumber,
+    String? address,
+  }) async {
     final updatedData = {"phone_number": phoneNumber, "address": address};
+    await db
+        .collection('users')
+        .doc('customersDoc')
+        .collection("customers")
+        .doc(email)
+        .update(updatedData);
+  }
+
+  Future<void> updateLanguage({
+    required String email,
+    required Language language,
+  }) async {
+    final updatedData = {"language": languageToString(language)};
     await db
         .collection('users')
         .doc('customersDoc')
