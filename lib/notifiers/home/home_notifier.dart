@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq/models/cart.dart';
+import 'package:suuq/models/order.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_state.dart';
 import 'package:suuq/services/cart_data_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/services/order_data_service.dart';
 import 'package:suuq/services/product_data_service.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 import 'package:suuq/utils/pop_up_message.dart';
@@ -14,6 +16,7 @@ part 'home_notifier.g.dart';
 @Riverpod()
 class HomeNotifier extends _$HomeNotifier {
   final ProductDataService _productDataService = ProductDataService();
+  final OrderDataService _orderDataService = OrderDataService();
   final CartDataService _cartDataService = CartDataService();
 
   late String? userEmail;
@@ -26,7 +29,9 @@ class HomeNotifier extends _$HomeNotifier {
     state = HomeStateLoading();
     userEmail = FirebaseAuth.instance.currentUser?.email;
     List<Cart?> cartItems = await _cartDataService.fetchUsersCart(userEmail!);
+    List<OrderModel?> activeOrders = await _orderDataService.fetchCurrentUsersOrders(userEmail!);
     int numberItemsInCart = cartItems.length;
+    int numberActiveOrders = activeOrders.length;
     final List<Product?> homeAccessories = await _productDataService
         .fetchProductsByCategory(categoryToString(Category.homeAccessories));
     final List<Product?> electronics = await _productDataService
@@ -44,6 +49,7 @@ class HomeNotifier extends _$HomeNotifier {
 
     state = HomeStateLoaded(
       numberItemsInCart: numberItemsInCart,
+      numberActiveOrder: numberActiveOrders,
       homeAccessories: homeAccessories,
       kitchenAccessories: kitchenAccessories,
       electronics: electronics,

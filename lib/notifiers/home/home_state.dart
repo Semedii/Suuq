@@ -8,6 +8,7 @@ class HomeStateLoading extends HomeState {}
 
 class HomeStateLoaded extends HomeState {
   final int numberItemsInCart;
+  final int numberActiveOrder;
   final List<Product?> homeAccessories;
   final List<Product?> electronics;
   final List<Product?> kitchenAccessories;
@@ -18,6 +19,7 @@ class HomeStateLoaded extends HomeState {
 
   HomeStateLoaded({
     this.numberItemsInCart = 0,
+    this.numberActiveOrder=0,
     this.homeAccessories = const [],
     this.electronics = const [],
     this.kitchenAccessories = const [],
