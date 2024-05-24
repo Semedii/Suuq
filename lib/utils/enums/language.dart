@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum Language {
   somali,
   english,
@@ -22,3 +24,24 @@ String languageToString(Language language) {
       return 'english';
   }
 }
+
+Locale languageToLocale(Language language) {
+  switch (language) {
+    case Language.somali:
+      return const Locale('es');
+    case Language.english:
+      return const Locale('en');
+  }
+}
+
+Language localeToString(Locale locale) {
+  switch (locale.languageCode) {
+    case 'es':
+      return Language.somali;
+    case 'en':
+      return Language.english;
+    default:
+      return Language.somali;
+  }
+}
+

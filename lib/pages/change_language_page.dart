@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
+import 'package:suuq/my_app.dart';
 import 'package:suuq/notifiers/myProfile/account_notifier.dart';
 import 'package:suuq/notifiers/myProfile/account_state.dart';
 import 'package:suuq/utils/enums/language.dart';
@@ -34,10 +35,10 @@ class ChangeLanguagePage extends ConsumerWidget {
             const Spacer(),
             AppButton(
               title: localizations.save,
-              onTap: ()=> ref
-                  .read(accountNotifierProvider.notifier)
-                  .onSaveLanguagePressed(localizations.successfullyUpdated),
-            )
+              onTap: () => ref
+                  .read(languageNotifierProvider.notifier)
+                  .setLocale(languageToLocale(state.language), localizations),
+            ),
           ],
         ),
       ),
