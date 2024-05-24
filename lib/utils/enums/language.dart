@@ -34,7 +34,7 @@ Locale languageToLocale(Language language) {
   }
 }
 
-Language localeToString(Locale locale) {
+Language localeToLangugae(Locale locale) {
   switch (locale.languageCode) {
     case 'es':
       return Language.somali;
@@ -42,6 +42,17 @@ Language localeToString(Locale locale) {
       return Language.english;
     default:
       return Language.somali;
+  }
+}
+
+String localeToString(Locale locale){
+   switch (locale.languageCode) {
+    case 'es':
+      return "So";
+    case 'en':
+      return "En";
+    default:
+      return "So";
   }
 }
 

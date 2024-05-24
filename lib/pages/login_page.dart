@@ -2,11 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_textfield.dart';
+import 'package:suuq/my_app.dart';
 import 'package:suuq/notifiers/login/login_notifier.dart';
 import 'package:suuq/notifiers/login/login_state.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:suuq/utils/enums/language.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 import 'package:suuq/utils/string_utilities.dart';
 
@@ -20,10 +23,15 @@ class LoginPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var loginState = ref.watch(loginInNotifierProvider);
     AppLocalizations localizations = AppLocalizations.of(context)!;
+    Locale selectedLanguage =
+        ref.read(languageNotifierProvider.notifier).locale;
     return Scaffold(
       appBar: AppBar(
         bottom: _getAppBarBottom(),
         title: Text(localizations.login),
+        actions: [
+           _buildLanguageButton(ref, selectedLanguage),
+        ],
       ),
       body: mapStateToWidget(context, ref, loginState),
     );
@@ -43,6 +51,26 @@ class LoginPage extends ConsumerWidget {
           _getLoginButton(localizations, ref),
           _getSignupButton(localizations, context)
         ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageButton(WidgetRef ref, Locale selectedLanguage) {
+    return Padding(
+      padding: AppStyles.edgeInsetsR16,
+      child: TextButton(
+        onPressed:
+            ref.read(languageNotifierProvider.notifier).changeLanguageLogin,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(AppColors.lightGrey),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+        ),
+        child: Text(
+          localeToString(selectedLanguage),
+          style: const TextStyle(fontSize: 16),
+        ),
       ),
     );
   }
@@ -113,7 +141,8 @@ class LoginPage extends ConsumerWidget {
   AppButton _getLoginButton(AppLocalizations localizations, WidgetRef ref) {
     return AppButton(
       title: localizations.login,
-      onTap:()=> ref.read(loginInNotifierProvider.notifier).handleLogin(localizations),
+      onTap: () =>
+          ref.read(loginInNotifierProvider.notifier).handleLogin(localizations),
     );
   }
 
