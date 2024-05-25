@@ -31,14 +31,14 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   initPage() async {
     state = CheckoutLoadingState();
     userEmail = FirebaseAuth.instance.currentUser?.email;
-    user = await _authDataService.fetchCurrentUser(userEmail!);
+    UserModel? user = await _authDataService.fetchCurrentUser(userEmail!);
     final MerchantData merchantData =
         await _merchantDataService.fetchMerchantData();
     state = CheckoutLoadedState(
         zaadNumber: merchantData.zaadNumber,
         edahabNumber: merchantData.edahabNumber,
         exchangeRate: merchantData.exchangeRate,
-        deliveryAddress: user.address,
+        deliveryAddress: user!.address,
         sendersName: user.name,
         sendersPhone: user.phoneNumber,
         currency: Currency.shilling);

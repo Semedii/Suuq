@@ -5,19 +5,24 @@ import 'package:suuq/utils/enums/language.dart';
 class AuthDataService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<UserModel> fetchCurrentUser(String email) async {
-    final collectionRef = db
-        .collectionGroup("customers")
-        .where('email', isEqualTo: email.toLowerCase())
-        .withConverter(
-          fromFirestore: (snapshot, option) =>
-              UserModel.fromFirestore(snapshot: snapshot),
-          toFirestore: (userModel, _) => UserModel().toFirestore(),
-        );
+  Future<UserModel?> fetchCurrentUser(String email) async {
+    try {
+      final collectionRef = db
+          .collectionGroup("customers")
+          .where('email', isEqualTo: email.toLowerCase())
+          .withConverter(
+            fromFirestore: (snapshot, option) =>
+                UserModel.fromFirestore(snapshot: snapshot),
+            toFirestore: (userModel, _) => UserModel().toFirestore(),
+          );
 
-    final querySnapshot = await collectionRef.get();
-    UserModel user = querySnapshot.docs.map((doc) => doc.data()).first;
-    return user;
+      final querySnapshot = await collectionRef.get();
+      UserModel user = querySnapshot.docs.map((doc) => doc.data()).first;
+      return user;
+    } catch (e) {
+      print("error happened $e");
+    }
+    return null;
   }
 
   Future<void> addNewUser(UserModel user) async {

@@ -21,9 +21,9 @@ class AccountNotifier extends _$AccountNotifier {
 
   initPage() async {
     final String? userEmail = FirebaseAuth.instance.currentUser?.email;
-    final UserModel user = await _authDataService.fetchCurrentUser(userEmail!);
+    final UserModel? user = await _authDataService.fetchCurrentUser(userEmail!);
     state = AccountLoadedState(
-        userName: user.name!,
+        userName: user!.name!,
         userEmail: user.email!,
         language: user.language,
         userPhoneNumber: user.phoneNumber,
