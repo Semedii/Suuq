@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:suuq/models/product.dart';
@@ -28,8 +26,8 @@ class ProductCard extends StatelessWidget {
             children: [
               isImageAvailable
                   ? Expanded(
-                      child: Image.memory(
-                        base64Decode(product.imageUrl.first ?? ""),
+                      child: Image.network(
+                        product.imageUrl.first!,
                         fit: BoxFit.cover,
                       ),
                     )

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -110,8 +108,8 @@ class _ProductPageState extends State<ProductPage> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.6,
                   child: isImageAvailable
-                      ? Image.memory(
-                          base64Decode(url ?? ''),
+                      ? Image.network(
+                          url!,
                           height: 200,
                           width: 150,
                           fit: BoxFit.cover,

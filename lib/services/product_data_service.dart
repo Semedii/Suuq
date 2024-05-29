@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq/models/product.dart';
+import 'package:suuq/services/image_data_service.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 
 class ProductDataService {
@@ -47,7 +48,18 @@ class ProductDataService {
       final querySnapshot = await collectionRef.get();
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      return products;
+      final List<Product> productsWithImages = [];
+      for (Product product in products) {
+        List<String> newImageUrls = [];
+        for (String? imageUrl in product.imageUrl) {
+          var newImageUrl =
+              await ImageDataService().retrieveImageUrl(category, imageUrl);
+          newImageUrls.add(newImageUrl);
+        }
+        product = product.copyWith(imageUrl: newImageUrls);
+        productsWithImages.add(product);
+      }
+      return productsWithImages;
     } catch (e) {
       print("Error fetching products: $e");
       return [];

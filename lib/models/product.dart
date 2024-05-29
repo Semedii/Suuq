@@ -64,4 +64,15 @@ class Product {
     );
   }
 
+   Product copyWith({List<String?>? imageUrl}) {
+    return Product(
+      id: id,
+      sellerName: sellerName,
+      imageUrl: imageUrl ??[],
+      description: description,
+      price: price,
+      category: category,
+    );
+  }
+
 }
