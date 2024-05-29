@@ -21,7 +21,6 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   final OrderDataService _orderDataService = OrderDataService();
   final CartDataService _cartDataService = CartDataService();
 
-  late UserModel user;
   late String? userEmail;
   @override
   CheckoutState build() {
@@ -80,10 +79,11 @@ class CheckoutNotifier extends _$CheckoutNotifier {
 
   onPaymentSent(List<CartProduct?> cartProductList, double totalPrice) async {
     var lastState = state as CheckoutLoadedState;
+    UserModel? user = await _authDataService.fetchCurrentUser(userEmail!);
     final newOrder = OrderModel(
       sellerName: cartProductList.first?.sellerName,
       sendersPhone: lastState.sendersPhone!,
-      customer: user,
+      customer: user!,
       address: lastState.deliveryAddress!,
       orderedDate: DateTime.now(),
       cartProducts: cartProductList,
