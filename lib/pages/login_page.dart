@@ -22,36 +22,65 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var loginState = ref.watch(loginInNotifierProvider);
-    AppLocalizations localizations = AppLocalizations.of(context)!;
     Locale selectedLanguage =
         ref.read(languageNotifierProvider.notifier).locale;
     return Scaffold(
-      appBar: AppBar(
-        bottom: _getAppBarBottom(),
-        title: Text(localizations.login),
-        actions: [
-           _buildLanguageButton(ref, selectedLanguage),
-        ],
-      ),
       body: mapStateToWidget(context, ref, loginState),
     );
   }
 
-  SingleChildScrollView _buildLoginForm(
+  Stack _buildLoginForm(
       BuildContext context, WidgetRef ref, LoginInitialState loginState) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _getEmailField(loginState, localizations, ref),
-          _getPasswordField(loginState, localizations, ref),
-          _getForgotPasswordText(localizations),
-          _getLoginButton(localizations, ref),
-          _getSignupButton(localizations, context)
-        ],
-      ),
+    Size size = MediaQuery.of(context).size;
+    return Stack(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: AppColors.lightGrey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: AppStyles.edgeInsetsT16,
+                child: Image.asset(
+                  "assets/images/lll.png",
+                  height: MediaQuery.of(context).size.height * .2,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: size.height * .2,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: AppStyles.edgeInsetsV24,
+              height: size.height * .8,
+              width: size.width,
+              decoration: const BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _getEmailField(loginState, localizations, ref),
+                  _getPasswordField(loginState, localizations, ref),
+                  _getForgotPasswordText(localizations),
+                  const Spacer(),
+                  _getLoginButton(localizations, ref),
+                  _getSignupButton(localizations, context)
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
