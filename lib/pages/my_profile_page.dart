@@ -58,7 +58,7 @@ class MyProfilePage extends ConsumerWidget {
   Container _buildHeader(BuildContext context, String? name) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * .4,
+      height: MediaQuery.of(context).size.height * .3,
       decoration: _buildHeaderDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -78,8 +78,8 @@ class MyProfilePage extends ConsumerWidget {
     return BoxDecoration(
       color: AppColors.lighterGrey,
       borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(80),
-        bottomRight: Radius.circular(80),
+        bottomLeft: Radius.circular(12),
+        bottomRight: Radius.circular(12),
       ),
     );
   }
@@ -101,10 +101,10 @@ class MyProfilePage extends ConsumerWidget {
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Positioned(
-        top: MediaQuery.of(context).size.height * .42,
+        top: MediaQuery.of(context).size.height * .3,
         bottom: 20,
         child: SizedBox(
-          height: MediaQuery.of(context).size.height * .6,
+          height: MediaQuery.of(context).size.height * .7,
           width: MediaQuery.of(context).size.width,
           child: Scrollbar(
             child: SingleChildScrollView(
