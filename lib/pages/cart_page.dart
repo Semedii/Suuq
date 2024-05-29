@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -155,7 +153,7 @@ class CartPage extends ConsumerWidget {
   Text _buildTotalText(BuildContext context) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Text(
-      localizations.total+StringUtilities.colon,
+      localizations.total + StringUtilities.colon,
       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
     );
   }
@@ -181,10 +179,7 @@ class CartPage extends ConsumerWidget {
     return SizedBox(
       width: 100,
       height: 130,
-      child: Image.memory(
-        base64Decode(imageUrl),
-        fit: BoxFit.cover,
-      ),
+      child: Image.network(imageUrl, fit: BoxFit.cover),
     );
   }
 

@@ -34,7 +34,14 @@ class ProductDataService {
     final querySnapshot = await collectionRef.get();
     final prodData =
         querySnapshot.docs.firstWhere((element) => element.id == id);
-    return prodData.data();
+    List<String> newImageUrls = [];
+    for (String? imageUrl in prodData.data().imageUrl) {
+      var newImageUrl =
+          await ImageDataService().retrieveImageUrl(stirngCategory, imageUrl);
+      newImageUrls.add(newImageUrl);
+    }
+    Product product = prodData.data().copyWith(imageUrl: newImageUrls);
+    return product;
   }
 
   Future<List<Product?>> fetchProductsByCategory(String category) async {
