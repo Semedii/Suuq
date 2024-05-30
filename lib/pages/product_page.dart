@@ -65,7 +65,7 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _buildBottomBar() {
     return Consumer(builder: (context, ref, _) {
-       AppLocalizations localizations = AppLocalizations.of(context)!;
+      AppLocalizations localizations = AppLocalizations.of(context)!;
       return Container(
         padding: const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 4),
         color: AppColors.lightestGrey,
@@ -80,11 +80,15 @@ class _ProductPageState extends State<ProductPage> {
                   onTap: () => AutoRouter.of(context).push(CheckOutRoute(
                       totalAmount: widget.product.price,
                       cartProductList: [
-                        CartProduct.mapProductToCartProduct(product: widget.product)
+                        CartProduct.mapProductToCartProduct(
+                            product: widget.product)
                       ])),
                 ),
-                _buildButton(localizations.addToCart, isTransparent: true, onTap: () {
-                  ref.read(homeNotifierProvider.notifier).addToCart(widget.product, localizations);
+                _buildButton(localizations.addToCart, isTransparent: true,
+                    onTap: () {
+                  ref
+                      .read(homeNotifierProvider.notifier)
+                      .addToCart(widget.product, localizations);
                 }),
               ],
             ),
@@ -113,6 +117,7 @@ class _ProductPageState extends State<ProductPage> {
                           height: 200,
                           width: 150,
                           fit: BoxFit.cover,
+                          loadingBuilder: _imageNetworkLoadingBuilder,
                         )
                       : Image.asset(
                           "assets/images/noImageAvailable.jpeg",
@@ -257,5 +262,21 @@ class _ProductPageState extends State<ProductPage> {
         ),
       ),
     );
+  }
+
+  Widget _imageNetworkLoadingBuilder(
+    BuildContext context,
+    Widget child,
+    ImageChunkEvent? loadingProgress,
+  ) {
+    if (loadingProgress == null) {
+      return child;
+    } else {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.black,
+        ),
+      );
+    }
   }
 }

@@ -29,6 +29,7 @@ class ProductCard extends StatelessWidget {
                       child: Image.network(
                         product.imageUrl.first!,
                         fit: BoxFit.cover,
+                        loadingBuilder: _imageNetworkLoadingBuilder,
                       ),
                     )
                   : Image.asset(
@@ -77,5 +78,21 @@ class ProductCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _imageNetworkLoadingBuilder(
+    BuildContext context,
+    Widget child,
+    ImageChunkEvent? loadingProgress,
+  ) {
+    if (loadingProgress == null) {
+      return child;
+    } else {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.black,
+        ),
+      );
+    }
   }
 }

@@ -179,7 +179,11 @@ class CartPage extends ConsumerWidget {
     return SizedBox(
       width: 100,
       height: 130,
-      child: Image.network(imageUrl, fit: BoxFit.cover),
+      child: Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        loadingBuilder: _imageNetworkLoadingBuilder,
+      ),
     );
   }
 
@@ -287,5 +291,21 @@ class CartPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Widget _imageNetworkLoadingBuilder(
+    BuildContext context,
+    Widget child,
+    ImageChunkEvent? loadingProgress,
+  ) {
+    if (loadingProgress == null) {
+      return child;
+    } else {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.black,
+        ),
+      );
+    }
   }
 }
