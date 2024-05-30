@@ -38,9 +38,10 @@ class FieldValidators {
   }
 
   static String? checkbox(bool? value, AppLocalizations localizations) {
-    if (value != null || value == false) {
+    if (value == null || value == false) {
       return localizations.termsValidation;
+    } else {
+      return null;
     }
-    return null;
   }
 }

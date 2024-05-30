@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
-import 'package:suuq/components/app_checkbox.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/notifiers/signup/signup_notifier.dart';
 import 'package:suuq/notifiers/signup/signup_state.dart';
@@ -90,6 +90,7 @@ class SignupPage extends ConsumerWidget {
 
   Form _getTextFields(
       WidgetRef ref, AppLocalizations localizations, SignupStateInitial state) {
+    print("aaaaa ${state.isAgreed}");
     return Form(
       key: _formKey,
       child: Column(
@@ -151,17 +152,17 @@ class SignupPage extends ConsumerWidget {
             validator: (value1) =>
                 FieldValidators.match(value1, state.password, localizations),
           ),
-          AppCheckBox(
-            title: _getTermsAndConditionsTitle(localizations),
-            value: state.isAgreed,
-            onChanged: (value) {
-              ref
-                  .read(signupNotifierProvider.notifier)
-                  .onIsAgreedChanged(value);
-            },
-            validator: (value) {
-                FieldValidators.checkbox(value, localizations);}
-          ),
+          FormBuilderCheckbox(
+              initialValue: state.isAgreed,
+              name: "terms",
+              onChanged: (value) {
+                ref.read(signupNotifierProvider.notifier).onIsAgreedChanged(
+                      value,
+                    );
+              },
+              title: _getTermsAndConditionsTitle(localizations),
+              validator: (value) =>
+                  FieldValidators.checkbox(value, localizations)),
         ],
       ),
     );
