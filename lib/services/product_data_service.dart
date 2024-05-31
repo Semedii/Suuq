@@ -44,10 +44,10 @@ class ProductDataService {
     return product;
   }
 
-  Future<List<Product?>> fetchProductsByCategory(String category) async {
+  Future<List<Product?>> fetchHomePageProducts(String category) async {
     try {
       final collectionRef =
-          db.collectionGroup(category.toLowerCase()).withConverter(
+          db.collectionGroup(category.toLowerCase()).limit(10).withConverter(
                 fromFirestore: Product.fromFirestore,
                 toFirestore: (product, _) => product.toFirestore(),
               );

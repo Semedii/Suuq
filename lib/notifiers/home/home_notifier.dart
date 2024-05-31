@@ -34,13 +34,13 @@ initPage() async {
   var activeOrdersFuture = _orderDataService.fetchCurrentUsersOrders(userEmail!);
 
   // Fetch products for different categories concurrently
-  var homeAccessoriesFuture = _productDataService.fetchProductsByCategory(categoryToString(Category.homeAccessories));
-  var electronicsFuture = _productDataService.fetchProductsByCategory(categoryToString(Category.electronics));
-  var kitchenAccessoriesFuture = _productDataService.fetchProductsByCategory(categoryToString(Category.kitchenAccessories));
-  var shoesFuture = _productDataService.fetchProductsByCategory(categoryToString(Category.shoes));
-  var cosmeticsFuture = _productDataService.fetchProductsByCategory(categoryToString(Category.cosmetics));
-  var clothesFuture = _productDataService.fetchProductsByCategory(categoryToString(Category.clothes));
-  var gymAccessoriesFuture = _productDataService.fetchProductsByCategory(categoryToString(Category.gymAccessories));
+  var homeAccessoriesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.homeAccessories));
+  var electronicsFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.electronics));
+  var kitchenAccessoriesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.kitchenAccessories));
+  var shoesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.shoes));
+  var cosmeticsFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.cosmetics));
+  var clothesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.clothes));
+  var gymAccessoriesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.gymAccessories));
 
   // Wait for all futures to complete
   List<Cart?> cartItems = await cartItemsFuture;

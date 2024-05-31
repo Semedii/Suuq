@@ -10,7 +10,7 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
   initPage(String category) async {
     state = CategoryLoadingState();
     List<Product?> products =
-        await _productDataService.fetchProductsByCategory(category);
+        await _productDataService.fetchHomePageProducts(category);
     state = CategoryLoadedState(products: products);
   }
 }
