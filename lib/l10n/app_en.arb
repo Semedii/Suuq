@@ -23,6 +23,7 @@
   "electronics": "Electronics",
   "email": "Email",
   "emailAlreadyInUse": "This email is already in-use",
+  "end": "End",
   "enterDeliveryAddress": "Please enter the delivery address",
   "enterNewPasswordAgain": "Enter your new password again",
   "enterPinExplanation": "Please enter your pin and click the button below once it is sent so we can recieve you order.",

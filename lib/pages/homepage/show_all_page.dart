@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq/notifiers/category/category_notifier.dart';
 import 'package:suuq/notifiers/category/category_state.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:suuq/utils/string_utilities.dart';
 
 @RoutePage()
 class CategoryPage extends ConsumerWidget {
@@ -47,6 +48,7 @@ class CategoryPage extends ConsumerWidget {
   }
 
   Padding _buildPageBody(BuildContext context, CategoryLoadedState state) {
+     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: CustomScrollView(
@@ -73,6 +75,16 @@ class CategoryPage extends ConsumerWidget {
                   padding: AppStyles.edgeInsetsB24,
                   child: const Center(
                     child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            },
+            if(state.noMoreToFetch)...{
+               SliverToBoxAdapter(
+                child: Padding(
+                  padding: AppStyles.edgeInsetsB24,
+                  child:  Center(
+                    child: Text(localizations.end+StringUtilities.exclamationMark),
                   ),
                 ),
               ),

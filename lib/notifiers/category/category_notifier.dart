@@ -16,18 +16,24 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
     state = CategoryLoadedState(products: products);
   }
 
-
   fetchNextBach(String category) async {
-    if (_isFetching) return; 
-     _isFetching = true;
+    if (_isFetching) return;
+    _isFetching = true;
     var lastState = state as CategoryLoadedState;
     state = lastState.copyWith(fetchingNextData: true);
-    List<Product?> products =
-        await _productDataService.fetchNextBatchProducts(category, lastState.products.last!);
-    state = CategoryLoadedState(products: lastState.products..addAll(products), fetchingNextData: false);
+    List<Product?> products = await _productDataService.fetchNextBatchProducts(
+        category, lastState.products.last!);
+    if (products.isEmpty || products.length < 20) {
+      state = lastState.copyWith(noMoreToFetch: true);
+    }
+    state = CategoryLoadedState(
+      products: lastState.products..addAll(products),
+      fetchingNextData: false,
+    );
     _isFetching = false;
   }
 }
+
 final categoryNotifierProvider =
     StateNotifierProvider.autoDispose<CategoryNotifier, CategoryState>(
         (ref) => CategoryNotifier());
