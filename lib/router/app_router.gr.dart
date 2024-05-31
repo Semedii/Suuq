@@ -18,7 +18,7 @@ import 'package:suuq/pages/change_password_page.dart' as _i5;
 import 'package:suuq/pages/checkout_page/check_out_page.dart' as _i6;
 import 'package:suuq/pages/checkout_page/confirmation_page.dart' as _i7;
 import 'package:suuq/pages/homepage/home_page.dart' as _i8;
-import 'package:suuq/pages/homepage/show_all_page.dart' as _i3;
+import 'package:suuq/pages/homepage/category_page.dart' as _i3;
 import 'package:suuq/pages/login_page.dart' as _i9;
 import 'package:suuq/pages/main_page.dart' as _i10;
 import 'package:suuq/pages/order_history_page.dart' as _i11;
