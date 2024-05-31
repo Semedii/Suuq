@@ -11,6 +11,7 @@ import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/utils/enums/category_enum.dart';
 
 @RoutePage()
 class HomePage extends ConsumerWidget {
@@ -99,7 +100,7 @@ class HomePage extends ConsumerWidget {
               ),
               GestureDetector(
                 onTap: () => AutoRouter.of(context).push(
-                    ShowAllRoute(categoryName: nicheName, products: products)),
+                    CategoryRoute(categoryName: categoryToString(products.first!.category))),
                 child: Text(
                   localizations.showAll,
                   style: const TextStyle(

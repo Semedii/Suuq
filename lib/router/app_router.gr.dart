@@ -13,17 +13,17 @@ import 'package:flutter/material.dart' as _i17;
 import 'package:suuq/models/cart_product.dart' as _i18;
 import 'package:suuq/models/product.dart' as _i19;
 import 'package:suuq/pages/cart_page.dart' as _i2;
-import 'package:suuq/pages/change_language_page.dart' as _i3;
-import 'package:suuq/pages/change_password_page.dart' as _i4;
-import 'package:suuq/pages/checkout_page/check_out_page.dart' as _i5;
-import 'package:suuq/pages/checkout_page/confirmation_page.dart' as _i6;
-import 'package:suuq/pages/homepage/home_page.dart' as _i7;
-import 'package:suuq/pages/homepage/show_all_page.dart' as _i13;
-import 'package:suuq/pages/login_page.dart' as _i8;
-import 'package:suuq/pages/main_page.dart' as _i9;
-import 'package:suuq/pages/order_history_page.dart' as _i10;
-import 'package:suuq/pages/personal_information_page.dart' as _i11;
-import 'package:suuq/pages/product_page.dart' as _i12;
+import 'package:suuq/pages/change_language_page.dart' as _i4;
+import 'package:suuq/pages/change_password_page.dart' as _i5;
+import 'package:suuq/pages/checkout_page/check_out_page.dart' as _i6;
+import 'package:suuq/pages/checkout_page/confirmation_page.dart' as _i7;
+import 'package:suuq/pages/homepage/home_page.dart' as _i8;
+import 'package:suuq/pages/homepage/show_all_page.dart' as _i3;
+import 'package:suuq/pages/login_page.dart' as _i9;
+import 'package:suuq/pages/main_page.dart' as _i10;
+import 'package:suuq/pages/order_history_page.dart' as _i11;
+import 'package:suuq/pages/personal_information_page.dart' as _i12;
+import 'package:suuq/pages/product_page.dart' as _i13;
 import 'package:suuq/pages/signup_page.dart' as _i14;
 import 'package:suuq/pages/welcome_page.dart' as _i15;
 import 'package:suuq/router/authentication_wrapper.dart' as _i1;
@@ -45,10 +45,20 @@ abstract class $AppRouter extends _i16.RootStackRouter {
         child: const _i2.CartPage(),
       );
     },
+    CategoryRoute.name: (routeData) {
+      final args = routeData.argsAs<CategoryRouteArgs>();
+      return _i16.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i3.CategoryPage(
+          categoryName: args.categoryName,
+          key: args.key,
+        ),
+      );
+    },
     ChangeLanguageRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.ChangeLanguagePage(),
+        child: const _i4.ChangeLanguagePage(),
       );
     },
     ChangePasswordRoute.name: (routeData) {
@@ -56,14 +66,14 @@ abstract class $AppRouter extends _i16.RootStackRouter {
           orElse: () => const ChangePasswordRouteArgs());
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i4.ChangePasswordPage(key: args.key),
+        child: _i5.ChangePasswordPage(key: args.key),
       );
     },
     CheckOutRoute.name: (routeData) {
       final args = routeData.argsAs<CheckOutRouteArgs>();
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i5.CheckOutPage(
+        child: _i6.CheckOutPage(
           key: args.key,
           cartProductList: args.cartProductList,
           totalAmount: args.totalAmount,
@@ -73,31 +83,31 @@ abstract class $AppRouter extends _i16.RootStackRouter {
     ConfirmationRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i6.ConfirmationPage(),
+        child: const _i7.ConfirmationPage(),
       );
     },
     HomeRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i7.HomePage(),
+        child: const _i8.HomePage(),
       );
     },
     LoginRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.LoginPage(),
+        child: const _i9.LoginPage(),
       );
     },
     MainRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i9.MainPage(),
+        child: const _i10.MainPage(),
       );
     },
     OrderHistoryRoute.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.OrderHistoryPage(),
+        child: const _i11.OrderHistoryPage(),
       );
     },
     PersonalInformationRoute.name: (routeData) {
@@ -105,26 +115,15 @@ abstract class $AppRouter extends _i16.RootStackRouter {
           orElse: () => const PersonalInformationRouteArgs());
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i11.PersonalInformationPage(key: args.key),
+        child: _i12.PersonalInformationPage(key: args.key),
       );
     },
     ProductRoute.name: (routeData) {
       final args = routeData.argsAs<ProductRouteArgs>();
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i12.ProductPage(
+        child: _i13.ProductPage(
           args.product,
-          key: args.key,
-        ),
-      );
-    },
-    ShowAllRoute.name: (routeData) {
-      final args = routeData.argsAs<ShowAllRouteArgs>();
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i13.ShowAllPage(
-          categoryName: args.categoryName,
-          products: args.products,
           key: args.key,
         ),
       );
@@ -177,7 +176,45 @@ class CartRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.ChangeLanguagePage]
+/// [_i3.CategoryPage]
+class CategoryRoute extends _i16.PageRouteInfo<CategoryRouteArgs> {
+  CategoryRoute({
+    required String categoryName,
+    _i17.Key? key,
+    List<_i16.PageRouteInfo>? children,
+  }) : super(
+          CategoryRoute.name,
+          args: CategoryRouteArgs(
+            categoryName: categoryName,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CategoryRoute';
+
+  static const _i16.PageInfo<CategoryRouteArgs> page =
+      _i16.PageInfo<CategoryRouteArgs>(name);
+}
+
+class CategoryRouteArgs {
+  const CategoryRouteArgs({
+    required this.categoryName,
+    this.key,
+  });
+
+  final String categoryName;
+
+  final _i17.Key? key;
+
+  @override
+  String toString() {
+    return 'CategoryRouteArgs{categoryName: $categoryName, key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i4.ChangeLanguagePage]
 class ChangeLanguageRoute extends _i16.PageRouteInfo<void> {
   const ChangeLanguageRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -191,7 +228,7 @@ class ChangeLanguageRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.ChangePasswordPage]
+/// [_i5.ChangePasswordPage]
 class ChangePasswordRoute extends _i16.PageRouteInfo<ChangePasswordRouteArgs> {
   ChangePasswordRoute({
     _i17.Key? key,
@@ -220,7 +257,7 @@ class ChangePasswordRouteArgs {
 }
 
 /// generated route for
-/// [_i5.CheckOutPage]
+/// [_i6.CheckOutPage]
 class CheckOutRoute extends _i16.PageRouteInfo<CheckOutRouteArgs> {
   CheckOutRoute({
     _i17.Key? key,
@@ -263,7 +300,7 @@ class CheckOutRouteArgs {
 }
 
 /// generated route for
-/// [_i6.ConfirmationPage]
+/// [_i7.ConfirmationPage]
 class ConfirmationRoute extends _i16.PageRouteInfo<void> {
   const ConfirmationRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -277,7 +314,7 @@ class ConfirmationRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.HomePage]
+/// [_i8.HomePage]
 class HomeRoute extends _i16.PageRouteInfo<void> {
   const HomeRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -291,7 +328,7 @@ class HomeRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.LoginPage]
+/// [_i9.LoginPage]
 class LoginRoute extends _i16.PageRouteInfo<void> {
   const LoginRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -305,7 +342,7 @@ class LoginRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.MainPage]
+/// [_i10.MainPage]
 class MainRoute extends _i16.PageRouteInfo<void> {
   const MainRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -319,7 +356,7 @@ class MainRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.OrderHistoryPage]
+/// [_i11.OrderHistoryPage]
 class OrderHistoryRoute extends _i16.PageRouteInfo<void> {
   const OrderHistoryRoute({List<_i16.PageRouteInfo>? children})
       : super(
@@ -333,7 +370,7 @@ class OrderHistoryRoute extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.PersonalInformationPage]
+/// [_i12.PersonalInformationPage]
 class PersonalInformationRoute
     extends _i16.PageRouteInfo<PersonalInformationRouteArgs> {
   PersonalInformationRoute({
@@ -363,7 +400,7 @@ class PersonalInformationRouteArgs {
 }
 
 /// generated route for
-/// [_i12.ProductPage]
+/// [_i13.ProductPage]
 class ProductRoute extends _i16.PageRouteInfo<ProductRouteArgs> {
   ProductRoute({
     required _i19.Product product,
@@ -397,49 +434,6 @@ class ProductRouteArgs {
   @override
   String toString() {
     return 'ProductRouteArgs{product: $product, key: $key}';
-  }
-}
-
-/// generated route for
-/// [_i13.ShowAllPage]
-class ShowAllRoute extends _i16.PageRouteInfo<ShowAllRouteArgs> {
-  ShowAllRoute({
-    required String categoryName,
-    required List<_i19.Product?> products,
-    _i17.Key? key,
-    List<_i16.PageRouteInfo>? children,
-  }) : super(
-          ShowAllRoute.name,
-          args: ShowAllRouteArgs(
-            categoryName: categoryName,
-            products: products,
-            key: key,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'ShowAllRoute';
-
-  static const _i16.PageInfo<ShowAllRouteArgs> page =
-      _i16.PageInfo<ShowAllRouteArgs>(name);
-}
-
-class ShowAllRouteArgs {
-  const ShowAllRouteArgs({
-    required this.categoryName,
-    required this.products,
-    this.key,
-  });
-
-  final String categoryName;
-
-  final List<_i19.Product?> products;
-
-  final _i17.Key? key;
-
-  @override
-  String toString() {
-    return 'ShowAllRouteArgs{categoryName: $categoryName, products: $products, key: $key}';
   }
 }
 
