@@ -114,9 +114,7 @@ class _ProductPageState extends State<ProductPage> {
                   child: isImageAvailable
                       ? Image.network(
                           url!,
-                          height: 200,
-                          width: 150,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           loadingBuilder: _imageNetworkLoadingBuilder,
                         )
                       : Image.asset(
