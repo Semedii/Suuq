@@ -112,11 +112,14 @@ class _ProductPageState extends State<ProductPage> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.6,
                   child: isImageAvailable
-                      ? Image.network(
-                          url!,
-                          fit: BoxFit.contain,
-                          loadingBuilder: _imageNetworkLoadingBuilder,
-                        )
+                      ? InkWell(
+                        onTap: ()=>AutoRouter.of(context).push(FullPhotoRoute(imageUrl: url)),
+                        child: Image.network(
+                            url!,
+                            fit: BoxFit.contain,
+                            loadingBuilder: _imageNetworkLoadingBuilder,
+                          ),
+                      )
                       : Image.asset(
                           "assets/images/noImageAvailable.jpeg",
                           height: 200,
