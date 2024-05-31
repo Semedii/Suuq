@@ -2,18 +2,27 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/product_card.dart';
-import 'package:suuq/models/product.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq/notifiers/category/category_notifier.dart';
 import 'package:suuq/notifiers/category/category_state.dart';
+import 'package:suuq/utils/app_styles.dart';
 
 @RoutePage()
 class CategoryPage extends ConsumerWidget {
-  const CategoryPage({required this.categoryName, super.key});
+  CategoryPage({required this.categoryName, super.key});
   final String categoryName;
 
+  final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    scrollController.addListener(() {
+      double maxScroll = scrollController.position.maxScrollExtent;
+      double currentScroll = scrollController.position.pixels;
+      double delta = MediaQuery.of(context).size.width * .2;
+      if (maxScroll - currentScroll <= delta) {
+        ref.read(categoryNotifierProvider.notifier).fetchNextBach(categoryName);
+      }
+    });
     final state = ref.watch(categoryNotifierProvider);
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
@@ -30,17 +39,18 @@ class CategoryPage extends ConsumerWidget {
         ref.read(categoryNotifierProvider.notifier).initPage(categoryName);
       });
     } else if (state is CategoryLoadedState) {
-      return _buildPageBody(context, state.products);
+      return _buildPageBody(context, state);
     }
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Padding _buildPageBody(BuildContext context, List<Product?> products) {
+  Padding _buildPageBody(BuildContext context, CategoryLoadedState state) {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: CustomScrollView(
+          controller: scrollController,
           slivers: [
             SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -50,13 +60,23 @@ class CategoryPage extends ConsumerWidget {
                 childAspectRatio: 0.7,
               ),
               delegate: SliverChildBuilderDelegate((context, index) {
-                final product = products[index];
+                final product = state.products[index];
                 if (product != null) {
                   return ProductCard(product: product);
                 }
                 return const Text("no items found");
-              }, childCount: products.length),
-            )
+              }, childCount: state.products.length),
+            ),
+            if (state.fetchingNextData) ...{
+               SliverToBoxAdapter(
+                child: Padding(
+                  padding: AppStyles.edgeInsetsB24,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            }
           ],
         ));
   }

@@ -6,6 +6,8 @@ import 'package:suuq/utils/enums/category_enum.dart';
 class ProductDataService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  late DocumentSnapshot lastDocument;
+
   Future<List<Product>?> fetchAllProducts() async {
     try {
       final collectionRef = db.collection("products").withConverter(
@@ -46,13 +48,21 @@ class ProductDataService {
 
   Future<List<Product?>> fetchHomePageProducts(String category) async {
     try {
-      final collectionRef =
-          db.collectionGroup(category.toLowerCase()).limit(10).withConverter(
-                fromFirestore: Product.fromFirestore,
-                toFirestore: (product, _) => product.toFirestore(),
-              );
+      final collectionRef = db
+          .collectionGroup(category.toLowerCase())
+          .limit(10)
+          .orderBy(FieldPath.documentId);
 
-      final querySnapshot = await collectionRef.get();
+      var query = await collectionRef.get();
+      lastDocument = query.docs.last;
+
+      final querySnapshot = await collectionRef
+          .withConverter(
+            fromFirestore: Product.fromFirestore,
+            toFirestore: (product, _) => product.toFirestore(),
+          )
+          .get();
+
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
       final List<Product> productsWithImages = [];
@@ -69,6 +79,44 @@ class ProductDataService {
       return productsWithImages;
     } catch (e) {
       print("Error fetching products: $e");
+      return [];
+    }
+  }
+
+  Future<List<Product?>> fetchNextBatchProducts(
+      String category, Product product) async {
+    try {
+      final collectionRef = db
+          .collectionGroup(category.toLowerCase())
+          .limit(20)
+          .orderBy(FieldPath.documentId)
+          .startAfterDocument(lastDocument);
+
+      var query = await collectionRef.get();
+      lastDocument = query.docs.last;
+
+      final querySnapshot = await collectionRef
+          .withConverter(
+            fromFirestore: Product.fromFirestore,
+            toFirestore: (product, _) => product.toFirestore(),
+          )
+          .get();
+      List<Product> products =
+          querySnapshot.docs.map((doc) => doc.data()).toList();
+      final List<Product> productsWithImages = [];
+      for (Product product in products) {
+        List<String> newImageUrls = [];
+        for (String? imageUrl in product.imageUrl) {
+          var newImageUrl =
+              await ImageDataService().retrieveImageUrl(category, imageUrl);
+          newImageUrls.add(newImageUrl);
+        }
+        product = product.copyWith(imageUrl: newImageUrls);
+        productsWithImages.add(product);
+      }
+      return productsWithImages;
+    } catch (e) {
+      print("Error fetching products: ${e.toString()}");
       return [];
     }
   }

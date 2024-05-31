@@ -8,10 +8,17 @@ class CategoryLoadingState extends CategoryState {}
 
 class CategoryLoadedState extends CategoryState {
   final List<Product?> products;
+  final bool fetchingNextData;
 
-  CategoryLoadedState({required this.products});
+  CategoryLoadedState({required this.products, this.fetchingNextData = false});
 
-  CategoryLoadedState copyWith({List<Product?>? products}) {
-    return CategoryLoadedState(products: products ?? this.products);
+  CategoryLoadedState copyWith({
+    List<Product?>? products,
+    bool? fetchingNextData,
+  }) {
+    return CategoryLoadedState(
+      products: products ?? this.products,
+      fetchingNextData: fetchingNextData ?? this.fetchingNextData,
+    );
   }
 }
