@@ -36,18 +36,25 @@ class StorePage extends ConsumerWidget {
   }
 
   Widget _mapStateToWidget(
-      BuildContext context, StoreState state, WidgetRef ref,) {
+    BuildContext context,
+    StoreState state,
+    WidgetRef ref,
+  ) {
     if (state is StoreInitialState) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(storeNotifierProvider.notifier).initPage(sellerEmail);
       });
     } else if (state is StoreLoadedState) {
-      return _buildPageBody(context, state);
+      return _buildPageBody(context, state, ref);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Column _buildPageBody(BuildContext context, StoreLoadedState state) {
+  Column _buildPageBody(
+    BuildContext context,
+    StoreLoadedState state,
+    WidgetRef ref,
+  ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -59,11 +66,25 @@ class StorePage extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               itemCount: Category.values.length,
               itemBuilder: (context, index) {
+                final currentCategory =
+                    categoryToString(Category.values[index]);
+                bool isSelected = state.filters.isFilterActive(currentCategory);
                 return Padding(
                   padding: AppStyles.edgeInsetsH4,
                   child: ChoiceChip(
-                      label: Text(categoryToString(Category.values[index])),
-                      selected: false),
+                    showCheckmark: false,
+                    selectedColor: Colors.black,
+                    disabledColor: Colors.white,
+                    labelStyle: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                    ),
+                    side: const BorderSide(color: Colors.black),
+                    label: Text(currentCategory),
+                    selected: isSelected,
+                    onSelected: (value)=> ref
+                        .read(storeNotifierProvider.notifier)
+                        .onFiltersApplied(value),
+                  ),
                 );
               },
             )),

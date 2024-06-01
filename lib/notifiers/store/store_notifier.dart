@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/store/store_state.dart';
 import 'package:suuq/services/product_data_service.dart';
+import 'package:suuq/utils/category_search_filters.dart';
 
 class StoreNotifier extends StateNotifier<StoreState> {
   final ProductDataService _productDataService = ProductDataService();
@@ -11,7 +12,7 @@ class StoreNotifier extends StateNotifier<StoreState> {
     state = StoreLoadingState();
     List<Product?>? products =
         await _productDataService.fetchFirstBatchProductsByStore(sellerEmail);
-    state = StoreLoadedState(products: products);
+    state = StoreLoadedState(products: products, filters: CategorySearchFilters());
   }
 
   fetchNextBach(String sellerEmail) async {
@@ -28,6 +29,12 @@ class StoreNotifier extends StateNotifier<StoreState> {
         products: lastState.products..addAll(products),
         nextBatchLoading: false);
     _isFetching = false;
+  }
+
+  onFiltersApplied(bool value){
+    var lastState = state as StoreLoadedState;
+    CategorySearchFilters categorySearchFilters = lastState.filters.copyWith(isShoes: value);
+   state = (state as StoreLoadedState).copyWith(filters:categorySearchFilters );
   }
 }
 
