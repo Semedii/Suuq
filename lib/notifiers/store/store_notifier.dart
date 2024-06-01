@@ -12,7 +12,8 @@ class StoreNotifier extends StateNotifier<StoreState> {
     state = StoreLoadingState();
     List<Product?>? products =
         await _productDataService.fetchFirstBatchProductsByStore(sellerEmail);
-    state = StoreLoadedState(products: products, filters: CategorySearchFilters());
+    state =
+        StoreLoadedState(products: products, filters: CategorySearchFilters());
   }
 
   fetchNextBach(String sellerEmail) async {
@@ -31,10 +32,53 @@ class StoreNotifier extends StateNotifier<StoreState> {
     _isFetching = false;
   }
 
-  onFiltersApplied(bool value){
-    var lastState = state as StoreLoadedState;
-    CategorySearchFilters categorySearchFilters = lastState.filters.copyWith(isShoes: value);
-   state = (state as StoreLoadedState).copyWith(filters:categorySearchFilters );
+  onShoesSelected(bool value) {
+    CategorySearchFilters categorySearchFilters =
+        CategorySearchFilters().copyWith(isShoes: value);
+    state =
+        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+  }
+
+  onClothesSelected(bool value) {
+    CategorySearchFilters categorySearchFilters =
+        CategorySearchFilters().copyWith(isClothes: value);
+    state =
+        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+  }
+
+  onHomeAccessoriesSelected(bool value) {
+    CategorySearchFilters categorySearchFilters =
+        CategorySearchFilters().copyWith(isHomeAccessories: value);
+    state =
+        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+  }
+
+  onKitchenAccessoriesSelected(bool value) {
+    CategorySearchFilters categorySearchFilters =
+        CategorySearchFilters().copyWith(isKitchenAccessories: value);
+    state =
+        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+  }
+
+  onGymAccessorieselected(bool value) {
+    CategorySearchFilters categorySearchFilters =
+        CategorySearchFilters().copyWith(isGymAccessories: value);
+    state =
+        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+  }
+
+  onCosmeticsSelected(bool value) {
+    CategorySearchFilters categorySearchFilters =
+        CategorySearchFilters().copyWith(isCosmetics: value);
+    state =
+        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+  }
+
+  onElectronicsSelected(bool value) {
+    CategorySearchFilters categorySearchFilters =
+        CategorySearchFilters().copyWith(isElectronics: value);
+    state =
+        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
   }
 }
 

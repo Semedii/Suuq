@@ -56,38 +56,24 @@ class StorePage extends ConsumerWidget {
     WidgetRef ref,
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
+    var storeProvider = ref.read(storeNotifierProvider.notifier);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
             height: 65,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: Category.values.length,
-              itemBuilder: (context, index) {
-                final currentCategory =
-                    categoryToString(Category.values[index]);
-                bool isSelected = state.filters.isFilterActive(currentCategory);
-                return Padding(
-                  padding: AppStyles.edgeInsetsH4,
-                  child: ChoiceChip(
-                    showCheckmark: false,
-                    selectedColor: Colors.black,
-                    disabledColor: Colors.white,
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                    ),
-                    side: const BorderSide(color: Colors.black),
-                    label: Text(currentCategory),
-                    selected: isSelected,
-                    onSelected: (value)=> ref
-                        .read(storeNotifierProvider.notifier)
-                        .onFiltersApplied(value),
-                  ),
-                );
-              },
-            )),
+            child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _buildFilterChip(state, Category.homeAccessories, onSelected: (value) => storeProvider.onHomeAccessoriesSelected(value)),
+                  _buildFilterChip(state, Category.kitchenAccessories, onSelected: (value) => storeProvider.onKitchenAccessoriesSelected(value)),
+                  _buildFilterChip(state, Category.electronics, onSelected: (value) => storeProvider.onElectronicsSelected(value)),
+                  _buildFilterChip(state, Category.cosmetics, onSelected: (value) => storeProvider.onCosmeticsSelected(value)),
+                  _buildFilterChip(state, Category.shoes, onSelected: (value) => storeProvider.onShoesSelected(value)),
+                  _buildFilterChip(state, Category.gymAccessories, onSelected: (value) => storeProvider.onGymAccessorieselected(value)),
+                  _buildFilterChip(state, Category.clothes, onSelected: (value) => storeProvider.onClothesSelected(value)),
+                ])),
         Expanded(
           child: CustomScrollView(
             controller: scrollController,
@@ -132,6 +118,27 @@ class StorePage extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Padding _buildFilterChip(StoreLoadedState state, Category category,
+      {Function(bool)? onSelected}) {
+    final categoryName = categoryToString(category);
+    bool isSelected = state.filters.isFilterActive(categoryName);
+    return Padding(
+      padding: AppStyles.edgeInsetsH4,
+      child: ChoiceChip(
+        showCheckmark: false,
+        selectedColor: Colors.black,
+        disabledColor: Colors.white,
+        labelStyle: TextStyle(
+          color: isSelected ? Colors.white : Colors.black,
+        ),
+        side: const BorderSide(color: Colors.black),
+        label: Text(categoryName.capitalize()),
+        selected: isSelected,
+        onSelected: onSelected,
+      ),
     );
   }
 }
