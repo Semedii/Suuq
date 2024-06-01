@@ -67,25 +67,28 @@ class StorePage extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 children: [
                   _buildAllChoiceChip(state, ref, localizations),
-                  _buildFilterChip(state, Category.homeAccessories,
+                  _buildFilterChip(
+                      state, Category.homeAccessories, localizations,
                       onSelected: (value) =>
                           storeProvider.onHomeAccessoriesSelected(value)),
-                  _buildFilterChip(state, Category.kitchenAccessories,
+                  _buildFilterChip(
+                      state, Category.kitchenAccessories, localizations,
                       onSelected: (value) =>
                           storeProvider.onKitchenAccessoriesSelected(value)),
-                  _buildFilterChip(state, Category.electronics,
+                  _buildFilterChip(state, Category.electronics, localizations,
                       onSelected: (value) =>
                           storeProvider.onElectronicsSelected(value)),
-                  _buildFilterChip(state, Category.cosmetics,
+                  _buildFilterChip(state, Category.cosmetics, localizations,
                       onSelected: (value) =>
                           storeProvider.onCosmeticsSelected(value)),
-                  _buildFilterChip(state, Category.shoes,
+                  _buildFilterChip(state, Category.shoes, localizations,
                       onSelected: (value) =>
                           storeProvider.onShoesSelected(value)),
-                  _buildFilterChip(state, Category.gymAccessories,
+                  _buildFilterChip(
+                      state, Category.gymAccessories, localizations,
                       onSelected: (value) =>
                           storeProvider.onGymAccessorieselected(value)),
-                  _buildFilterChip(state, Category.clothes,
+                  _buildFilterChip(state, Category.clothes, localizations,
                       onSelected: (value) =>
                           storeProvider.onClothesSelected(value)),
                 ])),
@@ -160,8 +163,12 @@ class StorePage extends ConsumerWidget {
         ));
   }
 
-  Padding _buildFilterChip(StoreLoadedState state, Category category,
-      {Function(bool)? onSelected}) {
+  Padding _buildFilterChip(
+    StoreLoadedState state,
+    Category category,
+    AppLocalizations localizations, {
+    Function(bool)? onSelected,
+  }) {
     final categoryName = categoryToString(category);
     bool isSelected = state.filters.isFilterActive(categoryName);
     return Padding(
@@ -174,7 +181,7 @@ class StorePage extends ConsumerWidget {
           color: isSelected ? Colors.white : Colors.black,
         ),
         side: const BorderSide(color: Colors.black),
-        label: Text(categoryName.capitalize()),
+        label: Text(getCategoryTranslations(category, localizations)),
         selected: isSelected,
         onSelected: state.isFilterUpdating ? null : onSelected,
       ),
