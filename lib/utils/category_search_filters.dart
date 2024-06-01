@@ -10,7 +10,7 @@ class CategorySearchFilters {
 
   CategorySearchFilters({
     this.isClothes = false,
-    this.isShoes = true,
+    this.isShoes = false,
     this.isHomeAccessories = false,
     this.isElectronics = false,
     this.isGymAccessories = false,
@@ -54,5 +54,18 @@ class CategorySearchFilters {
     };
 
     return filters[key] ?? false;
+  }
+
+  Map<String, bool> getActiveFilters() {
+    return {
+      'clothes': isClothes,
+      'shoes': isShoes,
+      'home accessories': isHomeAccessories,
+      'electronics': isElectronics,
+      'gym accessories': isGymAccessories,
+      'kitchen accessories': isKitchenAccessories,
+      'cosmetics': isCosmetics,
+      'others': isOthers,
+    }..removeWhere((key, value) => value == false);
   }
 }

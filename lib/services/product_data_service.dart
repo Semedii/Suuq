@@ -65,6 +65,36 @@ class ProductDataService {
       return [];
     }
   }
+    Future<List<Product?>> fetchFirstBatchProductsByStoreCategoy(
+    String sellerEmail,
+    String category,
+  ) async {
+    try {
+      final collectionRef = db
+          .collection("products")
+          .where("seller_email", isEqualTo: sellerEmail)
+          .where("category", isEqualTo: category)
+          .limit(20)
+          .orderBy(FieldPath.documentId);
+
+      var query = await collectionRef.get();
+      lastDocument = query.docs.last;
+
+      final querySnapshot = await collectionRef
+          .withConverter(
+            fromFirestore: Product.fromFirestore,
+            toFirestore: (product, _) => product.toFirestore(),
+          )
+          .get();
+
+      List<Product> products =
+          querySnapshot.docs.map((doc) => doc.data()).toList();
+      return _getProductsWithImages(products);
+    } catch (e) {
+      print("Error fetching productssss: $e");
+      return [];
+    }
+  }
 
   Future<Product> fetchProductsById(String id, Category category) async {
     final stirngCategory = categoryToString(category);

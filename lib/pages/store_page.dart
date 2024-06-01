@@ -137,7 +137,7 @@ class StorePage extends ConsumerWidget {
         side: const BorderSide(color: Colors.black),
         label: Text(categoryName.capitalize()),
         selected: isSelected,
-        onSelected: onSelected,
+        onSelected: state.isFilterUpdating? null : onSelected,
       ),
     );
   }

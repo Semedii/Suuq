@@ -8,7 +8,9 @@ class StoreNotifier extends StateNotifier<StoreState> {
   final ProductDataService _productDataService = ProductDataService();
   StoreNotifier() : super(StoreInitialState());
   bool _isFetching = false;
+  late String sellerEmail;
   initPage(String sellerEmail) async {
+    this.sellerEmail = sellerEmail;
     state = StoreLoadingState();
     List<Product?>? products =
         await _productDataService.fetchFirstBatchProductsByStore(sellerEmail);
@@ -32,53 +34,76 @@ class StoreNotifier extends StateNotifier<StoreState> {
     _isFetching = false;
   }
 
-  onShoesSelected(bool value) {
+  onShoesSelected(bool value) async {
+    var lastState = state as StoreLoadedState;
+    state = lastState.copyWith(isFilterUpdating: true);
     CategorySearchFilters categorySearchFilters =
         CategorySearchFilters().copyWith(isShoes: value);
-    state =
-        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+    state = lastState.copyWith(filters: categorySearchFilters);
+    await _onFilerApplied(categorySearchFilters);
   }
 
-  onClothesSelected(bool value) {
+  onClothesSelected(bool value) async {
+    var lastState = state as StoreLoadedState;
+    state = lastState.copyWith(isFilterUpdating: true);
     CategorySearchFilters categorySearchFilters =
         CategorySearchFilters().copyWith(isClothes: value);
-    state =
-        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+    state = lastState.copyWith(filters: categorySearchFilters);
+    await _onFilerApplied(categorySearchFilters);
   }
 
-  onHomeAccessoriesSelected(bool value) {
+  onHomeAccessoriesSelected(bool value) async {
+    var lastState = state as StoreLoadedState;
+    state = lastState.copyWith(isFilterUpdating: true);
     CategorySearchFilters categorySearchFilters =
         CategorySearchFilters().copyWith(isHomeAccessories: value);
-    state =
-        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+    state = lastState.copyWith(filters: categorySearchFilters);
+    await _onFilerApplied(categorySearchFilters);
   }
 
-  onKitchenAccessoriesSelected(bool value) {
+  onKitchenAccessoriesSelected(bool value) async {
+    var lastState = state as StoreLoadedState;
+    state = lastState.copyWith(isFilterUpdating: true);
     CategorySearchFilters categorySearchFilters =
         CategorySearchFilters().copyWith(isKitchenAccessories: value);
-    state =
-        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+    state = lastState.copyWith(filters: categorySearchFilters);
+    await _onFilerApplied(categorySearchFilters);
   }
 
-  onGymAccessorieselected(bool value) {
+  onGymAccessorieselected(bool value) async {
+    var lastState = state as StoreLoadedState;
+    state = lastState.copyWith(isFilterUpdating: true);
     CategorySearchFilters categorySearchFilters =
         CategorySearchFilters().copyWith(isGymAccessories: value);
-    state =
-        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+    state = lastState.copyWith(filters: categorySearchFilters);
+    await _onFilerApplied(categorySearchFilters);
   }
 
-  onCosmeticsSelected(bool value) {
+  onCosmeticsSelected(bool value) async {
+    var lastState = state as StoreLoadedState;
+    state = lastState.copyWith(isFilterUpdating: true);
     CategorySearchFilters categorySearchFilters =
         CategorySearchFilters().copyWith(isCosmetics: value);
-    state =
-        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+    state = lastState.copyWith(filters: categorySearchFilters);
+    await _onFilerApplied(categorySearchFilters);
   }
 
-  onElectronicsSelected(bool value) {
+  onElectronicsSelected(bool value) async {
+    var lastState = state as StoreLoadedState;
+    state = lastState.copyWith(isFilterUpdating: true);
     CategorySearchFilters categorySearchFilters =
         CategorySearchFilters().copyWith(isElectronics: value);
-    state =
-        (state as StoreLoadedState).copyWith(filters: categorySearchFilters);
+    state = lastState.copyWith(filters: categorySearchFilters,);
+    await _onFilerApplied(categorySearchFilters);
+  }
+
+  _onFilerApplied(CategorySearchFilters categorySearchFilters) async {
+    final selectedCategory =
+        categorySearchFilters.getActiveFilters().keys.first;
+    var lastState = state as StoreLoadedState;
+    List<Product?> products = await _productDataService
+        .fetchFirstBatchProductsByStoreCategoy(sellerEmail, selectedCategory);
+    state = StoreLoadedState(products: products, filters: lastState.filters);
   }
 }
 
