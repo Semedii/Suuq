@@ -31,7 +31,7 @@ class StorePage extends ConsumerWidget {
     });
     final storeState = ref.watch(storeNotifierProvider);
     return Scaffold(
-        appBar: AppBar(title: Text(storename)),
+        appBar: AppBar(title: Text(storename.toUpperCase())),
         body: _mapStateToWidget(context, storeState, ref));
   }
 
