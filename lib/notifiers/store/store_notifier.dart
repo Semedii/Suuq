@@ -33,9 +33,10 @@ class StoreNotifier extends StateNotifier<StoreState> {
       products =
           await _productDataService.fetchNextBatchProductsByStore(sellerEmail);
     }
-
+    
     if (products.isEmpty || products.length < 20) {
       state = lastState.copyWith(noMoreToFetch: true);
+      _isFetching = false;
     }
     state = lastState.copyWith(
         products: lastState.products..addAll(products),
