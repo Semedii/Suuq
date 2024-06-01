@@ -28,7 +28,7 @@ class ProductDataService {
   Future<Product> fetchProductsById(String id, Category category) async {
     final stirngCategory = categoryToString(category);
     final collectionRef =
-        db.collectionGroup(stirngCategory.toLowerCase()).withConverter(
+        db.collection('products').where("category", isEqualTo: stirngCategory.toLowerCase()).withConverter(
               fromFirestore: Product.fromFirestore,
               toFirestore: (product, _) => product.toFirestore(),
             );
@@ -48,8 +48,7 @@ class ProductDataService {
 
   Future<List<Product?>> fetchHomePageProducts(String category) async {
     try {
-      final collectionRef = db
-          .collectionGroup(category.toLowerCase())
+      final collectionRef = db.collection('products').where("category", isEqualTo: category.toLowerCase())
           .limit(10)
           .orderBy(FieldPath.documentId);
 
@@ -86,8 +85,7 @@ class ProductDataService {
   Future<List<Product?>> fetchNextBatchProducts(
       String category, Product product) async {
     try {
-      final collectionRef = db
-          .collectionGroup(category.toLowerCase())
+      final collectionRef = db.collection('products').where("category", isEqualTo: category.toLowerCase())
           .limit(20)
           .orderBy(FieldPath.documentId)
           .startAfterDocument(lastDocument);

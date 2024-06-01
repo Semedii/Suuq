@@ -20,7 +20,7 @@ class ImageDataService {
   }
 
   Future<String> retrieveImageUrl(String category, id) async {
-    final imageRef = storageRef.child("images/products/$category/$id.jpg");
+    final imageRef = storageRef.child("images/products/$id.jpg");
     var url = await imageRef.getDownloadURL();
     return url;
   }
