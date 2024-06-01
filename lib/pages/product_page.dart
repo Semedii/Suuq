@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/cart_product.dart';
@@ -186,6 +187,7 @@ class _ProductPageState extends State<ProductPage> {
                   color: AppColors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20),
+                  recognizer: TapGestureRecognizer()..onTap = () => AutoRouter.of(context).push( StoreRoute()),
             ),
             TextSpan(
               text: ' - ${widget.product.description}',
