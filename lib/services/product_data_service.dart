@@ -8,19 +8,60 @@ class ProductDataService {
 
   late DocumentSnapshot lastDocument;
 
-  Future<List<Product?>> fetchAllProductsByStore(String sellerEmail) async {
+  Future<List<Product?>> fetchFirstBatchProductsByStore(
+    String sellerEmail,
+  ) async {
     try {
-      final collectionRef = db.collection("products").where("seller_email", isEqualTo: sellerEmail).withConverter(
+      final collectionRef = db
+          .collection("products")
+          .where("seller_email", isEqualTo: sellerEmail)
+          .limit(20)
+          .orderBy(FieldPath.documentId);
+
+      var query = await collectionRef.get();
+      lastDocument = query.docs.last;
+
+      final querySnapshot = await collectionRef
+          .withConverter(
             fromFirestore: Product.fromFirestore,
             toFirestore: (product, _) => product.toFirestore(),
-          );
+          )
+          .get();
 
-      final querySnapshot = await collectionRef.get();
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-     return  _getProductsWithImages(products);
+      return _getProductsWithImages(products);
     } catch (e) {
       print("Error fetching productssss: $e");
+      return [];
+    }
+  }
+
+  Future<List<Product?>> fetchNextBatchProductsByStore(
+    String sellerEmail,
+  ) async {
+    try {
+      final collectionRef = db
+          .collection('products')
+          .where("seller_email", isEqualTo: sellerEmail)
+          .limit(20)
+          .orderBy(FieldPath.documentId)
+          .startAfterDocument(lastDocument);
+
+      var query = await collectionRef.get();
+      lastDocument = query.docs.last;
+
+      final querySnapshot = await collectionRef
+          .withConverter(
+            fromFirestore: Product.fromFirestore,
+            toFirestore: (product, _) => product.toFirestore(),
+          )
+          .get();
+      List<Product> products =
+          querySnapshot.docs.map((doc) => doc.data()).toList();
+      return _getProductsWithImages(products);
+    } catch (e) {
+      print("Error fetching products: ${e.toString()}");
       return [];
     }
   }
@@ -67,15 +108,14 @@ class ProductDataService {
 
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-       return  _getProductsWithImages(products);
+      return _getProductsWithImages(products);
     } catch (e) {
       print("Error fetching products: $e");
       return [];
     }
   }
 
-  Future<List<Product?>> fetchNextBatchProducts(
-      String category, Product product) async {
+  Future<List<Product?>> fetchNextBatchProducts(String category) async {
     try {
       final collectionRef = db
           .collection('products')
@@ -95,7 +135,7 @@ class ProductDataService {
           .get();
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-        return  _getProductsWithImages(products);
+      return _getProductsWithImages(products);
     } catch (e) {
       print("Error fetching products: ${e.toString()}");
       return [];

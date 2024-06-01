@@ -21,8 +21,8 @@ class CategoryNotifier extends StateNotifier<CategoryState> {
     _isFetching = true;
     var lastState = state as CategoryLoadedState;
     state = lastState.copyWith(fetchingNextData: true);
-    List<Product?> products = await _productDataService.fetchNextBatchProducts(
-        category, lastState.products.last!);
+    List<Product?> products =
+        await _productDataService.fetchNextBatchProducts(category);
     if (products.isEmpty || products.length < 20) {
       state = lastState.copyWith(noMoreToFetch: true);
     }
