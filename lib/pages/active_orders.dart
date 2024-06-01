@@ -69,11 +69,13 @@ class ActiveOrders extends ConsumerWidget {
                       },
                     ),
                   )
-                : Center(
-                    child: Text(
-                    localizations.noActiveOrders,
-                    textAlign: TextAlign.center,
-                  ))
+                : Expanded(
+                    child: Center(
+                      child: Text(
+                      localizations.noActiveOrders,
+                      textAlign: TextAlign.center,
+                                        ),
+                    ))
           ],
         ),
       ),
