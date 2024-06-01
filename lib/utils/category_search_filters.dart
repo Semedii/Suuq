@@ -68,4 +68,14 @@ class CategorySearchFilters {
       'others': isOthers,
     }..removeWhere((key, value) => value == false);
   }
+  bool isAnyFilterActive() {
+    return isClothes ||
+           isShoes ||
+           isHomeAccessories ||
+           isElectronics ||
+           isGymAccessories ||
+           isKitchenAccessories ||
+           isCosmetics ||
+           isOthers;
+  }
 }

@@ -23,8 +23,16 @@ class StoreNotifier extends StateNotifier<StoreState> {
     _isFetching = true;
     var lastState = state as StoreLoadedState;
     state = lastState.copyWith(nextBatchLoading: true);
-    List<Product?>? products =
-        await _productDataService.fetchNextBatchProductsByStore(sellerEmail);
+    List<Product?>? products = [];
+    if (lastState.filters.isAnyFilterActive()) {
+      final selectedCategory = lastState.filters.getActiveFilters().keys.first;
+      products =
+          await _productDataService.fetchFirstBatchProductsByStoreCategoy(sellerEmail, selectedCategory);
+    } else {
+      products =
+          await _productDataService.fetchNextBatchProductsByStore(sellerEmail);
+    }
+
     if (products.isEmpty || products.length < 20) {
       state = lastState.copyWith(noMoreToFetch: true);
     }
@@ -93,7 +101,9 @@ class StoreNotifier extends StateNotifier<StoreState> {
     state = lastState.copyWith(isFilterUpdating: true);
     CategorySearchFilters categorySearchFilters =
         CategorySearchFilters().copyWith(isElectronics: value);
-    state = lastState.copyWith(filters: categorySearchFilters,);
+    state = lastState.copyWith(
+      filters: categorySearchFilters,
+    );
     await _onFilerApplied(categorySearchFilters);
   }
 
