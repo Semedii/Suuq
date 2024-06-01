@@ -150,11 +150,14 @@ abstract class $AppRouter extends _i18.RootStackRouter {
       );
     },
     StoreRoute.name: (routeData) {
-      final args = routeData.argsAs<StoreRouteArgs>(
-          orElse: () => const StoreRouteArgs());
+      final args = routeData.argsAs<StoreRouteArgs>();
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i16.StorePage(key: args.key),
+        child: _i16.StorePage(
+          sellerEmail: args.sellerEmail,
+          storename: args.storename,
+          key: args.key,
+        ),
       );
     },
     WelcomeRoute.name: (routeData) {
@@ -529,11 +532,17 @@ class SignupRouteArgs {
 /// [_i16.StorePage]
 class StoreRoute extends _i18.PageRouteInfo<StoreRouteArgs> {
   StoreRoute({
+    required String sellerEmail,
+    required String storename,
     _i22.Key? key,
     List<_i18.PageRouteInfo>? children,
   }) : super(
           StoreRoute.name,
-          args: StoreRouteArgs(key: key),
+          args: StoreRouteArgs(
+            sellerEmail: sellerEmail,
+            storename: storename,
+            key: key,
+          ),
           initialChildren: children,
         );
 
@@ -544,13 +553,21 @@ class StoreRoute extends _i18.PageRouteInfo<StoreRouteArgs> {
 }
 
 class StoreRouteArgs {
-  const StoreRouteArgs({this.key});
+  const StoreRouteArgs({
+    required this.sellerEmail,
+    required this.storename,
+    this.key,
+  });
+
+  final String sellerEmail;
+
+  final String storename;
 
   final _i22.Key? key;
 
   @override
   String toString() {
-    return 'StoreRouteArgs{key: $key}';
+    return 'StoreRouteArgs{sellerEmail: $sellerEmail, storename: $storename, key: $key}';
   }
 }
 

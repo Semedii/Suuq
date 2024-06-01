@@ -8,9 +8,9 @@ class ProductDataService {
 
   late DocumentSnapshot lastDocument;
 
-  Future<List<Product>?> fetchAllProducts() async {
+  Future<List<Product?>> fetchAllProductsByStore(String sellerEmail) async {
     try {
-      final collectionRef = db.collection("products").withConverter(
+      final collectionRef = db.collection("products").where("seller_email", isEqualTo: sellerEmail).withConverter(
             fromFirestore: Product.fromFirestore,
             toFirestore: (product, _) => product.toFirestore(),
           );
@@ -18,28 +18,29 @@ class ProductDataService {
       final querySnapshot = await collectionRef.get();
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      return products;
+     return  _getProductsWithImages(products);
     } catch (e) {
-      print("Error fetching products: $e");
-      return null;
+      print("Error fetching productssss: $e");
+      return [];
     }
   }
 
   Future<Product> fetchProductsById(String id, Category category) async {
     final stirngCategory = categoryToString(category);
-    final collectionRef =
-        db.collection('products').where("category", isEqualTo: stirngCategory.toLowerCase()).withConverter(
-              fromFirestore: Product.fromFirestore,
-              toFirestore: (product, _) => product.toFirestore(),
-            );
+    final collectionRef = db
+        .collection('products')
+        .where("category", isEqualTo: stirngCategory.toLowerCase())
+        .withConverter(
+          fromFirestore: Product.fromFirestore,
+          toFirestore: (product, _) => product.toFirestore(),
+        );
 
     final querySnapshot = await collectionRef.get();
     final prodData =
         querySnapshot.docs.firstWhere((element) => element.id == id);
     List<String> newImageUrls = [];
     for (String? imageUrl in prodData.data().imageUrl) {
-      var newImageUrl =
-          await ImageDataService().retrieveImageUrl(stirngCategory, imageUrl);
+      var newImageUrl = await ImageDataService().retrieveImageUrl(imageUrl);
       newImageUrls.add(newImageUrl);
     }
     Product product = prodData.data().copyWith(imageUrl: newImageUrls);
@@ -48,7 +49,9 @@ class ProductDataService {
 
   Future<List<Product?>> fetchHomePageProducts(String category) async {
     try {
-      final collectionRef = db.collection('products').where("category", isEqualTo: category.toLowerCase())
+      final collectionRef = db
+          .collection('products')
+          .where("category", isEqualTo: category.toLowerCase())
           .limit(10)
           .orderBy(FieldPath.documentId);
 
@@ -64,18 +67,7 @@ class ProductDataService {
 
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      final List<Product> productsWithImages = [];
-      for (Product product in products) {
-        List<String> newImageUrls = [];
-        for (String? imageUrl in product.imageUrl) {
-          var newImageUrl =
-              await ImageDataService().retrieveImageUrl(category, imageUrl);
-          newImageUrls.add(newImageUrl);
-        }
-        product = product.copyWith(imageUrl: newImageUrls);
-        productsWithImages.add(product);
-      }
-      return productsWithImages;
+       return  _getProductsWithImages(products);
     } catch (e) {
       print("Error fetching products: $e");
       return [];
@@ -85,7 +77,9 @@ class ProductDataService {
   Future<List<Product?>> fetchNextBatchProducts(
       String category, Product product) async {
     try {
-      final collectionRef = db.collection('products').where("category", isEqualTo: category.toLowerCase())
+      final collectionRef = db
+          .collection('products')
+          .where("category", isEqualTo: category.toLowerCase())
           .limit(20)
           .orderBy(FieldPath.documentId)
           .startAfterDocument(lastDocument);
@@ -101,21 +95,24 @@ class ProductDataService {
           .get();
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      final List<Product> productsWithImages = [];
-      for (Product product in products) {
-        List<String> newImageUrls = [];
-        for (String? imageUrl in product.imageUrl) {
-          var newImageUrl =
-              await ImageDataService().retrieveImageUrl(category, imageUrl);
-          newImageUrls.add(newImageUrl);
-        }
-        product = product.copyWith(imageUrl: newImageUrls);
-        productsWithImages.add(product);
-      }
-      return productsWithImages;
+        return  _getProductsWithImages(products);
     } catch (e) {
       print("Error fetching products: ${e.toString()}");
       return [];
     }
+  }
+
+  Future<List<Product>> _getProductsWithImages(List<Product> products) async {
+    final List<Product> productsWithImages = [];
+    for (Product product in products) {
+      List<String> newImageUrls = [];
+      for (String? imageUrl in product.imageUrl) {
+        var newImageUrl = await ImageDataService().retrieveImageUrl(imageUrl);
+        newImageUrls.add(newImageUrl);
+      }
+      product = product.copyWith(imageUrl: newImageUrls);
+      productsWithImages.add(product);
+    }
+    return productsWithImages;
   }
 }

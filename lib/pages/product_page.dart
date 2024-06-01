@@ -114,13 +114,14 @@ class _ProductPageState extends State<ProductPage> {
                   height: MediaQuery.of(context).size.height * 0.6,
                   child: isImageAvailable
                       ? InkWell(
-                        onTap: ()=>AutoRouter.of(context).push(FullPhotoRoute(imageUrl: url)),
-                        child: Image.network(
+                          onTap: () => AutoRouter.of(context)
+                              .push(FullPhotoRoute(imageUrl: url)),
+                          child: Image.network(
                             url!,
                             fit: BoxFit.contain,
                             loadingBuilder: _imageNetworkLoadingBuilder,
                           ),
-                      )
+                        )
                       : Image.asset(
                           "assets/images/noImageAvailable.jpeg",
                           height: 200,
@@ -187,7 +188,11 @@ class _ProductPageState extends State<ProductPage> {
                   color: AppColors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20),
-                  recognizer: TapGestureRecognizer()..onTap = () => AutoRouter.of(context).push( StoreRoute()),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => AutoRouter.of(context).push(StoreRoute(
+                      sellerEmail: widget.product.sellerEmail,
+                      storename: widget.product.sellerName,
+                    )),
             ),
             TextSpan(
               text: ' - ${widget.product.description}',

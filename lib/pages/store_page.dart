@@ -2,40 +2,61 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/product_card.dart';
 import 'package:suuq/models/product.dart';
+import 'package:suuq/notifiers/store/store_notifier.dart';
+import 'package:suuq/notifiers/store/store_state.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 import '../utils/enums/category_enum.dart';
 
 @RoutePage()
-class StorePage extends StatelessWidget {
-   StorePage({super.key});
-  final List<Product> products = [
-    Product(sellerName: "sellerName", imageUrl: ["imageUrl"], description: "description", price: 2, category: Category.clothes)
-  ].expand((element) => [element, element, element, element,element, element, element,element, element, element,element, element, element,]).toList();
+class StorePage extends ConsumerWidget {
+  const StorePage(
+      {required this.sellerEmail, required this.storename, super.key});
+  final String storename;
+  final String sellerEmail;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final storeState = ref.watch(storeNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text("PixelBazaar")),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
+        appBar: AppBar(title: Text(storename)),
+        body: _mapStateToWidget(storeState, ref));
+  }
+
+  Widget _mapStateToWidget(StoreState state, WidgetRef ref) {
+    if (state is StoreInitialState) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(storeNotifierProvider.notifier).initPage(sellerEmail);
+      });
+    } else if (state is StoreLoadedState) {
+      return _buildPageBody(state.products);
+    }
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Column _buildPageBody(List<Product?> products) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
             height: 65,
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: Category.values.length,
               itemBuilder: (context, index) {
-              return Padding(
-                padding: AppStyles.edgeInsetsH4,
-                child: ChoiceChip(label: Text(categoryToString(Category.values[index])), selected: false),
-              );
-            },)
-          ),
-         Expanded(
-           child: CustomScrollView(
+                return Padding(
+                  padding: AppStyles.edgeInsetsH4,
+                  child: ChoiceChip(
+                      label: Text(categoryToString(Category.values[index])),
+                      selected: false),
+                );
+              },
+            )),
+        Expanded(
+          child: CustomScrollView(
             slivers: [
               SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -73,9 +94,9 @@ class StorePage extends StatelessWidget {
               //   ),
               //}
             ],
-                   ),
-         ),
-        ],
-    ));
+          ),
+        ),
+      ],
+    );
   }
 }
