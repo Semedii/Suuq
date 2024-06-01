@@ -25,9 +25,10 @@ class StoreNotifier extends StateNotifier<StoreState> {
     state = lastState.copyWith(nextBatchLoading: true);
     List<Product?>? products = [];
     if (lastState.filters.isAnyFilterActive()) {
+      
       final selectedCategory = lastState.filters.getActiveFilters().keys.first;
       products =
-          await _productDataService.fetchFirstBatchProductsByStoreCategoy(sellerEmail, selectedCategory);
+          await _productDataService.fetchNextBatchProductsByStoreCategoy(sellerEmail, selectedCategory);
     } else {
       products =
           await _productDataService.fetchNextBatchProductsByStore(sellerEmail);
