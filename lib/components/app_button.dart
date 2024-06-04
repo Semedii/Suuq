@@ -7,10 +7,12 @@ class AppButton extends StatelessWidget {
     super.key,
     required this.title,
     required this.onTap,
+    this.prefixWidget,
     this.isLoading = false,
     this.isSmall = false,
   });
   final String title;
+  final Widget? prefixWidget;
   final bool isLoading;
   final bool isSmall;
   final void Function() onTap;
@@ -41,16 +43,23 @@ class AppButton extends StatelessWidget {
     );
   }
 
-  Center _getTitleText() {
-    return Center(
-      child: Text(
-        title.toUpperCase(),
-        style: const TextStyle(
-          color: AppColors.white,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
+  Row _getTitleText() {
+    return Row(
+      children: [
+        prefixWidget!=null? prefixWidget!: const SizedBox.shrink(),
+        Expanded(
+          child: Center(
+            child: Text(
+              title.toUpperCase(),
+              style: const TextStyle(
+                color: AppColors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }

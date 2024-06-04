@@ -35,6 +35,7 @@
   "enterYourNewPassword": "Fadlan geli furaha sirta cusub",
   "enterYourPassword": "Geli furaha sirta ah",
   "enterYourPasswordAgain": "Geli furaha sirta ah mar kale",
+  "errorHasHappened": "Khalad baa dhacay",
   "favorites": "Alaabaha dookhayga ah",
   "firstOrderDescription": "Wax dalab ah weli maad dhiiban. Fadlan dalbo dalaabkaga ugu horeeya kuna guulayso hadyad.",
   "forgotYourPassword": "Waan ilaaway furihi sirta",
@@ -55,6 +56,7 @@
   "noActiveOrders": "Dalab taagan ma jiro. Dalabaadki hore waxaad ka arki kartaa bogga Dalabaad Hore",
   "noItemsInYourCart": "Seleddaadu way madhantahay",
   "onTheWay": "Jidka kusoo jira",
+  "orderErrorExplanation": "Waanu ka xunnahay, khalad dhacay awgeed dalabkaaga maanan helin. Fadlan nasoo wac ama whatsappka nagalasoo xidhiidh.",
   "orderHistory": "Dalabaad Hore",
   "orderRecievedExplanation": "Waanu helnay dalabkaaga. Waan hubinaynaa lacag bixintaada, waxaan ku soo wacaynaa 5 daqiiqo gudahood.",
   "outOfOfficeHoursNotice": "OGAYSIIS :-  macmiil Xafiiska shirkadu Ma sahqeeyo inta u dhaxaysa 9:00 PM habeenimo ilaa 7:00 AM Subaxnimo ee aroortii.  Lacagta aad dirto Xiligaas Shaqada laga maqan yahay waxa laguu hubin doonaa Marka shaqada lagu soo noqdo macmiil.",
@@ -86,5 +88,6 @@
   "termsValidation": "Fadlan aqbal shuruudaha",
   "thankYouForShopping": "Waad ku mahadsantahay adeegaaga.",
   "total": "Total",
+  "whatsapp": "Whatsapp-ka",
   "wrongEmailOrPassword": "Fadlan hubi furaha sirta ama emailka"
 }

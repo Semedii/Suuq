@@ -1,7 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:suuq/router/app_router.gr.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SendingStep extends ConsumerWidget {
@@ -28,7 +26,6 @@ class SendingStep extends ConsumerWidget {
     return ElevatedButton(
       onPressed: () {
         onPaymentSent();
-        AutoRouter.of(context).replace(const ConfirmationRoute());
       },
       child: Text(localizations.paymentSent),
     );

@@ -13,6 +13,7 @@ class CheckoutLoadedState extends CheckoutState {
   final Currency? currency;
   final int edahabNumber;
   final int zaadNumber;
+  final String contactNumber;
   final int exchangeRate;
   final String? deliveryAddress;
   final String? sendersName;
@@ -23,6 +24,7 @@ class CheckoutLoadedState extends CheckoutState {
     this.currency,
     required this.edahabNumber,
     required this.zaadNumber,
+    required this.contactNumber,
     required this.exchangeRate,
     this.stepIndex = 0,
     this.paymentOption,
@@ -52,6 +54,15 @@ class CheckoutLoadedState extends CheckoutState {
       zaadNumber: zaadNumber,
       edahabNumber: edahabNumber,
       exchangeRate: exchangeRate,
+      contactNumber: contactNumber
     );
   }
 }
+class CheckoutSuccessState extends CheckoutState{}
+
+ class CheckoutFailureState extends CheckoutState {
+  final String error;
+  final String? contactNumber;
+
+  CheckoutFailureState({required this.error, this.contactNumber});
+ }

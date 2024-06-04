@@ -22,6 +22,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   final CartDataService _cartDataService = CartDataService();
 
   late String? userEmail;
+  late String? contactNumber;
   @override
   CheckoutState build() {
     return CheckoutInitialState();
@@ -33,6 +34,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
     UserModel? user = await _authDataService.fetchCurrentUser(userEmail!);
     final MerchantData merchantData =
         await _merchantDataService.fetchMerchantData();
+    contactNumber = merchantData.contactNumber;
     state = CheckoutLoadedState(
         zaadNumber: merchantData.zaadNumber,
         edahabNumber: merchantData.edahabNumber,
@@ -40,6 +42,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
         deliveryAddress: user!.address,
         sendersName: user.name,
         sendersPhone: user.phoneNumber,
+        contactNumber: merchantData.contactNumber,
         currency: Currency.shilling);
   }
 
@@ -80,23 +83,28 @@ class CheckoutNotifier extends _$CheckoutNotifier {
   onPaymentSent(List<CartProduct?> cartProductList, double totalPrice) async {
     var lastState = state as CheckoutLoadedState;
     UserModel? user = await _authDataService.fetchCurrentUser(userEmail!);
-    final newOrder = OrderModel(
-      sellerName: cartProductList.first?.sellerName,
-      sendersPhone: lastState.sendersPhone!,
-      customer: user!,
-      address: lastState.deliveryAddress!,
-      orderedDate: DateTime.now(),
-      cartProducts: cartProductList,
-      totalPrice: totalPrice,
-      currency: lastState.currency!,
-      paymentOption: lastState.paymentOption!,
-    );
-    await _authDataService.updatePhoneAndAdress(
-      email: userEmail!,
-      address: lastState.deliveryAddress,
-      phoneNumber: lastState.sendersPhone,
-    );
-    await _orderDataService.addNewOrder(newOrder);
-    await _cartDataService.clearCart(userEmail!);
+    try {
+      final newOrder = OrderModel(
+        sellerName: cartProductList.first?.sellerName,
+        sendersPhone: lastState.sendersPhone!,
+        customer: user!,
+        address: lastState.deliveryAddress!,
+        orderedDate: DateTime.now(),
+        cartProducts: cartProductList,
+        totalPrice: totalPrice,
+        currency: lastState.currency!,
+        paymentOption: lastState.paymentOption!,
+      );
+      await _authDataService.updatePhoneAndAdress(
+        email: userEmail!,
+        address: lastState.deliveryAddress,
+        phoneNumber: lastState.sendersPhone,
+      );
+      await _orderDataService.addNewOrder(newOrder);
+      await _cartDataService.clearCart(userEmail!);
+      state = CheckoutSuccessState();
+    } catch (error) {
+      state = CheckoutFailureState(error: error.toString(), contactNumber: contactNumber);
+    }
   }
 }

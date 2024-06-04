@@ -35,6 +35,7 @@
   "enterYourNewPassword": "Enter your new password",
   "enterYourPassword": "Enter your password",
   "enterYourPasswordAgain": "Enter your password again",
+  "errorHasHappened": "An error has happened",
   "favorites": "Favorites",
   "firstOrderDescription": "No Orders found. Please place your first order and win a price",
   "forgotYourPassword": "Forgot your password",
@@ -55,6 +56,7 @@
   "noActiveOrders": "Currently there is no active orders. You can check past orders in Order History page",
   "noItemsInYourCart": "No items in your Cart",
   "onTheWay": "On the way",
+  "orderErrorExplanation": "We apologize for the inconvenience. Due to an error processing your order, we have not received it. Please call us or contact us through WhatsApp.",
   "orderHistory": "Order History",
   "orderRecievedExplanation": "Your order has been received. We will confirm the payment and call you within five minutes",
   "outOfOfficeHoursNotice": "Please note: Our customer service team is unavailable between 9:00 PM and 7:00 AM. Payments sent during this time will be confirmed the next business day.",
@@ -86,5 +88,6 @@
   "termsValidation": "You need to accept the terms",
   "thankYouForShopping": "Thank you for shopping with us",
   "total": "Total",
+  "whatsapp": "On whatsapp",
   "wrongEmailOrPassword": "Wrong email or password"
 }

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/cart_product.dart';
 import 'package:suuq/notifiers/checkout/checkout_notifier.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
+import 'package:suuq/pages/checkout_page/confirmation_page.dart';
+import 'package:suuq/pages/checkout_page/order_failure_page.dart';
 import 'package:suuq/pages/checkout_page/sending_step.dart';
 import 'package:suuq/pages/checkout_page/payment_step.dart';
 import 'package:suuq/utils/app_colors.dart';
@@ -25,7 +27,7 @@ class CheckOutPage extends ConsumerWidget {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title:  Text(localizations.checkout),
+        title: Text(localizations.checkout),
       ),
       body: _mapStateToWidget(context, checkoutState, ref),
     );
@@ -42,6 +44,10 @@ class CheckOutPage extends ConsumerWidget {
       });
     } else if (state is CheckoutLoadedState) {
       return _checkouSteppers(context, state, ref);
+    } else if (state is CheckoutFailureState) {
+      return OrderFailurePage(contactNumber:  state.contactNumber);
+    } else if (state is CheckoutSuccessState) {
+      return const ConfirmationPage();
     }
     return const Center(child: CircularProgressIndicator());
   }
@@ -66,13 +72,13 @@ class CheckOutPage extends ConsumerWidget {
         type: StepperType.horizontal,
         steps: [
           Step(
-            title:  Text(localizations.paymentMethod),
+            title: Text(localizations.paymentMethod),
             content: PaymentStep(totalAmount: totalAmount),
             isActive: state.stepIndex == 0,
             state: state.stepIndex > 0 ? StepState.complete : StepState.indexed,
           ),
           Step(
-              title:  Text(localizations.sending),
+              title: Text(localizations.sending),
               content: SendingStep(
                 onPaymentSent: () => ref
                     .read(checkoutNotifierProvider.notifier)
