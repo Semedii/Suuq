@@ -3,7 +3,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/components/app_button.dart';
-import 'package:suuq/components/app_checkbox.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/notifiers/checkout/checkout_notifier.dart';
 import 'package:suuq/notifiers/checkout/checkout_state.dart';
@@ -108,11 +107,6 @@ class PaymentStep extends ConsumerWidget {
             ),
           ),
         ),
-        AppCheckBox(
-          value: false,
-          title: Text(localizations.iAccept),
-          onChanged: (value) {},
-        )
       ],
     );
   }
