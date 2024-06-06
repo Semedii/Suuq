@@ -41,6 +41,7 @@ class PaymentStep extends ConsumerWidget {
                 _buildPhoneNumberFIeld(state.sendersPhone, ref, localizations),
                 if (isOutOfWorkingHours) _buildTimeDisclaimer(localizations),
                 _buildSendButton(localizations, state, ref),
+                _chatWithUsWhatsapp(localizations),
               ],
             ),
           ),
@@ -216,6 +217,33 @@ class PaymentStep extends ConsumerWidget {
             ref.read(checkoutNotifierProvider.notifier).onSendButtonPressed();
           }
         });
+  }
+
+  Widget _chatWithUsWhatsapp(AppLocalizations localizations) {
+    return Padding(
+      padding: AppStyles.edgeInsets8,
+      child: TextButton(
+          onPressed: () {},
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(AppColors.green),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+          ),
+          child: Padding(
+            padding: AppStyles.edgeInsets4,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.chat_rounded,
+                  color: Colors.white,
+                ),
+                Text(localizations.contactuswhatsapp),
+              ],
+            ),
+          )),
+    );
   }
 
   String _getZaadEdahabCodes(CheckoutLoadedState state) {
