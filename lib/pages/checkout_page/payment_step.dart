@@ -12,10 +12,12 @@ import 'package:suuq/utils/enums/currency_enum.dart';
 import 'package:suuq/utils/enums/payment_option_enum.dart';
 import 'package:suuq/utils/field_validators.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PaymentStep extends ConsumerWidget {
-  const PaymentStep({required this.totalAmount, super.key});
+  const PaymentStep({required this.totalAmount, required this.contactNumber, super.key});
   final double totalAmount;
+  final String? contactNumber;
   static final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -223,7 +225,9 @@ class PaymentStep extends ConsumerWidget {
     return Padding(
       padding: AppStyles.edgeInsets8,
       child: TextButton(
-          onPressed: () {},
+          onPressed: () async{
+            await launchUrl(Uri.parse("https://whatsapp://send?phone=${_getWhatsappNumber()}&text=ASC"));
+          },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(AppColors.white),
             foregroundColor: MaterialStateProperty.all(Colors.black),
@@ -269,5 +273,13 @@ class PaymentStep extends ConsumerWidget {
       return cents;
     }
     return null;
+  }
+
+  String? _getWhatsappNumber(){
+    String? whatsappNumber;
+    if(contactNumber!=null){
+        whatsappNumber = '+252${contactNumber!.substring(1)}';
+    }
+    return whatsappNumber;
   }
 }

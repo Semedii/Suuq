@@ -73,7 +73,7 @@ class CheckOutPage extends ConsumerWidget {
         steps: [
           Step(
             title: Text(localizations.paymentMethod),
-            content: PaymentStep(totalAmount: totalAmount),
+            content: PaymentStep(totalAmount: totalAmount, contactNumber: state.contactNumber),
             isActive: state.stepIndex == 0,
             state: state.stepIndex > 0 ? StepState.complete : StepState.indexed,
           ),
