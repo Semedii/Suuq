@@ -3,6 +3,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:suuq/components/app_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderFailurePage extends StatelessWidget {
   const OrderFailurePage({this.contactNumber, super.key});
@@ -23,7 +24,6 @@ class OrderFailurePage extends StatelessWidget {
               _buildTitle(localizations),
               const SizedBox(height: 16),
               _buildDescriptionText(localizations),
-              
               _chatWithUsWhatsapp(localizations, context),
               _callUstButton(localizations),
             ],
@@ -66,17 +66,33 @@ class OrderFailurePage extends StatelessWidget {
   ) {
     return AppButton(
         title: localizations.whatsapp,
-        prefixWidget: const Icon(Icons.chat_rounded, color: Colors.white,),
-        onTap: () {
+        prefixWidget: const Icon(
+          Icons.chat_rounded,
+          color: Colors.white,
+        ),
+        onTap: () async {
+          await launchUrl(Uri.parse(
+              "https://api.whatsapp.com/send?phone=${_getWhatsappNumber()}&text=ASC"));
         });
-}
-
-    TextButton _callUstButton(AppLocalizations localizations) => TextButton(
-        onPressed: () {},
-        child: AppButton(
-        title: localizations.callUsInstead,
-        prefixWidget: const Icon(Icons.call, color: Colors.white,),
-        onTap: () async{
-         FlutterPhoneDirectCaller.callNumber(contactNumber??"");
-        }));
   }
+
+  TextButton _callUstButton(AppLocalizations localizations) => TextButton(
+      onPressed: () {},
+      child: AppButton(
+          title: localizations.callUsInstead,
+          prefixWidget: const Icon(
+            Icons.call,
+            color: Colors.white,
+          ),
+          onTap: () async {
+            FlutterPhoneDirectCaller.callNumber(contactNumber ?? "");
+          }));
+
+  String? _getWhatsappNumber() {
+    String? whatsappNumber;
+    if (contactNumber != null) {
+      whatsappNumber = '+252${contactNumber!.substring(1)}';
+    }
+    return whatsappNumber;
+  }
+}

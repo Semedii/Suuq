@@ -15,7 +15,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PaymentStep extends ConsumerWidget {
-  const PaymentStep({required this.totalAmount, required this.contactNumber, super.key});
+  const PaymentStep({
+    required this.totalAmount,
+    required this.contactNumber,
+    super.key,
+  });
   final double totalAmount;
   final String? contactNumber;
   static final _formKey = GlobalKey<FormState>();
@@ -225,8 +229,11 @@ class PaymentStep extends ConsumerWidget {
     return Padding(
       padding: AppStyles.edgeInsets8,
       child: TextButton(
-          onPressed: () async{
-            await launchUrl(Uri.parse("https://whatsapp://send?phone=${_getWhatsappNumber()}&text=ASC"));
+          onPressed: () async {
+            await launchUrl(
+              Uri.parse(
+                  "https://api.whatsapp.com/send?phone=${_getWhatsappNumber()}&text=ASC"),
+            );
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(AppColors.white),
@@ -275,10 +282,10 @@ class PaymentStep extends ConsumerWidget {
     return null;
   }
 
-  String? _getWhatsappNumber(){
+  String? _getWhatsappNumber() {
     String? whatsappNumber;
-    if(contactNumber!=null){
-        whatsappNumber = '+252${contactNumber!.substring(1)}';
+    if (contactNumber != null) {
+      whatsappNumber = '+252${contactNumber!.substring(1)}';
     }
     return whatsappNumber;
   }
