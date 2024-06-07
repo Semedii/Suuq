@@ -21,11 +21,11 @@ class LanguageNotifier extends ChangeNotifier {
     }
   }
 
-  void changeLanguageLogin() {
-    if (locale == const Locale('es')) {
+  void changeLanguageLogin(String? newValue) {
+    if (newValue == 'English') {
       _locale = const Locale('en');
     } else {
-      if (locale == const Locale('en')) _locale = const Locale('es');
+      if (newValue == 'Somali') _locale = const Locale('es');
     }
     notifyListeners();
   }

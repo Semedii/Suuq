@@ -225,10 +225,11 @@ class PaymentStep extends ConsumerWidget {
       child: TextButton(
           onPressed: () {},
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(AppColors.green),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-            shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+            backgroundColor: MaterialStateProperty.all(AppColors.white),
+            foregroundColor: MaterialStateProperty.all(Colors.black),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: const BorderSide(color: AppColors.black))),
           ),
           child: Padding(
             padding: AppStyles.edgeInsets4,
@@ -237,7 +238,7 @@ class PaymentStep extends ConsumerWidget {
               children: [
                 const Icon(
                   Icons.chat_rounded,
-                  color: Colors.white,
+                  color: Colors.green,
                 ),
                 Text(localizations.contactuswhatsapp),
               ],

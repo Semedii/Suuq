@@ -10,11 +10,15 @@ class AppButton extends StatelessWidget {
     this.prefixWidget,
     this.isLoading = false,
     this.isSmall = false,
+    this.isTransparent = false,
+    this.noTopMargin = false,
   });
   final String title;
   final Widget? prefixWidget;
   final bool isLoading;
   final bool isSmall;
+  final bool isTransparent;
+  final bool noTopMargin;
   final void Function() onTap;
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,7 @@ class AppButton extends StatelessWidget {
       onTap: isLoading ? null : onTap,
       child: Container(
         width: isSmall? phoneWidth*.4: phoneWidth*.8,
-        margin: AppStyles.edgeInsetsT20L32R32,
+        margin: noTopMargin? const EdgeInsets.symmetric(horizontal: 32) : AppStyles.edgeInsetsT20L32R32,
         padding: AppStyles.edgeInsetsV10H20,
         decoration: _getDecoration(),
         child: isLoading
@@ -39,7 +43,8 @@ class AppButton extends StatelessWidget {
   BoxDecoration _getDecoration() {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(20.0),
-      color: AppColors.darkGrey,
+      border: Border.all(color: isTransparent? AppColors.black: Colors.transparent),
+      color: isTransparent? Colors.transparent:AppColors.green,
     );
   }
 
@@ -51,8 +56,8 @@ class AppButton extends StatelessWidget {
           child: Center(
             child: Text(
               title.toUpperCase(),
-              style: const TextStyle(
-                color: AppColors.white,
+              style:  TextStyle(
+                color: isTransparent? AppColors.black : AppColors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),

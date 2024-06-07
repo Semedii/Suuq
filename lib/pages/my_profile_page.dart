@@ -76,7 +76,7 @@ class MyProfilePage extends ConsumerWidget {
 
   BoxDecoration _buildHeaderDecoration() {
     return BoxDecoration(
-      color: AppColors.lighterGrey,
+      color: AppColors.green.withOpacity(0.7),
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(12),
         bottomRight: Radius.circular(12),
@@ -124,10 +124,13 @@ class MyProfilePage extends ConsumerWidget {
                       ChangePasswordRoute(),
                     ),
                   ),
-                  _getMenu(Icons.language, localizations.changeLanguage,
+                  _getMenu(
+                    Icons.language,
+                    localizations.changeLanguage,
                     onTap: () => AutoRouter.of(context).push(
-                     const ChangeLanguageRoute(),
-                    ),),
+                      const ChangeLanguageRoute(),
+                    ),
+                  ),
                   _getMenu(
                     Icons.history,
                     localizations.orderHistory,
@@ -142,6 +145,7 @@ class MyProfilePage extends ConsumerWidget {
                     localizations.logOut,
                     onTap:
                         ref.read(loginInNotifierProvider.notifier).handleLogout,
+                    color: Colors.red,
                   ),
                 ],
               ),
@@ -150,26 +154,34 @@ class MyProfilePage extends ConsumerWidget {
         ));
   }
 
-  Card _getMenu(IconData leadingIcon, String title, {void Function()? onTap}) {
+  Card _getMenu(
+    IconData leadingIcon,
+    String title, {
+    void Function()? onTap,
+    Color color = AppColors.green,
+  }) {
     return Card(
       color: AppColors.white,
       child: ListTile(
         onTap: onTap,
-        leading: Icon(leadingIcon),
+        leading: Icon(
+          leadingIcon,
+          color: color,
+        ),
         title: Text(title),
       ),
     );
   }
 
-    Widget _getFavMenu(AppLocalizations localizations) {
+  Widget _getFavMenu(AppLocalizations localizations) {
     return Banner(
       message: localizations.comingSoon,
       location: BannerLocation.bottomEnd,
       child: Card(
         color: AppColors.white,
         child: ListTile(
-          onTap: ()=> throw UnimplementedError(),
-          leading: const Icon(Icons.favorite),
+          onTap: () => throw UnimplementedError(),
+          leading: const Icon(Icons.favorite, color: AppColors.green),
           title: Text(localizations.favorites),
         ),
       ),

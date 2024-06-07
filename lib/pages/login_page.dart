@@ -22,8 +22,6 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var loginState = ref.watch(loginInNotifierProvider);
-    Locale selectedLanguage =
-        ref.read(languageNotifierProvider.notifier).locale;
     return Scaffold(
       body: mapStateToWidget(context, ref, loginState),
     );
@@ -32,13 +30,15 @@ class LoginPage extends ConsumerWidget {
   Stack _buildLoginForm(
       BuildContext context, WidgetRef ref, LoginInitialState loginState) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
+    Locale selectedLanguage =
+        ref.read(languageNotifierProvider.notifier).locale;
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: AppColors.lightGrey,
+          height: size.height,
+          width: size.width,
+          color: AppColors.green.withOpacity(0.7),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -46,18 +46,18 @@ class LoginPage extends ConsumerWidget {
                 padding: AppStyles.edgeInsetsT16,
                 child: Image.asset(
                   "assets/images/lll.png",
-                  height: MediaQuery.of(context).size.height * .2,
+                  height: size.height * .2,
                 ),
               ),
             ],
           ),
         ),
         Positioned(
-          top: size.height * .2,
+          top: size.height * .25,
           child: SingleChildScrollView(
             child: Container(
               padding: AppStyles.edgeInsetsV24,
-              height: size.height * .8,
+              height: size.height * .75,
               width: size.width,
               decoration: const BoxDecoration(
                 color: AppColors.white,
@@ -69,11 +69,13 @@ class LoginPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  _buildLanguageButton(ref, selectedLanguage),
                   _getEmailField(loginState, localizations, ref),
                   _getPasswordField(loginState, localizations, ref),
+                  _getLoginButton(localizations, ref),
                   _getForgotPasswordText(localizations),
                   const Spacer(),
-                  _getLoginButton(localizations, ref),
+                  // _getLoginButton(localizations, ref),
                   _getSignupButton(localizations, context)
                 ],
               ),
@@ -87,31 +89,24 @@ class LoginPage extends ConsumerWidget {
   Widget _buildLanguageButton(WidgetRef ref, Locale selectedLanguage) {
     return Padding(
       padding: AppStyles.edgeInsetsR16,
-      child: TextButton(
-        onPressed:
-            ref.read(languageNotifierProvider.notifier).changeLanguageLogin,
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(AppColors.lightGrey),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-        ),
-        child: Text(
-          localeToString(selectedLanguage),
-          style: const TextStyle(fontSize: 16),
+      child: Center(
+        child: DropdownButton<String>(
+          value: localeToString(selectedLanguage),
+          icon: const Icon(Icons.arrow_drop_down),
+          style: const TextStyle(color: Colors.black, fontSize: 14),
+          underline: Container(),
+          onChanged:
+              ref.read(languageNotifierProvider.notifier).changeLanguageLogin,
+          items: <String>['English', 'Somali']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
         ),
       ),
     );
-  }
-
-  PreferredSize _getAppBarBottom() {
-    return PreferredSize(
-        preferredSize: const Size.fromHeight(200),
-        child: Image.asset(
-          "assets/images/boy.png",
-          width: 150,
-          height: 150,
-        ));
   }
 
   AppTextField _getEmailField(
@@ -159,9 +154,11 @@ class LoginPage extends ConsumerWidget {
     return GestureDetector(
       onTap: () {},
       child: Padding(
-        padding: AppStyles.edgeInsetsH20,
-        child: Text(
-          localizations.forgotYourPassword + StringUtilities.questionMark,
+        padding: AppStyles.edgeInsets8,
+        child: Center(
+          child: Text(
+            localizations.forgotYourPassword + StringUtilities.questionMark,
+          ),
         ),
       ),
     );
@@ -170,6 +167,7 @@ class LoginPage extends ConsumerWidget {
   AppButton _getLoginButton(AppLocalizations localizations, WidgetRef ref) {
     return AppButton(
       title: localizations.login,
+      noTopMargin: true,
       onTap: () =>
           ref.read(loginInNotifierProvider.notifier).handleLogin(localizations),
     );
@@ -181,6 +179,7 @@ class LoginPage extends ConsumerWidget {
   ) {
     return AppButton(
       title: localizations.signup,
+      isTransparent: true,
       onTap: () => AutoRouter.of(context).push(SignupRoute()),
     );
   }

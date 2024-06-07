@@ -48,11 +48,11 @@ Language localeToLangugae(Locale locale) {
 String localeToString(Locale locale){
    switch (locale.languageCode) {
     case 'es':
-      return "So";
+      return "Somali";
     case 'en':
-      return "En";
+      return "English";
     default:
-      return "So";
+      return "Somali";
   }
 }
 
