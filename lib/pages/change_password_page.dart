@@ -6,6 +6,7 @@ import 'package:suuq/components/app_button.dart';
 import 'package:suuq/components/app_textfield.dart';
 import 'package:suuq/notifiers/myProfile/account_notifier.dart';
 import 'package:suuq/notifiers/myProfile/account_state.dart';
+import 'package:suuq/utils/app_styles.dart';
 import 'package:suuq/utils/field_validators.dart';
 
 @RoutePage()
@@ -47,14 +48,18 @@ class ChangePasswordPage extends ConsumerWidget {
               validator: (value1) => FieldValidators.match(
                   value1, state.newPassword, localizations),
             ),
-            AppButton(
-                isLoading: state.issaveButtonLoading,
-                title: localizations.save,
-                onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    ref.read(accountNotifierProvider.notifier).onSavePassword(localizations);
-                  }
-                })
+            const Spacer(),
+            Padding(
+              padding: AppStyles.edgeInsetsB24,
+              child: AppButton(
+                  isLoading: state.issaveButtonLoading,
+                  title: localizations.save,
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      ref.read(accountNotifierProvider.notifier).onSavePassword(localizations);
+                    }
+                  }),
+            )
           ],
         ),
       ),
