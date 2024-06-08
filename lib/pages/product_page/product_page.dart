@@ -54,6 +54,7 @@ class _ProductPageState extends State<ProductPage> {
                       children: [
                         buildCarousel(context, isImageAvailable),
                         _buildDescription(),
+                        _buildQuestionAnswersButton(context),
                         _builDetails(),
                         _buildReviews(),
                       ],
@@ -68,6 +69,19 @@ class _ProductPageState extends State<ProductPage> {
         ],
       ),
     );
+  }
+
+  Align _buildQuestionAnswersButton(BuildContext context) {
+    return Align(
+        alignment: Alignment.topRight,
+        child: TextButton(
+            onPressed: () =>
+                AutoRouter.of(context).push(QuestionAnswersRoute()),
+            child: const Text(
+              "Suaalo iyo jawaabo",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            )));
   }
 
   Widget _buildBottomBar() {

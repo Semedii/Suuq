@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:suuq/pages/product_page/questions_answers.dart';
 import 'package:suuq/router/app_router.gr.dart';
 
 
@@ -23,6 +24,7 @@ class AppRouter extends $AppRouter {
    AutoRoute(page: ChangePasswordRoute.page),
    AutoRoute(page: ChangeLanguageRoute.page),
    AutoRoute(page: FullPhotoRoute.page),
-   AutoRoute(page: StoreRoute.page)
+   AutoRoute(page: StoreRoute.page),
+   AutoRoute(page: QuestionAnswersRoute.page)
  ];
 }

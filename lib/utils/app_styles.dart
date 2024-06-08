@@ -8,6 +8,7 @@ class AppStyles {
   static EdgeInsets edgeInsetsL16R16B16 =
       const EdgeInsets.only(left: 16, right: 16, bottom: 16);
   static EdgeInsets edgeInsetsL8 = const EdgeInsets.only(left: 8.0);
+  static EdgeInsets edgeInsetsl16 = const EdgeInsets.only(left: 16.0);
   static EdgeInsets edgeInsetsT16 = const EdgeInsets.only(top: 16.0);
   static EdgeInsets edgeInsetsT40 = const EdgeInsets.only(top: 40);
   static EdgeInsets edgeInsets4 = const EdgeInsets.all(4);
