@@ -10,6 +10,7 @@ import 'package:suuq/notifiers/home/home_notifier.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq/utils/app_styles.dart';
 
 @RoutePage()
 class ProductPage extends StatefulWidget {
@@ -44,14 +45,19 @@ class _ProductPageState extends State<ProductPage> {
           Expanded(
             child: Stack(
               children: [
-                SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildCarousel(context, isImageAvailable),
-                      _buildDescription(),
-                      _buildReviews(),
-                    ],
+                Container(
+                  margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * .15),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildCarousel(context, isImageAvailable),
+                        _buildDescription(),
+                        _builDetails(),
+                        _buildReviews(),
+                      ],
+                    ),
                   ),
                 ),
                 Positioned(
@@ -68,8 +74,9 @@ class _ProductPageState extends State<ProductPage> {
     return Consumer(builder: (context, ref, _) {
       AppLocalizations localizations = AppLocalizations.of(context)!;
       return Container(
-        padding: const EdgeInsets.only(bottom: 32, left: 16, right: 16, top: 4),
-        color: AppColors.lightestGrey,
+        height: MediaQuery.of(context).size.height * .15,
+        padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16, top: 4),
+        color: AppColors.white,
         child: Column(
           children: [
             _buildPrice(),
@@ -223,6 +230,37 @@ class _ProductPageState extends State<ProductPage> {
       style: TextStyle(
         color: AppColors.black,
         fontSize: 16,
+      ),
+    );
+  }
+
+  Widget _builDetails() {
+    return Wrap(
+      children: [
+        _buildDetailItem("Model Year", "2022"),
+        _buildDetailItem("Model Year", "2022"),
+        _buildDetailItem("Model Year", "2022"),
+        _buildDetailItem("Model Year", "2022"),
+        _buildDetailItem("Model Year", "2022"),
+      ],
+    );
+  }
+
+  Container _buildDetailItem(String title, String detail) {
+    return Container(
+      padding: AppStyles.edgeInsets4,
+      margin: AppStyles.edgeInsets4,
+      color: AppColors.green.withOpacity(0.2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                color: AppColors.green, fontWeight: FontWeight.bold),
+          ),
+          Text(detail)
+        ],
       ),
     );
   }
