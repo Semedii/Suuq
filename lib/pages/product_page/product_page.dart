@@ -56,7 +56,6 @@ class _ProductPageState extends State<ProductPage> {
                         _buildDescription(),
                         _buildQuestionAnswersButton(context),
                         _builDetails(),
-                        _buildReviews(),
                       ],
                     ),
                   ),
