@@ -6,7 +6,11 @@ class ProductQuestions {
   final String askedName;
   final DateTime dateTime;
 
-  ProductQuestions({required this.question, required this.answer, required this.askedName, required this.dateTime});
+  ProductQuestions(
+      {required this.question,
+      required this.answer,
+      required this.askedName,
+      required this.dateTime});
 
   factory ProductQuestions.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -28,5 +32,15 @@ class ProductQuestions {
       "askedName": askedName,
       "dateTime": dateTime,
     };
+  }
+
+  factory ProductQuestions.fromJson(Map<String, dynamic> json) {
+    Timestamp date = json['dateTime'];
+    return ProductQuestions(
+      question: json['question'],
+      answer: json['answer'],
+      askedName: json['askedName'],
+      dateTime: date.toDate(),
+    );
   }
 }

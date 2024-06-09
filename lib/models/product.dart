@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:suuq/models/product_questions.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 
 class Product {
@@ -10,6 +11,7 @@ class Product {
   final double price;
   final Category category;
   final List<Map<String, String>>? features;
+  final List<ProductQuestions?> questions;
 
   Product({
     this.id = "",
@@ -20,6 +22,7 @@ class Product {
     required this.price,
     required this.category,
     this.features,
+    this.questions = const [],
   });
 
   factory Product.fromFirestore(
@@ -42,6 +45,7 @@ class Product {
         }
       }
     }
+
     return Product(
       id: snapshot.id,
       sellerName: data?['seller_name'],
@@ -51,6 +55,10 @@ class Product {
       price: isPriceString ? double.parse(data?['price']) : data?['price'],
       category: getCategoryFromString(data?['category']),
       features: productFeatures,
+      questions: (data?['questions'] as List<dynamic>?)
+              ?.map((questions) => ProductQuestions.fromJson(questions))
+              .toList() ??
+          [],
     );
   }
   Map<String, dynamic> toFirestore() {
@@ -61,6 +69,9 @@ class Product {
       "description": description,
       "price": price.toStringAsFixed(2),
       "category": categoryToString(category),
+       "questions": questions
+          .map((question) => question?.toFirestore())
+          .toList(),
       'features': features != null
           ? List<dynamic>.from(
               features!.map((feature) => Map<String, dynamic>.from(feature)))
@@ -91,6 +102,7 @@ class Product {
       price: price,
       category: category,
       features: features,
+      questions: questions,
     );
   }
 }
