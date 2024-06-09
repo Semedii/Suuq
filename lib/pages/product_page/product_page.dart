@@ -74,12 +74,12 @@ class _ProductPageState extends State<ProductPage> {
     return Align(
         alignment: Alignment.topRight,
         child: TextButton(
-            onPressed: () =>
-                AutoRouter.of(context).push(ProductQuestionsRoute(product: widget.product)),
-            child:  Text(
+            onPressed: () => AutoRouter.of(context)
+                .push(ProductQuestionsRoute(product: widget.product)),
+            child: Text(
               "Suaalo iyo jawaabo (${widget.product.questions.length})",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
             )));
   }
 
