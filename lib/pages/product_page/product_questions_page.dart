@@ -24,15 +24,17 @@ class ProductQuestionsPage extends ConsumerWidget {
       ),
       body: Stack(
         children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: AppStyles.edgeInsetsV24 + AppStyles.edgeInsetsB48,
-              child: Column(
-                  children: product.questions
-                      .map((question) => _buildQuestionAndAnswer(question!))
-                      .toList()),
+          if (product.questions.isNotEmpty) ...{
+            SingleChildScrollView(
+              child: Padding(
+                padding: AppStyles.edgeInsetsV24 + AppStyles.edgeInsetsB48,
+                child: Column(
+                    children: product.questions
+                        .map((question) => _buildQuestionAndAnswer(question!))
+                        .toList()),
+              ),
             ),
-          ),
+          },
           Positioned(
             bottom: 16,
             child: AppButton(
