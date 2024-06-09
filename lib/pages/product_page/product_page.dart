@@ -76,7 +76,7 @@ class _ProductPageState extends State<ProductPage> {
         alignment: Alignment.topRight,
         child: TextButton(
             onPressed: () =>
-                AutoRouter.of(context).push(ProductQuestionsRoute(productId: widget.product.id)),
+                AutoRouter.of(context).push(ProductQuestionsRoute(product: widget.product)),
             child: const Text(
               "Suaalo iyo jawaabo",
               style:

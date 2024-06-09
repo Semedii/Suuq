@@ -142,12 +142,11 @@ abstract class $AppRouter extends _i19.RootStackRouter {
       );
     },
     ProductQuestionsRoute.name: (routeData) {
-      final args = routeData.argsAs<ProductQuestionsRouteArgs>(
-          orElse: () => const ProductQuestionsRouteArgs());
+      final args = routeData.argsAs<ProductQuestionsRouteArgs>();
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i15.ProductQuestionsPage(
-          productId: args.productId,
+          product: args.product,
           key: args.key,
         ),
       );
@@ -515,13 +514,13 @@ class ProductRouteArgs {
 class ProductQuestionsRoute
     extends _i19.PageRouteInfo<ProductQuestionsRouteArgs> {
   ProductQuestionsRoute({
-    String? productId,
+    required _i22.Product product,
     _i20.Key? key,
     List<_i19.PageRouteInfo>? children,
   }) : super(
           ProductQuestionsRoute.name,
           args: ProductQuestionsRouteArgs(
-            productId: productId,
+            product: product,
             key: key,
           ),
           initialChildren: children,
@@ -535,17 +534,17 @@ class ProductQuestionsRoute
 
 class ProductQuestionsRouteArgs {
   const ProductQuestionsRouteArgs({
-    this.productId,
+    required this.product,
     this.key,
   });
 
-  final String? productId;
+  final _i22.Product product;
 
   final _i20.Key? key;
 
   @override
   String toString() {
-    return 'ProductQuestionsRouteArgs{productId: $productId, key: $key}';
+    return 'ProductQuestionsRouteArgs{product: $product, key: $key}';
   }
 }
 

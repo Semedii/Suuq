@@ -1,17 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:suuq/components/app_button.dart';
+import 'package:suuq/models/product.dart';
+import 'package:suuq/models/product_questions.dart';
 import 'package:suuq/notifiers/questionsAnswers/product_questions_notifier.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 @RoutePage()
 class ProductQuestionsPage extends ConsumerWidget {
-  ProductQuestionsPage({this.productId, super.key});
+  ProductQuestionsPage({required this.product, super.key});
   final TextEditingController questionController = TextEditingController();
 
-  final String? productId;
+  final Product product;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,14 +28,9 @@ class ProductQuestionsPage extends ConsumerWidget {
             child: Padding(
               padding: AppStyles.edgeInsetsV24 + AppStyles.edgeInsetsB48,
               child: Column(
-                children: [
-                  _buildQuestionAndAnswer(),
-                  _buildQuestionAndAnswer(),
-                  _buildQuestionAndAnswer(),
-                  _buildQuestionAndAnswer(),
-                  _buildQuestionAndAnswer(),
-                ],
-              ),
+                  children: product.questions
+                      .map((question) => _buildQuestionAndAnswer(question!))
+                      .toList()),
             ),
           ),
           Positioned(
@@ -48,31 +46,49 @@ class ProductQuestionsPage extends ConsumerWidget {
     );
   }
 
-  Card _buildQuestionAndAnswer() {
+  Card _buildQuestionAndAnswer(ProductQuestions questions) {
     return Card(
       color: AppColors.lightestGrey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [_buildQuestion(), _buildAnswer()],
+        children: [_buildQuestion(questions), _buildAnswer(questions)],
       ),
     );
   }
 
-  Widget _buildQuestion() {
+  Widget _buildQuestion(ProductQuestions questions) {
     return Padding(
       padding: AppStyles.edgeInsets4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Discount ma la samayn karaa?"),
-          Text("A**** I**** Y***"),
-          Text("24/06/2023"),
+          Text(
+            questions.question,
+            style: const TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            'Asked by: ${questions.askedName}',
+            style: TextStyle(
+              fontSize: 16.0,
+              color: Colors.grey[700],
+            ),
+          ),
+          Text(
+            'Date: ${DateFormat('yyyy-MM-dd').format(questions.dateTime)}',
+            style: TextStyle(
+              fontSize: 14.0,
+              color: Colors.grey[600],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Card _buildAnswer() {
+  Card _buildAnswer(ProductQuestions questions) {
     return Card(
       child: Padding(
         padding: AppStyles.edgeInsetsl16,
@@ -82,13 +98,12 @@ class ProductQuestionsPage extends ConsumerWidget {
               children: [
                 Icon(Icons.abc),
                 Text(
-                  "PixelBazaar",
+                  product.sellerName,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 )
               ],
             ),
-            Text(
-                "Fadlan qiimahu waa fixed. Fadlan qiimahu waa fixed. Fadlan qiimahu waa fixed. Fadlan qiimahu waa fixed.")
+            Text(questions.answer)
           ],
         ),
       ),
@@ -111,7 +126,7 @@ class ProductQuestionsPage extends ConsumerWidget {
                   onPressed: () {
                     ref
                         .read(productQuestionsNotifierProvider.notifier)
-                        .addNewQuestion(productId, questionController.text);
+                        .addNewQuestion(product.id, questionController.text);
                     Navigator.pop(context);
                   },
                   child: Text("ASK")),
