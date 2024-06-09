@@ -120,7 +120,6 @@ class _ProductPageState extends State<ProductPage> {
     });
   }
 
-  bool isss = false;
   int _current = 0;
   Widget buildCarousel(BuildContext context, bool isImageAvailable) {
     return Column(
@@ -250,13 +249,10 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _builDetails() {
     return Wrap(
-      children: [
-        _buildDetailItem("Model Year", "2022"),
-        _buildDetailItem("Model Year", "2022"),
-        _buildDetailItem("Model Year", "2022"),
-        _buildDetailItem("Model Year", "2022"),
-        _buildDetailItem("Model Year", "2022"),
-      ],
+      children: widget.product.features!
+          .map((feature) =>
+              _buildDetailItem(feature.keys.first, feature.values.first))
+          .toList(),
     );
   }
 
