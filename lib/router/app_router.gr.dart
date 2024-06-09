@@ -25,7 +25,7 @@ import 'package:suuq/pages/main_page.dart' as _i11;
 import 'package:suuq/pages/order_history_page.dart' as _i12;
 import 'package:suuq/pages/personal_information_page.dart' as _i13;
 import 'package:suuq/pages/product_page/product_page.dart' as _i14;
-import 'package:suuq/pages/product_page/questions_answers.dart' as _i15;
+import 'package:suuq/pages/product_page/product_questions_page.dart' as _i15;
 import 'package:suuq/pages/signup_page.dart' as _i16;
 import 'package:suuq/pages/store_page.dart' as _i17;
 import 'package:suuq/pages/welcome_page.dart' as _i18;
@@ -141,10 +141,15 @@ abstract class $AppRouter extends _i19.RootStackRouter {
         ),
       );
     },
-    QuestionAnswersRoute.name: (routeData) {
+    ProductQuestionsRoute.name: (routeData) {
+      final args = routeData.argsAs<ProductQuestionsRouteArgs>(
+          orElse: () => const ProductQuestionsRouteArgs());
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i15.QuestionAnswersPage(),
+        child: _i15.ProductQuestionsPage(
+          productId: args.productId,
+          key: args.key,
+        ),
       );
     },
     SignupRoute.name: (routeData) {
@@ -506,17 +511,42 @@ class ProductRouteArgs {
 }
 
 /// generated route for
-/// [_i15.QuestionAnswersPage]
-class QuestionAnswersRoute extends _i19.PageRouteInfo<void> {
-  const QuestionAnswersRoute({List<_i19.PageRouteInfo>? children})
-      : super(
-          QuestionAnswersRoute.name,
+/// [_i15.ProductQuestionsPage]
+class ProductQuestionsRoute
+    extends _i19.PageRouteInfo<ProductQuestionsRouteArgs> {
+  ProductQuestionsRoute({
+    String? productId,
+    _i20.Key? key,
+    List<_i19.PageRouteInfo>? children,
+  }) : super(
+          ProductQuestionsRoute.name,
+          args: ProductQuestionsRouteArgs(
+            productId: productId,
+            key: key,
+          ),
           initialChildren: children,
         );
 
-  static const String name = 'QuestionAnswersRoute';
+  static const String name = 'ProductQuestionsRoute';
 
-  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
+  static const _i19.PageInfo<ProductQuestionsRouteArgs> page =
+      _i19.PageInfo<ProductQuestionsRouteArgs>(name);
+}
+
+class ProductQuestionsRouteArgs {
+  const ProductQuestionsRouteArgs({
+    this.productId,
+    this.key,
+  });
+
+  final String? productId;
+
+  final _i20.Key? key;
+
+  @override
+  String toString() {
+    return 'ProductQuestionsRouteArgs{productId: $productId, key: $key}';
+  }
 }
 
 /// generated route for

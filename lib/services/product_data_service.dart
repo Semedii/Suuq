@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq/models/product.dart';
+import 'package:suuq/models/product_questions.dart';
 import 'package:suuq/services/image_data_service.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 
@@ -65,7 +66,8 @@ class ProductDataService {
       return [];
     }
   }
-    Future<List<Product?>> fetchFirstBatchProductsByStoreCategoy(
+
+  Future<List<Product?>> fetchFirstBatchProductsByStoreCategoy(
     String sellerEmail,
     String category,
   ) async {
@@ -96,7 +98,7 @@ class ProductDataService {
     }
   }
 
-      Future<List<Product?>> fetchNextBatchProductsByStoreCategoy(
+  Future<List<Product?>> fetchNextBatchProductsByStoreCategoy(
     String sellerEmail,
     String category,
   ) async {
@@ -107,7 +109,7 @@ class ProductDataService {
           .where("category", isEqualTo: category)
           .limit(20)
           .orderBy(FieldPath.documentId)
-          .startAfterDocument(lastDocument);;
+          .startAfterDocument(lastDocument);
 
       var query = await collectionRef.get();
       lastDocument = query.docs.last;
@@ -217,4 +219,19 @@ class ProductDataService {
     }
     return productsWithImages;
   }
+
+  Future<void> addNewQuestion({
+  required String productId,
+  required ProductQuestions question,
+}) async {
+  final productDoc = db.collection('products').doc(productId);
+  final productSnapshot = await productDoc.get();
+  if (productSnapshot.exists) {
+    final productData = productSnapshot.data();
+    final questions = productData?['questions'] ?? [];
+    questions.add(question.toFirestore());
+
+    await productDoc.update({'questions': questions});
+  }
+}
 }
