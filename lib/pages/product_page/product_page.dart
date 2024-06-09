@@ -77,8 +77,8 @@ class _ProductPageState extends State<ProductPage> {
         child: TextButton(
             onPressed: () =>
                 AutoRouter.of(context).push(ProductQuestionsRoute(product: widget.product)),
-            child: const Text(
-              "Suaalo iyo jawaabo",
+            child:  Text(
+              "Suaalo iyo jawaabo (${widget.product.questions.length})",
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             )));
