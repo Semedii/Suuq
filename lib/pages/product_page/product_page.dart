@@ -54,8 +54,8 @@ class _ProductPageState extends State<ProductPage> {
                       children: [
                         buildCarousel(context, isImageAvailable),
                         _buildDescription(),
-                        _buildQuestionAnswersButton(context),
-                        _builDetails(),
+                        _builFeatures(),
+                        _buildExtraDescription(),
                       ],
                     ),
                   ),
@@ -246,16 +246,16 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget _builDetails() {
+  Widget _builFeatures() {
     return Wrap(
       children: widget.product.features!
           .map((feature) =>
-              _buildDetailItem(feature.keys.first, feature.values.first))
+              _buildFeaureItem(feature.keys.first, feature.values.first))
           .toList(),
     );
   }
 
-  Container _buildDetailItem(String title, String detail) {
+  Container _buildFeaureItem(String title, String detail) {
     return Container(
       padding: AppStyles.edgeInsets4,
       margin: AppStyles.edgeInsets4,
@@ -271,6 +271,19 @@ class _ProductPageState extends State<ProductPage> {
           Text(detail)
         ],
       ),
+    );
+  }
+
+  _buildExtraDescription(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: AppStyles.edgeInsets4,
+          child: Text("Description", style: TextStyle(fontWeight: FontWeight.bold),),
+        ),
+        Text(widget.product.extraDescription??""),
+      ],
     );
   }
 

@@ -11,6 +11,7 @@ class Product {
   final double price;
   final Category category;
   final List<Map<String, String>>? features;
+  final String? extraDescription;
   final List<ProductQuestions?> questions;
 
   Product({
@@ -21,6 +22,7 @@ class Product {
     required this.description,
     required this.price,
     required this.category,
+    this.extraDescription,
     this.features,
     this.questions = const [],
   });
@@ -55,6 +57,7 @@ class Product {
       price: isPriceString ? double.parse(data?['price']) : data?['price'],
       category: getCategoryFromString(data?['category']),
       features: productFeatures,
+      extraDescription: data?['extra_description'],
       questions: (data?['questions'] as List<dynamic>?)
               ?.map((questions) => ProductQuestions.fromJson(questions))
               .toList() ??
@@ -69,6 +72,7 @@ class Product {
       "description": description,
       "price": price.toStringAsFixed(2),
       "category": categoryToString(category),
+      "extra_description": extraDescription,
        "questions": questions
           .map((question) => question?.toFirestore())
           .toList(),
@@ -88,6 +92,7 @@ class Product {
         description: json['description'],
         imageUrl: json['image'].cast<String>(),
         price: double.parse(json['price']),
+        extraDescription: json['extra_description'],
         category: getCategoryFromString(json['category']),
         features: json['features']);
   }
@@ -103,6 +108,7 @@ class Product {
       category: category,
       features: features,
       questions: questions,
+      extraDescription: extraDescription
     );
   }
 }
