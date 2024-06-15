@@ -16,7 +16,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isImageAvailable = product.imageUrl.isNotEmpty;
     return GestureDetector(
-      onTap: () => AutoRouter.of(context).push(ProductRoute(product: product)),
+      onTap: () => AutoRouter.of(context).push(ProductRoute(productId: product.id)),
       child: Card(
         child: SizedBox(
           width: 150,

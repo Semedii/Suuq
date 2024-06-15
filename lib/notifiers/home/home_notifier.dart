@@ -4,7 +4,6 @@ import 'package:suuq/models/cart.dart';
 import 'package:suuq/models/order.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_state.dart';
-import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/services/cart_data_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq/services/order_data_service.dart';
@@ -19,7 +18,6 @@ class HomeNotifier extends _$HomeNotifier {
   final ProductDataService _productDataService = ProductDataService();
   final OrderDataService _orderDataService = OrderDataService();
   final CartDataService _cartDataService = CartDataService();
-  final AuthDataService _authDataService = AuthDataService();
 
   late String? userEmail;
   @override
@@ -73,16 +71,6 @@ initPage() async {
     List<Cart?> cartItems = await _cartDataService.fetchUsersCart(userEmail!);
     state = (state as HomeStateLoaded)
         .copyWith(numberItemsInCart: cartItems.length);
-  }
-
-  Future<void> addToFavs(String productId)async{
-   var email = FirebaseAuth.instance.currentUser?.email;
-   await _authDataService.addProductToFav(email!, productId);
-  }
-
-    Future<void> removeFromFavs(String productId)async{
-   var email = FirebaseAuth.instance.currentUser?.email;
-   _authDataService.removeProductFromFav(email!, productId);
   }
 
   void addToCart(Product product, AppLocalizations localizations) async {

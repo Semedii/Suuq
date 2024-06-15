@@ -143,7 +143,7 @@ abstract class $AppRouter extends _i20.RootStackRouter {
       return _i20.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i15.ProductPage(
-          args.product,
+          productId: args.productId,
           key: args.key,
         ),
       );
@@ -496,13 +496,13 @@ class PersonalInformationRouteArgs {
 /// [_i15.ProductPage]
 class ProductRoute extends _i20.PageRouteInfo<ProductRouteArgs> {
   ProductRoute({
-    required _i23.Product product,
+    required String productId,
     _i21.Key? key,
     List<_i20.PageRouteInfo>? children,
   }) : super(
           ProductRoute.name,
           args: ProductRouteArgs(
-            product: product,
+            productId: productId,
             key: key,
           ),
           initialChildren: children,
@@ -516,17 +516,17 @@ class ProductRoute extends _i20.PageRouteInfo<ProductRouteArgs> {
 
 class ProductRouteArgs {
   const ProductRouteArgs({
-    required this.product,
+    required this.productId,
     this.key,
   });
 
-  final _i23.Product product;
+  final String productId;
 
   final _i21.Key? key;
 
   @override
   String toString() {
-    return 'ProductRouteArgs{product: $product, key: $key}';
+    return 'ProductRouteArgs{productId: $productId, key: $key}';
   }
 }
 

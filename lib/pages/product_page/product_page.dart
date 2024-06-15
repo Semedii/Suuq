@@ -7,180 +7,179 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq/models/cart_product.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_notifier.dart';
+import 'package:suuq/notifiers/product/product_notifier.dart';
+import 'package:suuq/notifiers/product/product_state.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq/utils/app_styles.dart';
 
 @RoutePage()
-class ProductPage extends StatefulWidget {
-  const ProductPage(this.product, {super.key});
-
-  final Product product;
+class ProductPage extends ConsumerStatefulWidget {
+  ProductPage({required this.productId, super.key});
+  final String productId;
 
   @override
-  State<ProductPage> createState() => _ProductPageState();
+  ProductPageState createState() => ProductPageState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class ProductPageState extends ConsumerState<ProductPage> {
   @override
   Widget build(BuildContext context) {
-    bool isImageAvailable = widget.product.imageUrl.isNotEmpty;
+    final state = ref.watch(productNotifierProvider);
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () => AutoRouter.of(context).push(const CartRoute()),
-            icon: const Icon(Icons.shopping_cart),
-          ),
-          IconButton(
-            onPressed: () => throw UnimplementedError(),
-            icon: const Icon(Icons.share_sharp),
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * .15),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildCarousel(context, isImageAvailable),
-                        _buildSellerAndProductName(),
-                        _builFeatures(),
-                        if (widget.product.extraDescription != null)
-                          _buildExtraDescription(),
-                      ],
-                    ),
+      appBar: _buildAppBar(context),
+      body: _mapStateToWidget(context, state, ref),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      actions: [
+        IconButton(
+          onPressed: () => AutoRouter.of(context).push(const CartRoute()),
+          icon: const Icon(Icons.shopping_cart),
+        ),
+        IconButton(
+          onPressed: () => throw UnimplementedError(),
+          icon: const Icon(Icons.share_sharp),
+        ),
+      ],
+    );
+  }
+
+  Widget _mapStateToWidget(
+      BuildContext context, ProductState state, WidgetRef ref) {
+    if (state is ProductInitialState) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(productNotifierProvider.notifier).initPage(widget.productId);
+      });
+    } else if (state is ProductLoadedState) {
+      return _buildPageBody(context, state, ref);
+    }
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Column _buildPageBody(
+      BuildContext context, ProductLoadedState state, WidgetRef ref) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height * .15),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildCarousel(context, state.product, ref),
+                      _buildSellerAndProductName(context, state.product),
+                      _builFeatures(state.product),
+                      if (state.product.extraDescription != null)
+                        _buildExtraDescription(state.product),
+                    ],
                   ),
                 ),
-                Positioned(
-                    bottom: 0, left: 0, right: 0, child: _buildBottomBar()),
-              ],
-            ),
+              ),
+              Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: _buildBottomBar(context, state.product, ref)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomBar(BuildContext context, Product product, WidgetRef ref) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    return Container(
+      height: MediaQuery.of(context).size.height * .15,
+      padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16, top: 4),
+      color: AppColors.white,
+      child: Column(
+        children: [
+          _buildPrice(product),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildButton(
+                localizations.buyNow,
+                onTap: () => AutoRouter.of(context).push(CheckOutRoute(
+                    totalAmount: product.price,
+                    cartProductList: [
+                      CartProduct.mapProductToCartProduct(product: product)
+                    ])),
+              ),
+              _buildButton(localizations.addToCart, isTransparent: true,
+                  onTap: () {
+                ref
+                    .read(homeNotifierProvider.notifier)
+                    .addToCart(product, localizations);
+              }),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Align _buildQuestionAnswersButton(BuildContext context) {
-    return Align(
-        alignment: Alignment.topRight,
-        child: TextButton(
-            onPressed: () => AutoRouter.of(context)
-                .push(ProductQuestionsRoute(product: widget.product)),
-            child: Text(
-              "Suaalo iyo jawaabo (${widget.product.questions.length})",
-              style: const TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold),
-            )));
-  }
-
-  Widget _buildBottomBar() {
-    return Consumer(builder: (context, ref, _) {
-      AppLocalizations localizations = AppLocalizations.of(context)!;
-      return Container(
-        height: MediaQuery.of(context).size.height * .15,
-        padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16, top: 4),
-        color: AppColors.white,
-        child: Column(
+  int _current = 0;
+  Widget buildCarousel(BuildContext context, Product product, WidgetRef ref) {
+    bool isImageAvailable = product.imageUrl.isNotEmpty;
+    return Stack(
+      alignment: Alignment.topRight,
+      children: [
+        Column(
           children: [
-            _buildPrice(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildButton(
-                  localizations.buyNow,
-                  onTap: () => AutoRouter.of(context).push(CheckOutRoute(
-                      totalAmount: widget.product.price,
-                      cartProductList: [
-                        CartProduct.mapProductToCartProduct(
-                            product: widget.product)
-                      ])),
-                ),
-                _buildButton(localizations.addToCart, isTransparent: true,
-                    onTap: () {
-                  ref
-                      .read(homeNotifierProvider.notifier)
-                      .addToCart(widget.product, localizations);
-                }),
-              ],
+            CarouselSlider(
+              options: _buildCarouselOptions(context),
+              items: product.imageUrl.map((url) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: isImageAvailable
+                          ? InkWell(
+                              onTap: () => AutoRouter.of(context)
+                                  .push(FullPhotoRoute(imageUrl: url)),
+                              child: Image.network(
+                                url!,
+                                fit: BoxFit.contain,
+                                loadingBuilder: _imageNetworkLoadingBuilder,
+                              ),
+                            )
+                          : Image.asset(
+                              "assets/images/noImageAvailable.jpeg",
+                              height: 200,
+                              width: 150,
+                              fit: BoxFit.cover,
+                            ),
+                    );
+                  },
+                );
+              }).toList(),
             ),
+            if (product.imageUrl.length > 1) _buildDotIndicator(product)
           ],
         ),
-      );
-    });
-  }
-
-  int _current = 0;
-  Widget buildCarousel(BuildContext context, bool isImageAvailable) {
-    return Consumer(builder: (context, ref, _) {
-      return Stack(
-        alignment: Alignment.topRight,
-        children: [
-          Column(
-            children: [
-              CarouselSlider(
-                options: _buildCarouselOptions(context),
-                items: widget.product.imageUrl.map((url) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.6,
-                        child: isImageAvailable
-                            ? InkWell(
-                                onTap: () => AutoRouter.of(context)
-                                    .push(FullPhotoRoute(imageUrl: url)),
-                                child: Image.network(
-                                  url!,
-                                  fit: BoxFit.contain,
-                                  loadingBuilder: _imageNetworkLoadingBuilder,
-                                ),
-                              )
-                            : Image.asset(
-                                "assets/images/noImageAvailable.jpeg",
-                                height: 200,
-                                width: 150,
-                                fit: BoxFit.cover,
-                              ),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-              if (widget.product.imageUrl.length > 1) _buildDotIndicator()
-            ],
-          ),
-          IconButton(
-              padding: AppStyles.edgeInsetsH20,
-              onPressed: () {
-                if (widget.product.isFav == true) {
-                  ref
-                      .read(homeNotifierProvider.notifier)
-                      .removeFromFavs(widget.product.id);
-                } else {
-                  ref
-                      .read(homeNotifierProvider.notifier)
-                      .addToFavs(widget.product.id);
-                }
-              },
-              icon: Icon(
-                widget.product.isFav ? Icons.favorite : Icons.favorite_outline,
-                color: Colors.red,
-                size: 40,
-              ))
-        ],
-      );
-    });
+        IconButton(
+            padding: AppStyles.edgeInsetsH20,
+            onPressed:
+                ref.read(productNotifierProvider.notifier).onFavButtonPressed,
+            icon: Icon(
+              product.isFav ? Icons.favorite : Icons.favorite_outline,
+              color: Colors.red,
+              size: 40,
+            ))
+      ],
+    );
   }
 
   CarouselOptions _buildCarouselOptions(BuildContext context) {
@@ -204,9 +203,9 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  DotsIndicator _buildDotIndicator() {
+  DotsIndicator _buildDotIndicator(Product product) {
     return DotsIndicator(
-      dotsCount: widget.product.imageUrl.length,
+      dotsCount: product.imageUrl.length,
       position: _current,
       decorator: DotsDecorator(
         shape: const Border(),
@@ -219,7 +218,7 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Padding _buildSellerAndProductName() {
+  Padding _buildSellerAndProductName(BuildContext context, Product product) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: RichText(
@@ -228,19 +227,19 @@ class _ProductPageState extends State<ProductPage> {
         text: TextSpan(
           children: [
             TextSpan(
-              text: widget.product.sellerName,
+              text: product.sellerName,
               style: const TextStyle(
                   color: AppColors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 20),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => AutoRouter.of(context).push(StoreRoute(
-                      sellerEmail: widget.product.sellerEmail,
-                      storename: widget.product.sellerName,
+                      sellerEmail: product.sellerEmail,
+                      storename: product.sellerName,
                     )),
             ),
             TextSpan(
-              text: ' - ${widget.product.description}',
+              text: ' - ${product.description}',
               style: const TextStyle(color: AppColors.black, fontSize: 24),
             ),
           ],
@@ -272,11 +271,11 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget _builFeatures() {
+  Widget _builFeatures(Product product) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Wrap(
-        children: widget.product.features!
+        children: product.features!
             .where((feature) => feature != null)
             .map((feature) => _buildFeaureItem(feature!.title, feature.value))
             .toList(),
@@ -303,7 +302,7 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  _buildExtraDescription() {
+  _buildExtraDescription(Product product) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -316,15 +315,15 @@ class _ProductPageState extends State<ProductPage> {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          Text(widget.product.extraDescription ?? ""),
+          Text(product.extraDescription ?? ""),
         ],
       ),
     );
   }
 
-  Text _buildPrice() {
+  Text _buildPrice(Product product) {
     return Text(
-      '${widget.product.price.toStringAsFixed(2)}\$',
+      '${product.price.toStringAsFixed(2)}\$',
       style: const TextStyle(
         color: AppColors.green,
         fontWeight: FontWeight.bold,
@@ -381,5 +380,18 @@ class _ProductPageState extends State<ProductPage> {
         ),
       );
     }
+  }
+
+  Align _buildQuestionAnswersButton(BuildContext context, Product product) {
+    return Align(
+        alignment: Alignment.topRight,
+        child: TextButton(
+            onPressed: () => AutoRouter.of(context)
+                .push(ProductQuestionsRoute(product: product)),
+            child: Text(
+              "Suaalo iyo jawaabo (${product.questions.length})",
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
+            )));
   }
 }
