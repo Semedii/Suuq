@@ -122,38 +122,46 @@ class _ProductPageState extends State<ProductPage> {
 
   int _current = 0;
   Widget buildCarousel(BuildContext context, bool isImageAvailable) {
-    return Column(
+    return Stack(
+      alignment: Alignment.topRight,
       children: [
-        CarouselSlider(
-          options: _buildCarouselOptions(context),
-          items: widget.product.imageUrl.map((url) {
-            return Builder(
-              builder: (BuildContext context) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: isImageAvailable
-                      ? InkWell(
-                          onTap: () => AutoRouter.of(context)
-                              .push(FullPhotoRoute(imageUrl: url)),
-                          child: Image.network(
-                            url!,
-                            fit: BoxFit.contain,
-                            loadingBuilder: _imageNetworkLoadingBuilder,
-                          ),
-                        )
-                      : Image.asset(
-                          "assets/images/noImageAvailable.jpeg",
-                          height: 200,
-                          width: 150,
-                          fit: BoxFit.cover,
-                        ),
+        Column(
+          children: [
+            CarouselSlider(
+              options: _buildCarouselOptions(context),
+              items: widget.product.imageUrl.map((url) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: isImageAvailable
+                          ? InkWell(
+                              onTap: () => AutoRouter.of(context)
+                                  .push(FullPhotoRoute(imageUrl: url)),
+                              child: Image.network(
+                                url!,
+                                fit: BoxFit.contain,
+                                loadingBuilder: _imageNetworkLoadingBuilder,
+                              ),
+                            )
+                          : Image.asset(
+                              "assets/images/noImageAvailable.jpeg",
+                              height: 200,
+                              width: 150,
+                              fit: BoxFit.cover,
+                            ),
+                    );
+                  },
                 );
-              },
-            );
-          }).toList(),
+              }).toList(),
+            ),
+            if (widget.product.imageUrl.length > 1) _buildDotIndicator()
+          ],
         ),
-        if (widget.product.imageUrl.length > 1) _buildDotIndicator()
+        IconButton(
+          padding: AppStyles.edgeInsetsH20,
+          onPressed: (){}, icon: Icon(Icons.favorite_outline, color: Colors.red, size: 40,))
       ],
     );
   }
