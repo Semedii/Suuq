@@ -59,6 +59,28 @@ class AuthDataService {
     }
   }
 
+Future<bool> isProductInFav(String email, String id) async {
+   final userRef = db
+        .collection('users')
+        .doc('customersDoc')
+        .collection("customers")
+        .doc(email);
+
+  DocumentSnapshot snapshot = await userRef.get();
+  if (snapshot.exists) {
+    Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>? ;
+
+    if (data != null && data.containsKey('favproducts') && data['favproducts'] is List) {
+  
+      List<dynamic> favProducts = data['favproducts'];
+
+      return favProducts.contains(id);
+    }
+  }
+  return false;
+}
+
+
     Future<void> removeProductFromFav(String email, String productId)async {
     final userRef = db
         .collection('users')

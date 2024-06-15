@@ -89,7 +89,7 @@ factory Product.fromFirestore(
         features: json['features']);
   }
 
-  Product copyWith({List<String?>? imageUrl}) {
+  Product copyWith({List<String?>? imageUrl, bool? isFav}) {
     return Product(
       id: id,
       sellerName: sellerName,
@@ -101,7 +101,7 @@ factory Product.fromFirestore(
       features: features,
       questions: questions,
       extraDescription: extraDescription,
-      isFav: isFav,
+      isFav: isFav?? this.isFav,
     );
   }
 }

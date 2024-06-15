@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/models/product_questions.dart';
+import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/services/image_data_service.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
 
@@ -31,7 +33,7 @@ class ProductDataService {
 
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      return _getProductsWithImages(products);
+      return _getProductsWithImagesAndIsFavs(products);
     } catch (e) {
       print("Error fetching productssss: $e");
       return [];
@@ -60,7 +62,7 @@ class ProductDataService {
           .get();
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      return _getProductsWithImages(products);
+      return _getProductsWithImagesAndIsFavs(products);
     } catch (e) {
       print("Error fetching products: ${e.toString()}");
       return [];
@@ -91,7 +93,7 @@ class ProductDataService {
 
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      return _getProductsWithImages(products);
+      return _getProductsWithImagesAndIsFavs(products);
     } catch (e) {
       print("Error fetching productssss: $e");
       return [];
@@ -123,7 +125,7 @@ class ProductDataService {
 
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      return _getProductsWithImages(products);
+      return _getProductsWithImagesAndIsFavs(products);
     } catch (e) {
       print("Error fetching productssss: $e");
       return [];
@@ -172,7 +174,7 @@ class ProductDataService {
 
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      return _getProductsWithImages(products);
+      return _getProductsWithImagesAndIsFavs(products);
     } catch (e) {
       print("Error fetching products: $e");
       return [];
@@ -199,14 +201,16 @@ class ProductDataService {
           .get();
       List<Product> products =
           querySnapshot.docs.map((doc) => doc.data()).toList();
-      return _getProductsWithImages(products);
+      return _getProductsWithImagesAndIsFavs(products);
     } catch (e) {
       print("Error fetching products: ${e.toString()}");
       return [];
     }
   }
 
-  Future<List<Product>> _getProductsWithImages(List<Product> products) async {
+  Future<List<Product>> _getProductsWithImagesAndIsFavs(
+      List<Product> products) async {
+    var email = FirebaseAuth.instance.currentUser?.email;
     final List<Product> productsWithImages = [];
     for (Product product in products) {
       List<String> newImageUrls = [];
@@ -214,24 +218,25 @@ class ProductDataService {
         var newImageUrl = await ImageDataService().retrieveImageUrl(imageUrl);
         newImageUrls.add(newImageUrl);
       }
-      product = product.copyWith(imageUrl: newImageUrls);
+      bool isFav = await AuthDataService().isProductInFav(email!, product.id);
+      product = product.copyWith(imageUrl: newImageUrls, isFav: isFav);
       productsWithImages.add(product);
     }
     return productsWithImages;
   }
 
   Future<void> addNewQuestion({
-  required String productId,
-  required ProductQuestions question,
-}) async {
-  final productDoc = db.collection('products').doc(productId);
-  final productSnapshot = await productDoc.get();
-  if (productSnapshot.exists) {
-    final productData = productSnapshot.data();
-    final questions = productData?['questions'] ?? [];
-    questions.add(question.toFirestore());
+    required String productId,
+    required ProductQuestions question,
+  }) async {
+    final productDoc = db.collection('products').doc(productId);
+    final productSnapshot = await productDoc.get();
+    if (productSnapshot.exists) {
+      final productData = productSnapshot.data();
+      final questions = productData?['questions'] ?? [];
+      questions.add(question.toFirestore());
 
-    await productDoc.update({'questions': questions});
+      await productDoc.update({'questions': questions});
+    }
   }
-}
 }
