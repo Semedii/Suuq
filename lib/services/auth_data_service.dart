@@ -51,7 +51,7 @@ class AuthDataService {
         .doc(email);
     try {
       await userRef.update({
-        'favproducts': FieldValue.arrayUnion([productId]),
+        'favProducts': FieldValue.arrayUnion([productId]),
       });
       print('Product added to favorites successfully.');
     } catch (e) {
@@ -70,9 +70,9 @@ Future<bool> isProductInFav(String email, String id) async {
   if (snapshot.exists) {
     Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>? ;
 
-    if (data != null && data.containsKey('favproducts') && data['favproducts'] is List) {
+    if (data != null && data.containsKey('favProducts') && data['favProducts'] is List) {
   
-      List<dynamic> favProducts = data['favproducts'];
+      List<dynamic> favProducts = data['favProducts'];
 
       return favProducts.contains(id);
     }
@@ -89,7 +89,7 @@ Future<bool> isProductInFav(String email, String id) async {
         .doc(email);
    try {
     await userRef.update({
-      'favproducts': FieldValue.arrayRemove([productId]),
+      'favProducts': FieldValue.arrayRemove([productId]),
     });
     print('Product removed from favorites successfully.');
   } catch (e) {

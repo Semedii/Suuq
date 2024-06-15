@@ -90,7 +90,7 @@ initPage() async {
     List<String> sellersInCart = [];
     for (int i = 0; i < carts.length; i++) {
       Product? product = await _productDataService.fetchProductsById(
-          carts[i]!.productId, carts[i]!.category);
+          carts[i]!.productId);
       sellersInCart.add(product.sellerName);
     }
     if (sellersInCart.isNotEmpty &&

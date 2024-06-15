@@ -10,6 +10,7 @@ class UserModel {
   String? address;
   Language language;
   DateTime? joinedDate;
+  List<String?>? favProducts;
 
   UserModel({
     this.language = Language.somali,
@@ -20,6 +21,7 @@ class UserModel {
     this.email,
     this.phoneNumber,
     this.avatar,
+    this.favProducts,
   });
 
   factory UserModel.fromFirestore({
@@ -36,6 +38,7 @@ class UserModel {
         address: data?['address'],
         joinedDate: createdDate.toDate(),
         phoneNumber: data?['phone_number'],
+        favProducts: data?['favProducts'].cast<String>(),
         avatar: data?['phone_number']);
   }
   Map<String, dynamic> toFirestore() {
@@ -48,6 +51,7 @@ class UserModel {
       "avatar": avatar,
       "address": address,
       "language": languageToString(language),
+      "favProducts": favProducts
     };
   }
 
@@ -61,6 +65,7 @@ class UserModel {
         address: map['address'],
         joinedDate: createdDate.toDate(),
         phoneNumber: map['phone_number'],
+        favProducts: map['favProducts'],
         avatar: map['phone_number']);
   }
 }

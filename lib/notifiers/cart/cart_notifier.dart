@@ -25,7 +25,7 @@ class CartNotifier extends _$CartNotifier {
     List<CartProduct> cartProducts = [];
     for (int i = 0; i < carts.length; i++) {
       Product? product = await _productDataService.fetchProductsById(
-          carts[i]!.productId, carts[i]!.category);
+          carts[i]!.productId);
       CartProduct cartProduct = CartProduct.mapProductToCartProduct(
           id: carts[i]?.id, product: product);
       cartProducts.add(cartProduct);

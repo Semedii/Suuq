@@ -4,7 +4,6 @@ import 'package:suuq/models/product.dart';
 import 'package:suuq/models/product_questions.dart';
 import 'package:suuq/services/auth_data_service.dart';
 import 'package:suuq/services/image_data_service.dart';
-import 'package:suuq/utils/enums/category_enum.dart';
 
 class ProductDataService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -132,11 +131,10 @@ class ProductDataService {
     }
   }
 
-  Future<Product> fetchProductsById(String id, Category category) async {
-    final stirngCategory = categoryToString(category);
+  Future<Product> fetchProductsById(String id) async {
+      var email = FirebaseAuth.instance.currentUser?.email;
     final collectionRef = db
         .collection('products')
-        .where("category", isEqualTo: stirngCategory.toLowerCase())
         .withConverter(
           fromFirestore: Product.fromFirestore,
           toFirestore: (product, _) => product.toFirestore(),
@@ -150,7 +148,8 @@ class ProductDataService {
       var newImageUrl = await ImageDataService().retrieveImageUrl(imageUrl);
       newImageUrls.add(newImageUrl);
     }
-    Product product = prodData.data().copyWith(imageUrl: newImageUrls);
+     bool isFav = await AuthDataService().isProductInFav(email!, id);
+    Product product = prodData.data().copyWith(imageUrl: newImageUrls, isFav: isFav);
     return product;
   }
 
