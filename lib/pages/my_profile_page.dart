@@ -138,7 +138,10 @@ class MyProfilePage extends ConsumerWidget {
                       const OrderHistoryRoute(),
                     ),
                   ),
-                  _getFavMenu(localizations),
+                  _getMenu(Icons.favorite, localizations.favorites,
+                      onTap: () => AutoRouter.of(context).push(
+                            const FavoritesRoute(),
+                          )),
                   _getMenu(Icons.person, "About Suuq"),
                   _getMenu(
                     Icons.logout_outlined,
@@ -169,21 +172,6 @@ class MyProfilePage extends ConsumerWidget {
           color: color,
         ),
         title: Text(title),
-      ),
-    );
-  }
-
-  Widget _getFavMenu(AppLocalizations localizations) {
-    return Banner(
-      message: localizations.comingSoon,
-      location: BannerLocation.bottomEnd,
-      child: Card(
-        color: AppColors.white,
-        child: ListTile(
-          onTap: () => throw UnimplementedError(),
-          leading: const Icon(Icons.favorite, color: AppColors.green),
-          title: Text(localizations.favorites),
-        ),
       ),
     );
   }
