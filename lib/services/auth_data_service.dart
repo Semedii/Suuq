@@ -43,6 +43,39 @@ class AuthDataService {
     }
   }
 
+  Future<void> addProductToFav(String email, String productId)async {
+    final userRef = db
+        .collection('users')
+        .doc('customersDoc')
+        .collection("customers")
+        .doc(email);
+    try {
+      await userRef.update({
+        'favproducts': FieldValue.arrayUnion([productId]),
+      });
+      print('Product added to favorites successfully.');
+    } catch (e) {
+      print('Error adding product to favorites: $e');
+    }
+  }
+
+    Future<void> removeProductFromFav(String email, String productId)async {
+    final userRef = db
+        .collection('users')
+        .doc('customersDoc')
+        .collection("customers")
+        .doc(email);
+   try {
+    await userRef.update({
+      'favproducts': FieldValue.arrayRemove([productId]),
+    });
+    print('Product removed from favorites successfully.');
+  } catch (e) {
+    print('Error removing product from favorites: $e');
+    // Handle any errors as needed
+  }
+  }
+
   Future<void> updateUserInfo(
       {required String email,
       required String phoneNumber,

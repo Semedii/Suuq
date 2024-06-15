@@ -14,6 +14,7 @@ class Product {
   final Category category;
   final String? extraDescription;
   final List<Feature?>? features;
+  final bool isFav;
   final List<ProductQuestions?> questions;
 
   Product({
@@ -25,6 +26,7 @@ class Product {
     this.extraDescription,
     required this.price,
     required this.category,
+    this.isFav=false,
     this.features,
     this.questions = const [],
   });
@@ -52,7 +54,8 @@ factory Product.fromFirestore(
     price: double.parse(data?['price'].toString() ?? ""),
     category: getCategoryFromString(data?['category']),
     features: featuresList,
-    extraDescription: data?['extra_description']
+    extraDescription: data?['extra_description'],
+    isFav: data?['isFav']?? false,
   );
 }
 
@@ -67,6 +70,7 @@ factory Product.fromFirestore(
       "category": categoryToString(category),
       "extra_description": extraDescription,
       'features': features?.map((feature) => feature?.toJson()).toList(),
+      'isFav': isFav,
     };
   }
 
@@ -81,6 +85,7 @@ factory Product.fromFirestore(
         price: double.parse(json['price']),
         extraDescription: json['extra_description'],
         category: getCategoryFromString(json['category']),
+        isFav: json['isFav'],
         features: json['features']);
   }
 
@@ -95,7 +100,8 @@ factory Product.fromFirestore(
       category: category,
       features: features,
       questions: questions,
-      extraDescription: extraDescription
+      extraDescription: extraDescription,
+      isFav: isFav,
     );
   }
 }

@@ -122,48 +122,65 @@ class _ProductPageState extends State<ProductPage> {
 
   int _current = 0;
   Widget buildCarousel(BuildContext context, bool isImageAvailable) {
-    return Stack(
-      alignment: Alignment.topRight,
-      children: [
-        Column(
-          children: [
-            CarouselSlider(
-              options: _buildCarouselOptions(context),
-              items: widget.product.imageUrl.map((url) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: isImageAvailable
-                          ? InkWell(
-                              onTap: () => AutoRouter.of(context)
-                                  .push(FullPhotoRoute(imageUrl: url)),
-                              child: Image.network(
-                                url!,
-                                fit: BoxFit.contain,
-                                loadingBuilder: _imageNetworkLoadingBuilder,
+    return Consumer(builder: (context, ref, _) {
+      return Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Column(
+            children: [
+              CarouselSlider(
+                options: _buildCarouselOptions(context),
+                items: widget.product.imageUrl.map((url) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: isImageAvailable
+                            ? InkWell(
+                                onTap: () => AutoRouter.of(context)
+                                    .push(FullPhotoRoute(imageUrl: url)),
+                                child: Image.network(
+                                  url!,
+                                  fit: BoxFit.contain,
+                                  loadingBuilder: _imageNetworkLoadingBuilder,
+                                ),
+                              )
+                            : Image.asset(
+                                "assets/images/noImageAvailable.jpeg",
+                                height: 200,
+                                width: 150,
+                                fit: BoxFit.cover,
                               ),
-                            )
-                          : Image.asset(
-                              "assets/images/noImageAvailable.jpeg",
-                              height: 200,
-                              width: 150,
-                              fit: BoxFit.cover,
-                            ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-            if (widget.product.imageUrl.length > 1) _buildDotIndicator()
-          ],
-        ),
-        IconButton(
-          padding: AppStyles.edgeInsetsH20,
-          onPressed: (){}, icon: Icon(Icons.favorite_outline, color: Colors.red, size: 40,))
-      ],
-    );
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+              if (widget.product.imageUrl.length > 1) _buildDotIndicator()
+            ],
+          ),
+          IconButton(
+              padding: AppStyles.edgeInsetsH20,
+              onPressed: () {
+                if (widget.product.isFav == true) {
+                  ref
+                      .read(homeNotifierProvider.notifier)
+                      .removeFromFavs(widget.product.id);
+                } else {
+                  ref
+                      .read(homeNotifierProvider.notifier)
+                      .addToFavs(widget.product.id);
+                }
+              },
+              icon: Icon(
+                widget.product.isFav ? Icons.favorite : Icons.favorite_outline,
+                color: Colors.red,
+                size: 40,
+              ))
+        ],
+      );
+    });
   }
 
   CarouselOptions _buildCarouselOptions(BuildContext context) {
