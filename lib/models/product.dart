@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:suuq/models/feature.dart';
 import 'package:suuq/models/product_questions.dart';
 import 'package:suuq/utils/enums/category_enum.dart';
+
 
 class Product {
   final String id;
@@ -10,8 +12,8 @@ class Product {
   final String description;
   final double price;
   final Category category;
-  final List<Map<String, String>>? features;
   final String? extraDescription;
+  final List<Feature?>? features;
   final List<ProductQuestions?> questions;
 
   Product({
@@ -20,66 +22,51 @@ class Product {
     required this.sellerEmail,
     required this.imageUrl,
     required this.description,
+    this.extraDescription,
     required this.price,
     required this.category,
-    this.extraDescription,
     this.features,
     this.questions = const [],
   });
 
-  factory Product.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
-    final bool isPriceString = data?['price'].runtimeType == String;
-
-    List<Map<String, String>> productFeatures = [];
-
-    if (data?['features'] != null) {
-      for (var feature in data?['features']) {
-        if (feature is Map<dynamic, dynamic>) {
-          Map<String, String> convertedFeature = {};
-          feature.forEach((key, value) {
-            convertedFeature[key.toString()] = value.toString();
-          });
-          productFeatures.add(convertedFeature);
-        }
-      }
-    }
-
-    return Product(
-      id: snapshot.id,
-      sellerName: data?['seller_name'],
-      sellerEmail: data?['seller_email'],
-      imageUrl: data?['image'].cast<String>(),
-      description: data?['description'],
-      price: isPriceString ? double.parse(data?['price']) : data?['price'],
-      category: getCategoryFromString(data?['category']),
-      features: productFeatures,
-      extraDescription: data?['extra_description'],
-      questions: (data?['questions'] as List<dynamic>?)
-              ?.map((questions) => ProductQuestions.fromJson(questions))
-              .toList() ??
-          [],
-    );
+factory Product.fromFirestore(
+  DocumentSnapshot<Map<String, dynamic>> snapshot,
+  SnapshotOptions? options,
+) {
+  final data = snapshot.data();
+  List<Feature>? featuresList = [];
+  if (data?['features'] != null) {
+    List<dynamic> featuresData = data?['features'];
+    featuresList = featuresData.map((dynamic feature) {
+      return Feature(title: feature['title'].toString(), value: feature['value'].toString());
+     
+    }).toList();
   }
+
+  return Product(
+    id: snapshot.id,
+    sellerName: data?['seller_name'],
+    sellerEmail: data?['seller_email'],
+    imageUrl: data?['image'].cast<String>(),
+    description: data?['description'],
+    price: double.parse(data?['price'].toString() ?? ""),
+    category: getCategoryFromString(data?['category']),
+    features: featuresList,
+    extraDescription: data?['extra_description']
+  );
+}
+
+
   Map<String, dynamic> toFirestore() {
     return {
       "seller_name": sellerName,
-      "seller_email": sellerEmail,
+      'seller_email': sellerEmail,
       "image": imageUrl,
       "description": description,
       "price": price.toStringAsFixed(2),
       "category": categoryToString(category),
       "extra_description": extraDescription,
-       "questions": questions
-          .map((question) => question?.toFirestore())
-          .toList(),
-      'features': features != null
-          ? List<dynamic>.from(
-              features!.map((feature) => Map<String, dynamic>.from(feature)))
-          : null,
+      'features': features?.map((feature) => feature?.toJson()).toList(),
     };
   }
 

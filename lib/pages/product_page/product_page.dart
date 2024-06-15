@@ -53,9 +53,10 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         buildCarousel(context, isImageAvailable),
-                        _buildDescription(),
+                        _buildSellerAndProductName(),
                         _builFeatures(),
-                        _buildExtraDescription(),
+                        if (widget.product.extraDescription != null)
+                          _buildExtraDescription(),
                       ],
                     ),
                   ),
@@ -193,7 +194,7 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Padding _buildDescription() {
+  Padding _buildSellerAndProductName() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: RichText(
@@ -247,11 +248,14 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Widget _builFeatures() {
-    return Wrap(
-      children: widget.product.features!
-          .map((feature) =>
-              _buildFeaureItem(feature.keys.first, feature.values.first))
-          .toList(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Wrap(
+        children: widget.product.features!
+            .where((feature) => feature != null)
+            .map((feature) => _buildFeaureItem(feature!.title, feature.value))
+            .toList(),
+      ),
     );
   }
 
@@ -274,16 +278,22 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  _buildExtraDescription(){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: AppStyles.edgeInsets4,
-          child: Text("Description", style: TextStyle(fontWeight: FontWeight.bold),),
-        ),
-        Text(widget.product.extraDescription??""),
-      ],
+  _buildExtraDescription() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: AppStyles.edgeInsets4,
+            child: Text(
+              "Description",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text(widget.product.extraDescription ?? ""),
+        ],
+      ),
     );
   }
 
