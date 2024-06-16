@@ -49,7 +49,10 @@ class ProductPageState extends ConsumerState<ProductPage> {
   }
 
   Widget _mapStateToWidget(
-      BuildContext context, ProductState state, WidgetRef ref) {
+    BuildContext context,
+    ProductState state,
+    WidgetRef ref,
+  ) {
     if (state is ProductInitialState) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(productNotifierProvider.notifier).initPage(widget.productId);
@@ -61,7 +64,10 @@ class ProductPageState extends ConsumerState<ProductPage> {
   }
 
   Column _buildPageBody(
-      BuildContext context, ProductLoadedState state, WidgetRef ref) {
+    BuildContext context,
+    ProductLoadedState state,
+    WidgetRef ref,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -75,11 +81,12 @@ class ProductPageState extends ConsumerState<ProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      buildCarousel(context, state.product, ref),
+                      _buildCarousel(context, state.product, ref),
                       _buildSellerAndProductName(context, state.product),
                       _builFeatures(state.product),
-                      if (state.product.extraDescription != null)
+                      if (state.product.extraDescription != null) ...{
                         _buildExtraDescription(state.product),
+                      }
                     ],
                   ),
                 ),
@@ -96,89 +103,40 @@ class ProductPageState extends ConsumerState<ProductPage> {
     );
   }
 
-  Widget _buildBottomBar(BuildContext context, Product product, WidgetRef ref) {
-    AppLocalizations localizations = AppLocalizations.of(context)!;
-    return Container(
-      height: MediaQuery.of(context).size.height * .15,
-      padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16, top: 4),
-      color: AppColors.white,
-      child: Column(
-        children: [
-          _buildPrice(product),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildButton(
-                localizations.buyNow,
-                onTap: () => AutoRouter.of(context).push(CheckOutRoute(
-                    totalAmount: product.price,
-                    cartProductList: [
-                      CartProduct.mapProductToCartProduct(product: product)
-                    ])),
-              ),
-              _buildButton(localizations.addToCart, isTransparent: true,
-                  onTap: () {
-                ref
-                    .read(homeNotifierProvider.notifier)
-                    .addToCart(product, localizations);
-              }),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   int _current = 0;
-  Widget buildCarousel(BuildContext context, Product product, WidgetRef ref) {
+  Widget _buildCarousel(BuildContext context, Product product, WidgetRef ref) {
     bool isImageAvailable = product.imageUrl.isNotEmpty;
     return Stack(
       alignment: Alignment.topRight,
       children: [
         Column(
           children: [
-            CarouselSlider(
-              options: _buildCarouselOptions(context),
-              items: product.imageUrl.map((url) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.6,
-                      child: isImageAvailable
-                          ? InkWell(
-                              onTap: () => AutoRouter.of(context)
-                                  .push(FullPhotoRoute(imageUrl: url)),
-                              child: Image.network(
-                                url!,
-                                fit: BoxFit.contain,
-                                loadingBuilder: _imageNetworkLoadingBuilder,
-                              ),
-                            )
-                          : Image.asset(
-                              "assets/images/noImageAvailable.jpeg",
-                              height: 200,
-                              width: 150,
-                              fit: BoxFit.cover,
-                            ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
+            _buildCarouselSlider(context, product, isImageAvailable),
             if (product.imageUrl.length > 1) _buildDotIndicator(product)
           ],
         ),
-        IconButton(
-            padding: AppStyles.edgeInsetsH20,
-            onPressed:
-                ref.read(productNotifierProvider.notifier).onFavButtonPressed,
-            icon: Icon(
-              product.isFav ? Icons.favorite : Icons.favorite_outline,
-              color: Colors.red,
-              size: 40,
-            ))
+        _buildFavButton(ref, product)
       ],
+    );
+  }
+
+  CarouselSlider _buildCarouselSlider(
+      BuildContext context, Product product, bool isImageAvailable) {
+    return CarouselSlider(
+      options: _buildCarouselOptions(context),
+      items: product.imageUrl.map((url) {
+        return Builder(
+          builder: (BuildContext context) {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.6,
+              child: isImageAvailable
+                  ? _buildProductImage(context, url)
+                  : _buildImagePlaceHolder(),
+            );
+          },
+        );
+      }).toList(),
     );
   }
 
@@ -203,6 +161,26 @@ class ProductPageState extends ConsumerState<ProductPage> {
     );
   }
 
+  InkWell _buildProductImage(BuildContext context, String? url) {
+    return InkWell(
+      onTap: () => AutoRouter.of(context).push(FullPhotoRoute(imageUrl: url)),
+      child: Image.network(
+        url!,
+        fit: BoxFit.contain,
+        loadingBuilder: _imageNetworkLoadingBuilder,
+      ),
+    );
+  }
+
+  Image _buildImagePlaceHolder() {
+    return Image.asset(
+      "assets/images/noImageAvailable.jpeg",
+      height: 200,
+      width: 150,
+      fit: BoxFit.cover,
+    );
+  }
+
   DotsIndicator _buildDotIndicator(Product product) {
     return DotsIndicator(
       dotsCount: product.imageUrl.length,
@@ -216,6 +194,18 @@ class ProductPageState extends ConsumerState<ProductPage> {
         activeSize: const Size(20, 10),
       ),
     );
+  }
+
+  IconButton _buildFavButton(WidgetRef ref, Product product) {
+    return IconButton(
+        padding: AppStyles.edgeInsetsH20,
+        onPressed:
+            ref.read(productNotifierProvider.notifier).onFavButtonPressed,
+        icon: Icon(
+          product.isFav ? Icons.favorite : Icons.favorite_outline,
+          color: Colors.red,
+          size: 40,
+        ));
   }
 
   Padding _buildSellerAndProductName(BuildContext context, Product product) {
@@ -316,6 +306,39 @@ class ProductPageState extends ConsumerState<ProductPage> {
             ),
           ),
           Text(product.extraDescription ?? ""),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomBar(BuildContext context, Product product, WidgetRef ref) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    return Container(
+      height: MediaQuery.of(context).size.height * .15,
+      padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16, top: 4),
+      color: AppColors.white,
+      child: Column(
+        children: [
+          _buildPrice(product),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildButton(
+                localizations.buyNow,
+                onTap: () => AutoRouter.of(context).push(CheckOutRoute(
+                    totalAmount: product.price,
+                    cartProductList: [
+                      CartProduct.mapProductToCartProduct(product: product)
+                    ])),
+              ),
+              _buildButton(localizations.addToCart, isTransparent: true,
+                  onTap: () {
+                ref
+                    .read(homeNotifierProvider.notifier)
+                    .addToCart(product, localizations);
+              }),
+            ],
+          ),
         ],
       ),
     );
