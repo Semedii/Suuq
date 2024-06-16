@@ -17,14 +17,14 @@ class AuthService {
     AppLocalizations localizations,
   ) async {
     try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final firebaseUser = userCredential.user;
-      ;
+      User? firebaseUser = _auth.currentUser;
       if (firebaseUser != null) {
+        await firebaseUser.sendEmailVerification();
+
         UserModel newUser = UserModel(
           id: firebaseUser.uid,
           name: displayName,
@@ -33,12 +33,17 @@ class AuthService {
           joinedDate: DateTime.now(),
           avatar: firebaseUser.photoURL,
         );
+
         await _authDataService.addNewUser(newUser);
+
         return newUser;
       }
     } on FirebaseException catch (e) {
       FirebaseExceptionHandler.handleFirebaseError(e, localizations);
+    } catch (e) {
+      print('Error during signup: $e');
     }
+
     return null;
   }
 
@@ -51,13 +56,19 @@ class AuthService {
         password: password,
       );
       final User? firebaseUser = userCredential.user;
+
       if (firebaseUser != null) {
-        UserModel? user = await _authDataService.fetchCurrentUser(email);
-        if (user == null) {
-          logout();
-          toastInfo(localizations.customerCheckToast);
+        if (firebaseUser.emailVerified) {
+          UserModel? user = await _authDataService.fetchCurrentUser(email);
+          if (user == null) {
+            logout();
+            toastInfo(localizations.customerCheckToast);
+          } else {
+            return user;
+          }
         } else {
-          return user;
+          logout();
+          toastInfo("please verify your email to log in");
         }
       }
     } on FirebaseException catch (e) {

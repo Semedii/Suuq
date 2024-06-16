@@ -38,7 +38,7 @@ class UserModel {
         address: data?['address'],
         joinedDate: createdDate.toDate(),
         phoneNumber: data?['phone_number'],
-        favProducts: data?['favProducts'].cast<String>(),
+        favProducts: data?['favProducts']?.cast<String>(),
         avatar: data?['phone_number']);
   }
   Map<String, dynamic> toFirestore() {
