@@ -25,12 +25,14 @@ class ProductNotifier extends _$ProductNotifier {
 
   Future<void> onFavButtonPressed() async {
     var lastState = state as ProductLoadedState;
+    state = lastState.copyWith(isAddingToFav: true);
     var email = FirebaseAuth.instance.currentUser?.email;
     if (lastState.product.isFav == true) {
       _authDataService.removeProductFromFav(email!, lastState.product.id);
     } else {
       await _authDataService.addProductToFav(email!, lastState.product.id);
     }
-    initPage(lastState.product.id);
+    Product product = await _productDataService.fetchProductsById(lastState.product.id);
+    state = lastState.copyWith(isAddingToFav: false, product: product);
   }
 }

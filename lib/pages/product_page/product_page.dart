@@ -81,7 +81,7 @@ class ProductPageState extends ConsumerState<ProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildCarousel(context, state.product, ref),
+                      _buildCarousel(context, state, ref),
                       _buildSellerAndProductName(context, state.product),
                       _builFeatures(state.product),
                       if (state.product.extraDescription != null) ...{
@@ -104,18 +104,23 @@ class ProductPageState extends ConsumerState<ProductPage> {
   }
 
   int _current = 0;
-  Widget _buildCarousel(BuildContext context, Product product, WidgetRef ref) {
-    bool isImageAvailable = product.imageUrl.isNotEmpty;
+  Widget _buildCarousel(
+    BuildContext context,
+    ProductLoadedState state,
+    WidgetRef ref,
+  ) {
+    bool isImageAvailable = state.product.imageUrl.isNotEmpty;
     return Stack(
       alignment: Alignment.topRight,
       children: [
         Column(
           children: [
-            _buildCarouselSlider(context, product, isImageAvailable),
-            if (product.imageUrl.length > 1) _buildDotIndicator(product)
+            _buildCarouselSlider(context, state.product, isImageAvailable),
+            if (state.product.imageUrl.length > 1)
+              _buildDotIndicator(state.product)
           ],
         ),
-        _buildFavButton(ref, product)
+        _buildFavButton(ref, state)
       ],
     );
   }
@@ -196,16 +201,19 @@ class ProductPageState extends ConsumerState<ProductPage> {
     );
   }
 
-  IconButton _buildFavButton(WidgetRef ref, Product product) {
-    return IconButton(
-        padding: AppStyles.edgeInsetsH20,
-        onPressed:
-            ref.read(productNotifierProvider.notifier).onFavButtonPressed,
-        icon: Icon(
-          product.isFav ? Icons.favorite : Icons.favorite_outline,
-          color: Colors.red,
-          size: 40,
-        ));
+  Widget _buildFavButton(WidgetRef ref, ProductLoadedState state) {
+    return AbsorbPointer(
+      absorbing: state.isAddingToFav,
+      child: IconButton(
+          padding: AppStyles.edgeInsetsH20,
+          onPressed:
+              ref.read(productNotifierProvider.notifier).onFavButtonPressed,
+          icon: Icon(
+            state.product.isFav ? Icons.favorite : Icons.favorite_outline,
+            color: Colors.red,
+            size: 40,
+          )),
+    );
   }
 
   Padding _buildSellerAndProductName(BuildContext context, Product product) {
