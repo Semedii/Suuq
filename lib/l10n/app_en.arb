@@ -55,6 +55,7 @@
   "myProfile": "My Profile",
   "newPassword": "New Password",
   "noActiveOrders": "Currently there is no active orders. You can check past orders in Order History page",
+  "noFavProductDescription": "You haven't added any favorite products yet. Start adding by clicking the heart icon on any product.",
   "noItemsInYourCart": "No items in your Cart",
   "onTheWay": "On the way",
   "orderErrorExplanation": "We apologize for the inconvenience. Due to an error processing your order, we have not received it. Please call us or contact us through WhatsApp.",
