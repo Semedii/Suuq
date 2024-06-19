@@ -132,13 +132,9 @@ class ProductPageState extends ConsumerState<ProductPage> {
       items: product.imageUrl.map((url) {
         return Builder(
           builder: (BuildContext context) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.6,
-              child: isImageAvailable
-                  ? _buildProductImage(context, url)
-                  : _buildImagePlaceHolder(),
-            );
+            return isImageAvailable
+                ? _buildProductImage(context, url)
+                : _buildImagePlaceHolder();
           },
         );
       }).toList(),
@@ -147,7 +143,7 @@ class ProductPageState extends ConsumerState<ProductPage> {
 
   CarouselOptions _buildCarouselOptions(BuildContext context) {
     return CarouselOptions(
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * 0.55,
       viewportFraction: 1,
       initialPage: 0,
       enableInfiniteScroll: true,
@@ -210,7 +206,7 @@ class ProductPageState extends ConsumerState<ProductPage> {
               ref.read(productNotifierProvider.notifier).onFavButtonPressed,
           icon: Icon(
             state.product.isFav ? Icons.favorite : Icons.favorite_outline,
-            color: Colors.red,
+            color: AppColors.green,
             size: 40,
           )),
     );
