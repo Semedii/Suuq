@@ -188,6 +188,7 @@ class PaymentStep extends ConsumerWidget {
     return Row(
       children: [
         Radio<Currency>(
+          activeColor: AppColors.green,
           value: radioValue,
           groupValue: currentValue,
           onChanged: onChanged,

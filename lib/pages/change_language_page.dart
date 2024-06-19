@@ -5,6 +5,7 @@ import 'package:suuq/components/app_button.dart';
 import 'package:suuq/my_app.dart';
 import 'package:suuq/notifiers/myProfile/account_notifier.dart';
 import 'package:suuq/notifiers/myProfile/account_state.dart';
+import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/enums/language.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -76,6 +77,7 @@ class ChangeLanguagePage extends ConsumerWidget {
     return Row(
       children: [
         Radio<Language>(
+          activeColor: AppColors.green,
           value: radioValue,
           groupValue: currentValue,
           onChanged: onChanged,

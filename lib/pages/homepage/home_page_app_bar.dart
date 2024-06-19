@@ -41,7 +41,7 @@ class HomePageAppBar extends StatelessWidget {
             Icons.shopping_cart_rounded,
             size: 32,
           ),
-          Badge(label: Text(numberItemsInCart.toString()),),
+          Badge(label: Text(numberItemsInCart.toString()), backgroundColor: AppColors.green,),
         ],
       ));
 

@@ -379,13 +379,13 @@ class ProductPageState extends ConsumerState<ProductPage> {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
           color: isTransparent ? null : Colors.green,
-          border: isTransparent ? Border.all() : null,
+          border: isTransparent ? Border.all(color: AppColors.green) : null,
           borderRadius: BorderRadius.circular(4),
         ),
         child: Text(
           title,
           style: TextStyle(
-            color: isTransparent ? Colors.black : Colors.white,
+            color: isTransparent ? Colors.green : Colors.white,
             fontSize: 20,
           ),
         ),
