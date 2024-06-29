@@ -72,16 +72,8 @@ class SignupPage extends ConsumerWidget {
         child: Column(
           children: [
             _getTextFields(ref, localizations, state),
-            AppButton(
-                title: localizations.signup,
-                isLoading: state.isButtonLoading,
-                onTap: () => _handleSignUp(ref, localizations)),
-            AppButton(
-              title: localizations.backToLogin,
-              onTap: () => AutoRouter.of(context).replace(
-                const LoginRoute(),
-              ),
-            ),
+            _buildSignupButton(localizations, state, ref),
+            _buildBackToLoginButton(localizations, context),
           ],
         ),
       ),
@@ -89,8 +81,10 @@ class SignupPage extends ConsumerWidget {
   }
 
   Form _getTextFields(
-      WidgetRef ref, AppLocalizations localizations, SignupStateInitial state) {
-    print("aaaaa ${state.isAgreed}");
+    WidgetRef ref,
+    AppLocalizations localizations,
+    SignupStateInitial state,
+  ) {
     return Form(
       key: _formKey,
       child: Column(
@@ -183,6 +177,25 @@ class SignupPage extends ConsumerWidget {
                 decoration: TextDecoration.underline),
           ),
         ],
+      ),
+    );
+  }
+
+  AppButton _buildSignupButton(
+      AppLocalizations localizations, SignupStateInitial state, WidgetRef ref) {
+    return AppButton(
+        title: localizations.signup,
+        isLoading: state.isButtonLoading,
+        onTap: () => _handleSignUp(ref, localizations));
+  }
+
+  AppButton _buildBackToLoginButton(
+      AppLocalizations localizations, BuildContext context) {
+    return AppButton(
+      isTransparent: true,
+      title: localizations.backToLogin,
+      onTap: () => AutoRouter.of(context).replace(
+        const LoginRoute(),
       ),
     );
   }
