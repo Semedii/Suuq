@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.suuq</string>
+	<string>com.suuq.staging</string>
 	<key>PROJECT_ID</key>
 	<string>suuq-staging-770c6</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:306904529292:ios:f637b529e739383bff7ea9</string>
+	<string>1:306904529292:ios:ba9493206aab0f01ff7ea9</string>
 </dict>
 </plist>

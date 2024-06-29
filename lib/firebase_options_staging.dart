@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart'
 ///
 /// Example:
 /// ```dart
-/// import 'firebase_options.dart';
+/// import 'firebase_options_staging.dart';
 /// // ...
 /// await Firebase.initializeApp(
 ///   options: DefaultFirebaseOptions.currentPlatform,
@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyA4fH2zua6DB__rHsdHu-h1vqLjzUiWu3s',
-    appId: '1:306904529292:android:972e9499ba47e6b0ff7ea9',
+    appId: '1:306904529292:android:d4e3e21c3d6e9007ff7ea9',
     messagingSenderId: '306904529292',
     projectId: 'suuq-staging-770c6',
     storageBucket: 'suuq-staging-770c6.appspot.com',
@@ -60,11 +60,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBp2fWP3_rWkVkzVRCiZm4ShtQ8I1h_lNA',
-    appId: '1:306904529292:ios:f637b529e739383bff7ea9',
+    appId: '1:306904529292:ios:ba9493206aab0f01ff7ea9',
     messagingSenderId: '306904529292',
     projectId: 'suuq-staging-770c6',
     storageBucket: 'suuq-staging-770c6.appspot.com',
-    iosBundleId: 'com.example.suuq',
+    iosBundleId: 'com.suuq.staging',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -85,5 +85,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'suuq-staging-770c6.appspot.com',
     measurementId: 'G-FXE57GBN8S',
   );
-
 }

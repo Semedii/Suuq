@@ -6,16 +6,24 @@ import 'package:suuq/router/app_router.dart';
 import 'package:suuq/utils/app_theme.dart';
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  MyApp({super.key, required this.env});
 
   final _appRouter = AppRouter();
-
+  final String env;
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, _) {
         final languageNotifier = ref.watch(languageNotifierProvider);
         return MaterialApp.router(
+          builder: (context, child) {
+            if (env == 'prod') return child!;
+            return Banner(
+              message: env.toUpperCase(),
+              location: BannerLocation.topStart,
+              child: child,
+            );
+          },
           locale: languageNotifier.locale,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
