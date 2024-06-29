@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.suuq</string>
+	<string>com.suuq.prod</string>
 	<key>PROJECT_ID</key>
 	<string>suuq-b54e7</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:510650794585:ios:a165424b916767e4b3e748</string>
+	<string>1:510650794585:ios:4905609837b9abc8b3e748</string>
 </dict>
 </plist>
