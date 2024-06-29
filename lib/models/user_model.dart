@@ -65,7 +65,7 @@ class UserModel {
         address: map['address'],
         joinedDate: createdDate.toDate(),
         phoneNumber: map['phone_number'],
-        favProducts: map['favProducts'],
+        favProducts: map['favProducts']?.cast<String>(),
         avatar: map['phone_number']);
   }
 }
