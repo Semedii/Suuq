@@ -7,9 +7,10 @@ import 'package:suuq/my_app.dart';
 import 'firebase_options_staging.dart';
 
 void main() async {
-  await Global.init();
-   await Firebase.initializeApp(
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ProviderScope(child: MyApp(env: "staging",)));
+  await Global.init();
+  runApp(ProviderScope(child: MyApp(env: "staging")));
 }

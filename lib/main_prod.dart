@@ -7,9 +7,10 @@ import 'package:suuq/my_app.dart';
 import 'firebase_options_prod.dart';
 
 void main() async {
-  await Global.init();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Global.init();
   runApp(ProviderScope(child: MyApp(env:  "prod")));
 }

@@ -10,6 +10,7 @@ class UserModel {
   String? address;
   Language language;
   DateTime? joinedDate;
+  String? fCMToken;
   List<String?>? favProducts;
 
   UserModel({
@@ -22,6 +23,7 @@ class UserModel {
     this.phoneNumber,
     this.avatar,
     this.favProducts,
+    this.fCMToken,
   });
 
   factory UserModel.fromFirestore({
@@ -38,6 +40,7 @@ class UserModel {
         address: data?['address'],
         joinedDate: createdDate.toDate(),
         phoneNumber: data?['phone_number'],
+        fCMToken: data?['fCMToken'],
         favProducts: data?['favProducts']?.cast<String>(),
         avatar: data?['phone_number']);
   }
@@ -51,7 +54,8 @@ class UserModel {
       "avatar": avatar,
       "address": address,
       "language": languageToString(language),
-      "favProducts": favProducts
+      "favProducts": favProducts,
+      "fCMToken": fCMToken,
     };
   }
 
@@ -65,6 +69,7 @@ class UserModel {
         address: map['address'],
         joinedDate: createdDate.toDate(),
         phoneNumber: map['phone_number'],
+        fCMToken: map['fCMToken'],
         favProducts: map['favProducts']?.cast<String>(),
         avatar: map['phone_number']);
   }

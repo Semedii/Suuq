@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:suuq/global.dart';
 import 'package:suuq/models/user_model.dart';
 import 'package:suuq/services/auth_data_service.dart';
@@ -16,6 +17,7 @@ class AuthService {
     String password,
     AppLocalizations localizations,
   ) async {
+    final fCMToken = await FirebaseMessaging.instance.getToken();
     try {
       await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -32,6 +34,7 @@ class AuthService {
           phoneNumber: firebaseUser.phoneNumber,
           joinedDate: DateTime.now(),
           avatar: firebaseUser.photoURL,
+          fCMToken: fCMToken,
         );
 
         await _authDataService.addNewUser(newUser);
