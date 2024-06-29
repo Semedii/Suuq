@@ -23,6 +23,44 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612442301144:android:1b25bdad91b62e0d332dad",
+        "android_client_info": {
+          "package_name": "com.example.suuq_iibiye"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALwn6CdBMVummiSu64rstx1iNWi0kEQ-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612442301144:android:4f537c4463baa07a332dad",
+        "android_client_info": {
+          "package_name": "com.suuq.prod"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALwn6CdBMVummiSu64rstx1iNWi0kEQ-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"
