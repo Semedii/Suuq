@@ -51,7 +51,7 @@ class SignupPage extends ConsumerWidget {
       return const Center(child: CircularProgressIndicator());
     }
     if (signupState is SignupStateSuccess) {
-      toastInfo(localizations.succesfullyCreatedDescription);
+      toastInfo(localizations.verifyEmail);
       AutoRouter.of(context).replace(const LoginRoute());
     }
     if (signupState is SignupStateFailure) {

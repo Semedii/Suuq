@@ -84,12 +84,12 @@
   "showAll": "Show all",
   "signup": "Signup",
   "succesfullyAddedToCart": "Successfully added to cart",
-  "succesfullyCreatedDescription": "Successfully created, please login",
   "successfullyUpdated": "Successfully updated",
   "termsAndConditions": "the terms and conditions",
   "termsValidation": "You need to accept the terms",
   "thankYouForShopping": "Thank you for shopping with us",
   "total": "Total",
+  "verifyEmail": "Please verify the link sent to your email",
   "whatsapp": "On whatsapp",
   "wrongEmailOrPassword": "Wrong email or password"
 }
