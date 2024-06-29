@@ -89,7 +89,7 @@ initPage() async {
           customerEmail: userEmail!,
           productId: product.id,
           category: product.category);
-      await _cartDataService.addNewProductToCart(cart, localizations.successfullyUpdated);
+      await _cartDataService.addNewProductToCart(cart, localizations.succesfullyAddedToCart);
       await _cartItemsUpdated();
     }
   }
