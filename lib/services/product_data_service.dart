@@ -207,22 +207,30 @@ class ProductDataService {
     }
   }
 
-  Future<List<Product>> _getProductsWithImagesAndIsFavs(
-      List<Product> products) async {
-    var email = FirebaseAuth.instance.currentUser?.email;
-    final List<Product> productsWithImages = [];
-    for (Product product in products) {
-      List<String> newImageUrls = [];
-      for (String? imageUrl in product.imageUrl) {
-        var newImageUrl = await ImageDataService().retrieveImageUrl(imageUrl);
-        newImageUrls.add(newImageUrl);
-      }
-      bool isFav = await AuthDataService().isProductInFav(email!, product.id);
-      product = product.copyWith(imageUrl: newImageUrls, isFav: isFav);
-      productsWithImages.add(product);
-    }
-    return productsWithImages;
+Future<List<Product>> _getProductsWithImagesAndIsFavs(List<Product> products) async {
+  var email = FirebaseAuth.instance.currentUser?.email;
+  final List<Product> productsWithImages = [];
+
+  List<Future<List<String>>> imageFutures = products.map((product) =>
+      Future.wait(product.imageUrl.map((imageUrl) =>
+          ImageDataService().retrieveImageUrl(imageUrl)))).toList();
+
+  List<List<String>> imageUrlsList = await Future.wait(imageFutures);
+
+  List<Future<bool>> favFutures = products.map((product) =>
+      AuthDataService().isProductInFav(email!, product.id)).toList();
+
+  List<bool> isFavList = await Future.wait(favFutures);
+
+  for (int i = 0; i < products.length; i++) {
+    Product product = products[i];
+    List<String> newImageUrls = imageUrlsList[i];
+    bool isFav = isFavList[i];
+    product = product.copyWith(imageUrl: newImageUrls, isFav: isFav);
+    productsWithImages.add(product);
   }
+  return productsWithImages;
+}
 
   Future<void> addNewQuestion({
     required String productId,
