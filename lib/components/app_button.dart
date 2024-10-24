@@ -20,14 +20,18 @@ class AppButton extends StatelessWidget {
   final bool isTransparent;
   final bool noTopMargin;
   final void Function() onTap;
+
   @override
   Widget build(BuildContext context) {
     double phoneWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: isLoading ? null : onTap,
       child: Container(
-        width: isSmall? phoneWidth*.4: phoneWidth*.8,
-        margin: noTopMargin? const EdgeInsets.symmetric(horizontal: 32) : AppStyles.edgeInsetsT20L32R32,
+        width: isSmall ? phoneWidth * .4 : phoneWidth * .8,
+        margin: noTopMargin
+            ? const EdgeInsets.symmetric(horizontal: 32)
+            : AppStyles.edgeInsetsT20L32R32,
         padding: AppStyles.edgeInsetsV10H20,
         decoration: _getDecoration(),
         child: isLoading
@@ -43,28 +47,33 @@ class AppButton extends StatelessWidget {
   BoxDecoration _getDecoration() {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(20.0),
-      border: Border.all(color: isTransparent? AppColors.black: Colors.transparent),
-      color: isTransparent? Colors.transparent:AppColors.green,
+      border: Border.all(
+          color: isTransparent ? AppColors.black : Colors.transparent),
+      color: isTransparent ? Colors.transparent : AppColors.green,
     );
   }
 
   Row _getTitleText() {
     return Row(
       children: [
-        prefixWidget!=null? prefixWidget!: const SizedBox.shrink(),
+        prefixWidget != null ? prefixWidget! : const SizedBox.shrink(),
         Expanded(
           child: Center(
             child: Text(
               title.toUpperCase(),
-              style:  TextStyle(
-                color: isTransparent? AppColors.black : AppColors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: _buildTitleStyle(),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  TextStyle _buildTitleStyle() {
+    return TextStyle(
+      color: isTransparent ? AppColors.black : AppColors.white,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
     );
   }
 }
