@@ -19,6 +19,8 @@ class ProductCard extends StatelessWidget {
       onTap: () =>
           AutoRouter.of(context).push(ProductRoute(productId: product.id)),
       child: Card(
+        elevation: 10,
+        shadowColor: Colors.green,
         child: SizedBox(
           width: 150,
           height: 270,
