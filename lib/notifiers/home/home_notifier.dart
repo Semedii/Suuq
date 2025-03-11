@@ -12,7 +12,6 @@ import 'package:suuq/utils/enums/category_enum.dart';
 import 'package:suuq/utils/pop_up_message.dart';
 part 'home_notifier.g.dart';
 
-
 @Riverpod()
 class HomeNotifier extends _$HomeNotifier {
   final ProductDataService _productDataService = ProductDataService();
@@ -25,47 +24,54 @@ class HomeNotifier extends _$HomeNotifier {
     return HomeStateInitial();
   }
 
-initPage() async {
-  state = HomeStateLoading();
-  userEmail = FirebaseAuth.instance.currentUser?.email;
-  
-  // Fetch cart items and active orders concurrently
-  var cartItemsFuture = _cartDataService.fetchUsersCart(userEmail!);
-  var activeOrdersFuture = _orderDataService.fetchCurrentUsersOrders(userEmail!);
+  initPage() async {
+    state = HomeStateLoading();
+    userEmail = FirebaseAuth.instance.currentUser?.email;
 
-  // Fetch products for different categories concurrently
-  var homeAccessoriesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.homeAccessories));
-  var electronicsFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.electronics));
-  var kitchenAccessoriesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.kitchenAccessories));
-  var shoesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.shoes));
-  var cosmeticsFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.cosmetics));
-  var clothesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.clothes));
-  var gymAccessoriesFuture = _productDataService.fetchHomePageProducts(categoryToString(Category.gymAccessories));
+    // Fetch cart items and active orders concurrently
+    var cartItemsFuture = _cartDataService.fetchUsersCart(userEmail!);
+    var activeOrdersFuture =
+        _orderDataService.fetchCurrentUsersOrders(userEmail!);
 
-  // Wait for all futures to complete
-  List<Cart?> cartItems = await cartItemsFuture;
-  List<OrderModel?> activeOrders = await activeOrdersFuture;
-  List<Product?> homeAccessories = await homeAccessoriesFuture;
-  List<Product?> electronics = await electronicsFuture;
-  List<Product?> kitchenAccessories = await kitchenAccessoriesFuture;
-  List<Product?> shoes = await shoesFuture;
-  List<Product?> cosmetics = await cosmeticsFuture;
-  List<Product?> clothes = await clothesFuture;
-  List<Product?> gymAccessories = await gymAccessoriesFuture;
+    // Fetch products for different categories concurrently
+    var homeAccessoriesFuture = _productDataService
+        .fetchHomePageProducts(Category.homeAccessories.name);
+    var electronicsFuture =
+        _productDataService.fetchHomePageProducts(Category.electronics.name);
+    var kitchenAccessoriesFuture = _productDataService
+        .fetchHomePageProducts(Category.kitchenAccessories.name);
+    var shoesFuture =
+        _productDataService.fetchHomePageProducts(Category.shoes.name);
+    var cosmeticsFuture =
+        _productDataService.fetchHomePageProducts(Category.cosmetics.name);
+    var clothesFuture =
+        _productDataService.fetchHomePageProducts(Category.clothes.name);
+    var gymAccessoriesFuture =
+        _productDataService.fetchHomePageProducts(Category.gymAccessories.name);
 
-  state = HomeStateLoaded(
-    numberItemsInCart: cartItems.length,
-    numberActiveOrder: activeOrders.length,
-    homeAccessories: homeAccessories,
-    kitchenAccessories: kitchenAccessories,
-    electronics: electronics,
-    cosmetics: cosmetics,
-    shoes: shoes,
-    clothes: clothes,
-    gymAccessories: gymAccessories,
-  );
-}
+    // Wait for all futures to complete
+    List<Cart?> cartItems = await cartItemsFuture;
+    List<OrderModel?> activeOrders = await activeOrdersFuture;
+    List<Product?> homeAccessories = await homeAccessoriesFuture;
+    List<Product?> electronics = await electronicsFuture;
+    List<Product?> kitchenAccessories = await kitchenAccessoriesFuture;
+    List<Product?> shoes = await shoesFuture;
+    List<Product?> cosmetics = await cosmeticsFuture;
+    List<Product?> clothes = await clothesFuture;
+    List<Product?> gymAccessories = await gymAccessoriesFuture;
 
+    state = HomeStateLoaded(
+      numberItemsInCart: cartItems.length,
+      numberActiveOrder: activeOrders.length,
+      homeAccessories: homeAccessories,
+      kitchenAccessories: kitchenAccessories,
+      electronics: electronics,
+      cosmetics: cosmetics,
+      shoes: shoes,
+      clothes: clothes,
+      gymAccessories: gymAccessories,
+    );
+  }
 
   _cartItemsUpdated() async {
     List<Cart?> cartItems = await _cartDataService.fetchUsersCart(userEmail!);
@@ -77,8 +83,8 @@ initPage() async {
     List<Cart?> carts = await _cartDataService.fetchUsersCart(userEmail!);
     List<String> sellersInCart = [];
     for (int i = 0; i < carts.length; i++) {
-      Product? product = await _productDataService.fetchProductsById(
-          carts[i]!.productId);
+      Product? product =
+          await _productDataService.fetchProductsById(carts[i]!.productId);
       sellersInCart.add(product.sellerName);
     }
     if (sellersInCart.isNotEmpty &&
@@ -89,7 +95,8 @@ initPage() async {
           customerEmail: userEmail!,
           productId: product.id,
           category: product.category);
-      await _cartDataService.addNewProductToCart(cart, localizations.succesfullyAddedToCart);
+      await _cartDataService.addNewProductToCart(
+          cart, localizations.succesfullyAddedToCart);
       await _cartItemsUpdated();
     }
   }

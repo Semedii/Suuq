@@ -8,7 +8,7 @@ class Cart {
   final Category category;
 
   Cart({
-     this.id="",
+    this.id = "",
     required this.customerEmail,
     required this.productId,
     required this.category,
@@ -20,10 +20,11 @@ class Cart {
   ) {
     final data = snapshot.data();
     return Cart(
-        id: snapshot.id,
-        customerEmail: data?['customerEmail'],
-        productId: data?['productId'],
-        category: getCategoryFromString(data?['category']),);
+      id: snapshot.id,
+      customerEmail: data?['customerEmail'],
+      productId: data?['productId'],
+      category: getCategoryFromString(data?['category']),
+    );
   }
 
   Map<String, dynamic> toFirestore() {
@@ -31,6 +32,7 @@ class Cart {
       "id": id,
       'customerEmail': customerEmail,
       "productId": productId,
-      'category': categoryToString(category)};
+      'category': category.name
+    };
   }
 }

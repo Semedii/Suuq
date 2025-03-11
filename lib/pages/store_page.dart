@@ -169,7 +169,7 @@ class StorePage extends ConsumerWidget {
     AppLocalizations localizations, {
     Function(bool)? onSelected,
   }) {
-    final categoryName = categoryToString(category);
+    final categoryName = category.name;
     bool isSelected = state.filters.isFilterActive(categoryName);
     return Padding(
       padding: AppStyles.edgeInsetsH4,

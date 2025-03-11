@@ -36,7 +36,7 @@ class CartProduct {
       "image": imageUrl,
       "description": description,
       "price": price.toStringAsFixed(2),
-      "category": categoryToString(category),
+      "category": category.name,
     };
   }
 

@@ -100,7 +100,7 @@ class HomePage extends ConsumerWidget {
               ),
               GestureDetector(
                 onTap: () => AutoRouter.of(context).push(
-                    CategoryRoute(categoryName: categoryToString(products.first!.category))),
+                    CategoryRoute(categoryName: products.first!.category.name)),
                 child: Text(
                   localizations.showAll,
                   style: const TextStyle(
