@@ -7,10 +7,7 @@ import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_notifier.dart';
 import 'package:suuq/notifiers/home/home_state.dart';
 import 'package:suuq/pages/homepage/home_page_app_bar.dart';
-import 'package:suuq/router/app_router.gr.dart';
-import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class HomePage extends ConsumerWidget {
@@ -41,7 +38,6 @@ class HomePage extends ConsumerWidget {
     HomeStateLoaded state,
     WidgetRef ref,
   ) {
-    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size(double.infinity, 80),
@@ -55,83 +51,42 @@ class HomePage extends ConsumerWidget {
             onRefresh: () async {
               ref.read(homeNotifierProvider.notifier).initPage();
             },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Shop By Category",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextButton(onPressed: () {}, child: Text("See All"))
-                    ],
-                  ),
-                  CategoriesList(),
-                  _buildNiche(localizations.homeAccessories,
-                      state.homeAccessories, context),
-                  _buildNiche(
-                      localizations.electronics, state.electronics, context),
-                  _buildNiche(localizations.kitchenAccessories,
-                      state.kitchenAccessories, context),
-                  _buildNiche(localizations.shoes, state.shoes, context),
-                  _buildNiche(localizations.gymAccessories,
-                      state.gymAccessories, context),
-                  _buildNiche(
-                      localizations.cosmetics, state.cosmetics, context),
-                  _buildNiche(localizations.clothes, state.clothes, context),
-                ],
-              ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Shop By Category",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextButton(onPressed: () {}, child: Text("See All"))
+                  ],
+                ),
+                CategoriesList(),
+                _buildProductsList(state.shoes),
+              ],
             ),
           ),
         ));
   }
 
-  SizedBox _buildNiche(
-    String nicheName,
-    List<Product?> products,
-    BuildContext context,
-  ) {
-    AppLocalizations localizations = AppLocalizations.of(context)!;
-    return SizedBox(
-      height: 370,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                nicheName,
-                style: const TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              GestureDetector(
-                onTap: () => AutoRouter.of(context).push(
-                    CategoryRoute(categoryName: products.first!.category.name)),
-                child: Text(
-                  localizations.showAll,
-                  style: const TextStyle(
-                      color: AppColors.green, fontWeight: FontWeight.bold),
-                ),
-              )
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: products.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return product != null
-                    ? ProductCard(product: product)
-                    : const Text("not found");
-              },
-            ),
-          ),
-        ],
+  Widget _buildProductsList(List<Product?> products) {
+    return Expanded(
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
+          crossAxisCount: 2,
+          childAspectRatio: .55,
+        ),
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return product != null
+              ? ProductCard(product: product)
+              : const Text("not found");
+        },
       ),
     );
   }
