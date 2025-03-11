@@ -26,9 +26,11 @@ class MainPage extends ConsumerWidget {
       const HomePage(),
       const ActiveOrders(),
       const MyProfilePage(),
+      const ActiveOrders(),
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: indexBottomNavbar,
         onTap: ref.read(bottomNavBarNotifierProvider.notifier).onTap,
         selectedItemColor: AppColors.black,
@@ -36,6 +38,10 @@ class MainPage extends ConsumerWidget {
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
             label: localizations.home,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.search),
+            label: localizations.explore,
           ),
           homeState is HomeStateLoaded && homeState.numberActiveOrder > 0
               ? _getActiveOrdersWithBadge(homeState, localizations)
