@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:suuq/components/categories_list.dart';
 import 'package:suuq/components/product_card.dart';
 import 'package:suuq/models/product.dart';
 import 'package:suuq/notifiers/home/home_notifier.dart';
@@ -11,7 +11,6 @@ import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:suuq/utils/enums/category_enum.dart';
 
 @RoutePage()
 class HomePage extends ConsumerWidget {
@@ -59,6 +58,17 @@ class HomePage extends ConsumerWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Shop By Category",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextButton(onPressed: () {}, child: Text("See All"))
+                    ],
+                  ),
+                  CategoriesList(),
                   _buildNiche(localizations.homeAccessories,
                       state.homeAccessories, context),
                   _buildNiche(

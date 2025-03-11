@@ -1,20 +1,21 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum Category {
-  clothes(name: "clothes", imageUrl: "assets/image/tshirt.jpg"),
-  shoes(name: "shoes", imageUrl: "assets/image/shoe.jpg"),
   homeAccessories(
-    name: "home accessories",
-    imageUrl: "assets/image/hanger.jpg",
+    name: "Home Accessories",
+    imageUrl: "assets/images/hanger.jpg",
   ),
-  electronics(name: "electronics", imageUrl: "assets/image/tshirt.jpg"),
-  gymAccessories(name: "gym accessories", imageUrl: "assets/image/tshirt.jpg"),
   kitchenAccessories(
-    name: "kitchen accessories",
-    imageUrl: "assets/image/tshirt.jpg",
+    name: "Kitchen Accessories",
+    imageUrl: "assets/images/tshirt.jpg",
   ),
-  cosmetics(name: "cosmetics", imageUrl: "assets/image/tshirt.jpg"),
-  others(name: "others", imageUrl: "assets/image/tshirt.jpg");
+  gymAccessories(name: "Gym Accessories", imageUrl: "assets/images/tshirt.jpg"),
+  electronics(name: "Electronics", imageUrl: "assets/images/tshirt.jpg"),
+  shoes(name: "Shoes", imageUrl: "assets/images/shoe.jpg"),
+  clothes(name: "Clothes", imageUrl: "assets/images/tshirt.jpg"),
+
+  cosmetics(name: "Cosmetics", imageUrl: "assets/images/tshirt.jpg"),
+  others(name: "Others", imageUrl: "assets/images/tshirt.jpg");
 
   final String name;
   final String imageUrl;
