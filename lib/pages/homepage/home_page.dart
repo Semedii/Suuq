@@ -95,7 +95,7 @@ class HomePage extends ConsumerWidget {
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return SizedBox(
-      height: 300,
+      height: 370,
       child: Column(
         children: [
           Row(

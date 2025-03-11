@@ -4,6 +4,7 @@ import 'package:suuq/models/product.dart';
 import 'package:suuq/router/app_router.gr.dart';
 import 'package:suuq/utils/app_colors.dart';
 import 'package:suuq/utils/app_styles.dart';
+import 'package:suuq/utils/string_utilities.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -18,21 +19,19 @@ class ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: () =>
           AutoRouter.of(context).push(ProductRoute(productId: product.id)),
-      child: Card(
-        elevation: 10,
-        shadowColor: Colors.green,
-        child: SizedBox(
-          width: 150,
-          height: 270,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              isImageAvailable ? _getImageFromNetwork() : _getImageFromAsset(),
-              _buildProductInfo(),
-              _buildProductPrice(),
-            ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 270,
+            child: isImageAvailable
+                ? _getImageFromNetwork()
+                : _getImageFromAsset(),
           ),
-        ),
+          _getSellerName(),
+          _getProductDescription(),
+          _buildProductPrice()
+        ],
       ),
     );
   }
@@ -46,8 +45,9 @@ class ProductCard extends StatelessWidget {
     );
   }
 
-  Expanded _getImageFromNetwork() {
-    return Expanded(
+  ClipRRect _getImageFromNetwork() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
       child: Image.network(
         product.imageUrl.first!,
         fit: BoxFit.cover,
@@ -73,35 +73,18 @@ class ProductCard extends StatelessWidget {
     }
   }
 
-  Padding _buildProductInfo() {
-    return Padding(
-      padding: AppStyles.edgeInsets4,
-      child: RichText(
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        text: TextSpan(
-          children: [
-            _getSellerName(),
-            _getProductDescription(),
-          ],
-        ),
+  Text _getSellerName() {
+    return Text(
+      product.sellerName.toUpperCase(),
+      style: TextStyle(
+        color: AppColors.lightGrey,
       ),
     );
   }
 
-  TextSpan _getSellerName() {
-    return TextSpan(
-      text: product.sellerName.toUpperCase(),
-      style: const TextStyle(
-        color: AppColors.black,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
-
-  TextSpan _getProductDescription() {
-    return TextSpan(
-      text: " - ${product.description}",
+  Text _getProductDescription() {
+    return Text(
+      product.description.capitalize(),
       style: const TextStyle(
         color: AppColors.black,
       ),
